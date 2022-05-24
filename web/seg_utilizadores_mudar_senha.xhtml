@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./templates/master_template.xhtml">
+
+            <ui:define name="page_title">
+                page_title
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>Segurança -> Utilizadores -> Mudar a Senha</h2>
+                <p:growl id="gr_geral" life="5000">
+                    <p:autoUpdate />
+                </p:growl>
+                <p></p>
+                <p:fieldset>
+                    <p:fieldset>
+
+                        <h:panelGrid columns="2" id="gridCamposPesquisa" cellpadding="4">
+
+
+                            <p:outputLabel value="Nome Completo"/>
+                            <p:outputLabel value="#{segPessoaBean.find(segLoginBean.sessaoActual.fkSegPessoa).nome}"/>
+
+                            <p:outputLabel value=" Nome de Utilizador"/>
+                            <p:outputLabel value="#{segLoginBean.sessaoActual.nomeUtilizador}"/>
+
+                            <p></p>
+                            <h:panelGrid columns="3">
+                                <p:commandButton
+                                    value="Alterar Senha" icon="ui-icon-contitua" ajax="true"
+                                    onclick="PF('dialogRestaurarPass').show()"          
+                                    partialSubmit="true" 
+                                    process="@this"
+                                    actionListener="#{segUtilizadoresListar.setContaEditar(segLoginBean.sessaoActual)}" 
+                                    onstart="PF('w_dlgLoading').show();" 
+                                    oncomplete="PF('w_dlgLoading').hide();"
+                                    update="form_geral:formRestaurarPass2:gridRestaurPass2"
+                                    />
+
+
+
+                            </h:panelGrid> 
+                        </h:panelGrid>
+
+                        <p></p>
+
+                    </p:fieldset>
+
+
+
+
+                </p:fieldset>
+
+                <!-- Dialog Resetar Password-->
+                <p:dialog header="Alterar Senha" closable="true" showEffect="fade"
+                          widgetVar="dialogRestaurarPass" closeOnEscape="true"
+                          width="50%" modal="true" >
+                    <h:form id="formRestaurarPass2">
+
+                        <center>
+                            <h5>
+                                <p:outputLabel value="#{segPessoaBean.find(segLoginBean.sessaoActual.fkSegPessoa).nome}" style="color:#005580"/></h5>
+                            <br/>
+                            <h:panelGrid  columns="2" id="gridRestaurPass2" rendered="#{true}">
+                                <p:outputLabel value="Nome do Utilizador:" style="font-weight: bold;"/>
+                                <p:inputText value="#{segLoginBean.sessaoActual.nomeUtilizador}" disabled="true"/>
+
+                                <p:outputLabel value="Senha Actual:" style="font-weight: bold;"/>
+                                <p:password value="#{segUtilizadoresListar.passActual}"/>
+
+                                <p:outputLabel value="Nova Senha:" style="font-weight: bold;"/>
+                                <p:password id="novaPass" feedback="true"
+                                            promptLabel="Por favor insira a senha" weakLabel="Fraco" 
+                                            goodLabel="Bom" strongLabel="Forte" value="#{segUtilizadoresListar.passNova}" 
+                                            styleClass="input-xlarge"/>
+
+                                <p:outputLabel value="Confirmar Nova Senha:" style="font-weight: bold;"/>
+                                <p:password id="passConfirm" feedback="true"
+                                            goodLabel="Bom" strongLabel="Forte" value="#{segUtilizadoresListar.passConfirmada}" 
+                                            styleClass="input-xlarge"/>
+                            </h:panelGrid>
+
+                            <center><p:commandButton 
+                                    value="Guardar"                              
+                                    icon="ui-icon-check" 
+                                    onclick="PF('formRestaurarPass2').hide()"
+                                    onstart="PF('w_dlgLoading').show();" 
+                                    oncomplete="PF('w_dlgLoading').hide();"
+                                    actionListener="#{segUtilizadoresListar.alterarPalavraPass()}"
+                                    style="width:200px"
+                                    >
+                                    <p:ajax oncomplete="PF('dialogRestaurarPass2').hide()"/>
+                                </p:commandButton></center>
+
+
+
+                        </center>
+                    </h:form>
+                </p:dialog> 
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

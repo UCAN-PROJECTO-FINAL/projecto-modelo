@@ -1,0 +1,59 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_frt/template.xhtml">
+ 
+    
+    <ui:define name="content">
+        
+             
+        
+    	
+
+                <p:growl id="messages" showDetail="true"/> 
+                
+                <h4>Gestão de Frotas -> Transporte -> Agenda</h4>
+        
+                <br/>
+        
+                
+                
+                <p:toolbar style="margin-top: 20px">
+                    
+                            <p:toolbarGroup>
+                                <p:button icon="ui-icon-check" value="AGENDAR TRANSPORTE"  style="margin-bottom:10px; width: 300px;height: 50px" styleClass="flat" outcome="/modulos/frtVisao/frtTransporte/frtTransporteAgendar/frt_transporteagendar_cadastrar.xhtml"/>
+                            </p:toolbarGroup>
+
+                            <p:toolbarGroup align="right">
+                                <p:button icon="ui-icon-list" value="TRANSPORTES AGENDADO"  style="margin-bottom:10px; width: 300px;height: 50px" styleClass="flat" outcome="/modulos/frtVisao/frtTransporte/frtTransporteAgendar/frt_transporteagendado_listar.xhtml"/>
+                            </p:toolbarGroup>
+                    
+                    
+                </p:toolbar>
+
+                <h:panelGrid columnClasses="value">
+           
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <p:schedule id="schedule" value="#{scheduleView.eventModel}"  widgetVar="myschedule" timeZone="GMT+2" locale="pt">
+
+                                <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
+                                <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+
+                    </p:schedule>
+
+                </h:panelGrid>
+	    	
+    	
+        
+     </ui:define>   
+    
+        
+</ui:composition>
+

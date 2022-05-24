@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title> Portal de Suporte a Gestão de Lotes - Login </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputStylesheet name="css/pages/signin.css"/>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/bootstrap-responsive.min.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon/Logo-EGTI.png']}" />
+    </h:head>
+
+    <h:body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <span class="brand">
+                        <p:graphicImage url="/resources/Imagens/logotipo.jpg" width="5%"/>
+                        Portal de Suporte a Gestão de Lotes
+                    </span>
+                </div>
+            </div> <!-- /navbar-inner -->
+        </div> <!-- /navbar -->
+
+        <br/><br/><br/><br/>
+
+        <h:form id="alterarPassForm" acceptcharset="ISO-8859-1">
+
+            <div class="account-container">
+                <div class="content clearfix">
+                    <center><h1>Alterar Palavra Passe</h1></center>
+                    <p:growl id="gr_geral" life="5000">
+                        <p:autoUpdate />
+                    </p:growl>
+                    <f:event 
+                        type="javax.faces.event.PreRenderViewEvent" 
+                        listener="#{segUtilizadorNovoBean.preRenderView()}" 
+                        />
+
+                    <h:outputLabel 
+                        styleClass="alert alert-error" 
+                        value="Senha inválida" 
+                        rendered="#{segLoginBean.validateError}" 
+                        />
+
+                    <div class="login-fields">
+                        <div class="field">
+                            <p:password 
+                                id="password"
+                                placeholder="nova senha"  
+                                value="#{segLoginBean.novaSenha}" 
+                                styleClass="input-xlarge"
+                                />
+                        </div>
+
+                        <div class="field">
+                            <p:password 
+                                id="novaSenha" 
+                                feedback="true" 
+                                placeholder="confirme a senha"
+                                promptLabel="Por favor insira a senha" 
+                                weakLabel="Fraco" 
+                                goodLabel="Bom" 
+                                strongLabel="Forte" 
+                                value="#{segLoginBean.novaSenhaConfirmada}" 
+                                styleClass="input-xlarge"
+                                />  
+                        </div>
+
+
+
+
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <h:commandLink 
+                            class="button btn-success btn-large" 
+                            value="Actualizar Credenciais" 
+                            action="#{segLoginBean.primeiroLogin()}"
+                            />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </h:body>
+
+</html>

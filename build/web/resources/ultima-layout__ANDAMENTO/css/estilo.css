@@ -1,0 +1,177 @@
+.txt {
+  
+    width: 20%;
+    height: 30%;
+    font-size: 10px;
+    /*    
+      line-height: 1.428571429;
+        color: #212121;
+        vertical-align: middle;*/
+
+    padding: 6px 6px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #c7c7cc; 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 #283593;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.painelGrupo{
+
+    float: left;
+    margin-top: -2px;
+}
+
+.calendar {
+    float: left;
+    width: 120%;
+    height: 30%;
+    font-size: 13px;
+
+    padding: 4px 4px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #c7c7cc;
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 #283593;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+
+.combo {
+
+    width: 80%;
+    height: 30%;
+    font-size: 13px;
+
+    padding: 6px 6px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #c7c7cc; 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 #283593;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+
+.txt:focus {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-color: #283593;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px #283593;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px #283593;
+    outline: 0;
+
+}
+
+
+
+
+
+
+.txt[disabled],
+.txt[readonly],
+fieldset[disabled] .txt {
+    cursor: not-allowed;
+
+}
+
+/*fim tema para textArea*/
+
+
+.txtArea {
+    width: auto;
+    height: 50px;
+    padding: 12px 12px;
+    font-size: 14px;
+    color: #212121;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px solid #c7c7cc; 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 #283593;
+
+}
+
+
+.txtArea:focus {
+    border-color: #283593;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px #283593;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px #283593;
+    outline: 0;  
+}
+
+.txtArea[disabled],
+.txtArea[readonly],
+fieldset[disabled] .txtArea {
+    cursor: not-allowed;
+
+}
+
+/*fim tema para textArea*/
+
+/*inicio tema para data*/
+.txtData {
+    width: 300px;
+    height: 15px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #212121;
+    background-color: #ffffff;
+    border: 1px solid #c7c7cc; 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 #283593;
+
+}
+
+/*fim tema para data*/
+
+
+
+.combo:focus {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-color: #283593;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px #283593;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px #283593;
+    outline: 0;  
+}
+.combo[disabled],
+.combo[readonly],
+fieldset[disabled] .combo {
+    cursor: not-allowed;
+    background-color: #f7f7f7;
+}
+textarea.form-control {
+    height: auto;
+}
+
+/*fim tema para combo*/
+
+/*Inicio tema para label*/
+
+.lb{
+    color: #000000; 
+    text-align: right;
+    text-indent: inherit;
+    font-size: small;
+
+}
+
+
+/*fim tema para label*/
+

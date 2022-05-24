@@ -1,0 +1,241 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui"
+    template="/template_frt/template.xhtml">
+
+
+    <ui:define name="head">
+        <style type="text/css">
+            .cars-datalist .text-column p:last-child{
+                color:#757575;
+            }
+
+            .cars-datalist .car-item i, .cars-datalist .car-item .car-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .cars-datalist .car-item button {
+                float: right;
+            }
+
+            .cars-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .ui-car-display td:last-child {
+                font-weight: 700;
+            }
+
+            @media (max-width:640px) {
+                .cars-datalist .text-column {
+                    text-align: center;
+                }
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+        <h4> Gestão de Frotas -> Transporte -> Manutenção </h4>
+
+        <br/>
+        <br/>
+
+
+        <div class="ui-g ui-fluid" style=" filter:drop-shadow(1px 1px 2px black); margin-top: -2%; margin-bottom: -2%">
+            <div class="ui-g-12 ui-lg-6" >
+
+                <div class="card card-w-title" style="width: 203%; height: 100%">
+
+
+                    <p:messages id="messages"  showSummary="true"  closable="true" showDetail="true"  />
+
+                    <p:toolbar >
+
+                        <p:toolbarGroup>
+                            <p:commandButton value="SALVAR" style="margin-bottom:10px; width: 150px" styleClass="flat"/>
+                        </p:toolbarGroup> 
+
+                        <p:toolbarGroup  align="right">    
+                            <p:button value="LISTAR" style="margin-bottom:10px; width: 150px" styleClass="flat"  outcome="/modulos/frtVisao/frt_home.xhtml"/>    
+                        </p:toolbarGroup>
+
+                    </p:toolbar>    
+
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+
+        <p:tabView style="height: auto" >
+
+            <p:tab title="Manutenção" >
+
+                <br/>
+                <br/>
+                <br/>
+
+                <p:fieldset legend="Selecione o Transporte para a Manutencao">
+
+                    <p:panelGrid columns="1" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Transporte:" for="tr"/> 
+                        <h:outputText id="tr" 
+                                      value="#{transporteManutencaoCadastrarBean.selectedPtTransporte.matricula} #{transporteManutencaoCadastrarBean.selectedPtTransporte.fkModelo.descricao}"  style="width:400px " />
+
+
+
+                        <h:panelGroup >
+                            <p:outputLabel value="Selecionar Transporte" />
+                            <p:commandButton  oncomplete="PF('transporteDialog').show()"  value="Pesquisar" title="Listar" style="width: 200px" process="@this" />
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Dados da Manutencao">
+
+                    <p:panelGrid columns="2" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Motorista"/>
+                            <p:selectOneMenu value="#{comumEnderecoBean.municipio}"
+                                             effect="fold" editable="true"
+                                             id="motorista" filter="true"
+                                             required="true" requiredMessage="Informe  a sua Naturalidade" 
+                                             style="width:40%">
+                                <f:selectItems var="mun" value="#{comumEnderecoBean.locLocalidadeCache.listaLocLocalidadeMunicipio}" 
+                                               itemLabel="#{mun.designacao}" itemValue="#{mun.pkLocLocalidade}"/>
+
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Tipo de Manutenção"/>
+                            <p:selectOneMenu value="#{comumEnderecoBean.municipio}"
+                                             effect="fold" editable="true"
+                                             id="tipo_manutencao" filter="true"
+                                             required="true" requiredMessage="Informe  a sua Naturalidade" 
+                                             style="width:40%">
+                                <f:selectItems var="mun" value="#{comumEnderecoBean.locLocalidadeCache.listaLocLocalidadeMunicipio}" 
+                                               itemLabel="#{mun.designacao}" itemValue="#{mun.pkLocLocalidade}"/>
+
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Local da Manutenção"/>
+                            <p:inputText id="nome" style="width: 40%"/> 
+                        </p:panelGrid>
+
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Preço da Manutenção"/>
+                            <p:inputText id="preco" style="width: 40%"/> 
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Forma de Pagamento"/>
+                            <p:selectOneMenu value="#{comumEnderecoBean.municipio}"
+                                             effect="fold" editable="true"
+                                             id="frm_pagamenti" filter="true"
+                                             required="true" requiredMessage="Informe  a sua Naturalidade" 
+                                             style="width:40%">
+                                <f:selectItems var="mun" value="#{comumEnderecoBean.locLocalidadeCache.listaLocLocalidadeMunicipio}" 
+                                               itemLabel="#{mun.designacao}" itemValue="#{mun.pkLocLocalidade}"/>
+
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Data do Pagamento"/> 
+                            <p:calendar id="button_emissao" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" required="true"   requiredMessage="Deve selecionar a Data de Emissão" style="width: 50%"/>
+                        </p:panelGrid>
+
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Data da Manutenção"/> 
+                            <p:calendar id="button_emissao" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" required="true"   requiredMessage="Deve selecionar a Data de Emissão" style="width: 50%"/>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Data do Cadastro"/>
+                            <p:inputText value="#{transporteManutencaoCadastrarBean.dataSystem()}" readonly="true">
+                                <f:convertDateTime locale="pt" timeZone="GMT+1" pattern="dd/MM/yyyy " /> 
+                            </p:inputText>
+                        </p:panelGrid>
+
+                        <p:fieldset legend="Observação" style="color: black">
+
+                            <label>  Peças substituidas, etc </label><br /><br /><br />
+                            <p:inputTextarea styleClass="txtArea" style="width: 770px; height: 1500px"/>
+
+
+                        </p:fieldset>
+
+                    </p:panelGrid>
+
+
+                </p:fieldset>
+
+
+
+            </p:tab>
+
+
+
+
+
+        </p:tabView>
+
+
+        <p:dialog header="Adicionar Transporte"  widgetVar="transporteDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+                  width="100%"
+                  >
+
+            <p:dataTable id="tabela" var="transporte" value="#{transporteListarBean.listaTransporte}" paginatorAlwaysVisible="true"
+                         paginator="true"  paginatorPosition="bottom" rows="2" rowsPerPageTemplate="10, 20, 30" emptyMessage="Nenhum Transporte Encontrado !!!">
+                <f:facet name="header">
+                    <label style="font-size:140% ">Visualização dos Transporte </label> 
+                </f:facet>
+
+                <p:column headerText="Transporte" sortBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                    <h:outputText value="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao}" />
+
+
+                </p:column>
+
+                <p:column headerText="Seleccionar" style="text-align: center; width: 100px">
+                    <p:commandButton ajax="false" value="Selecionar" title="Selecionar" update="@this,tr" process="@form"  partialSubmit="true"  actionListener="#{transporteManutencaoCadastrarBean.adicionar}">
+                        <f:attribute name="codigoTransporte" value="#{transporte.pkPtTransporte}"  />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:dialog>
+
+
+
+
+
+    </ui:define>   
+
+
+</ui:composition>
+
+
+
+
