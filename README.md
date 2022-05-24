@@ -29,7 +29,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h1 align="center">projecto-modelo</h1>
+<h1 align="center">Projecto Modelo</h1>
 
   <p align="center">
     <br />
@@ -81,13 +81,24 @@
 
 Este repositório serve de modelo de base para o ínicio do desenvolvimento do projecto final, mostrando a estrutura inicial das pastas, suas organizações, prefixos e entre outros
 
+
+## Instruções para começar o projecto
+
+- Criar uma pasta em [web/modulos](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/tree/main/web/modulos)
+  - Instruções para criar a pasta: <prefixo-módulo>_visao. <prefixo-módulo> deve ser de 3 letras no mínimo exemplo: financas -> fin; logistica -> logis
+- Usar o arquivo template.xhtml em [web/template](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/tree/main/web/template) como template
+- Alterar o arquivo menu.xhtml em [web/template](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/tree/main/web/template) para adicionar o menu de acordo com o teu módulo
+
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
 ### Built With
 
-java 11, JSF 2.3, Wildfly 20.0
+- Java 11 
+- JSF 2.3
+- Wildfly 20.0
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -98,7 +109,8 @@ java 11, JSF 2.3, Wildfly 20.0
 
 ### Prerequisites
 
-java 11, Wildfly Server
+- Java 11
+- Wildfly Server
 
 
 <!-- USAGE EXAMPLES -->
@@ -113,7 +125,6 @@ java 11, Wildfly Server
 <!-- ROADMAP -->
 ## Tasks
 
-None
 
 See the [open issues](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/issues) for a full list of proposed features (and known issues).
 
