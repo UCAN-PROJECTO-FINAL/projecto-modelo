@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card" >
+                    <div id="contentor">
+                        <center>
+                            <p:panel style=" width: 100%; float: left;  height: 10%"
+                                     id="basic" header="MODULO DE GESTÃO DE FINANÇAS" >
+
+                                <h1 style="font-weight: bold">Favoritos</h1>
+                                <div style="margin-left: 600px">
+
+                                    <ui:repeat var="favoritos" value="#{finFavoritosBeans.listFinFavoritos}" >
+                                        <div style="float: left;margin-top: -3px; width: 157px; height: 143px; margin-left:60px;">
+                                            <h:panelGroup  id="sig_frotas" >
+                                                <a href="/SIG_UCAN-1.0#{favoritos.urlPagina}" ><div id="bMFRT">
+                                                        <i class="fa fa-star-o" style="font-size: 6rem"></i><br/>
+                                                        #{favoritos.descricao}
+                                                    </div></a>
+                                            </h:panelGroup>
+                                        </div>
+                                    </ui:repeat>
+
+                                </div>
+
+                            </p:panel>
+                        </center> 
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

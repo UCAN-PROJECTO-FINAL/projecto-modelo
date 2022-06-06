@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SIG_FRT_Master.iml" filepath="$PROJECT_DIR$/SIG_FRT_Master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/SIG_FRT_Master1.iml" filepath="$PROJECT_DIR$/src/SIG_FRT_Master1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+    </modules>
+  </component>
+</project>

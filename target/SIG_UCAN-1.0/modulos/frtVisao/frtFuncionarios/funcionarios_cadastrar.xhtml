@@ -1,0 +1,341 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui"
+    template="/template_frt/template.xhtml">
+
+
+    <ui:define name="head">
+        <style type="text/css">
+
+
+            h5 {
+                font-size: 15px;
+                font-weight: 300;
+                padding: 0px;
+                margin: 0px
+            }
+
+            rotulo.rotulo {
+                width: 150px
+
+            }
+
+            .rotulo {
+                width: 150px
+            }
+
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+        <h5>Modulos -> Frotas -> Funcionários -> Cadastrar Funcionários</h5>
+
+        <p:toolbar style="margin-top: 20px">
+
+            <p:toolbarGroup>
+                <p:commandButton icon="ui-icon-check" value="Salvar" action="#{transporteFuncionarioCadastrarBean.salvar()}" />
+
+            </p:toolbarGroup>
+
+            <p:toolbarGroup align="right">
+
+
+                <p:separator/>
+
+                <p:button icon="ui-icon-list" value="Listar" outcome="/modulos/frtVisao/frtFuncionarios/funcionarios_listar?faces-redirect=true" />
+            </p:toolbarGroup>
+
+        </p:toolbar>
+
+        <p:tabView id="tabPrincipal"  style="height: auto">
+
+            <p:tab title="Dados do Pessoais" >
+
+                <p:fieldset legend="Dados do Pessoais">
+
+                    <p:panelGrid columns="4" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Nome "/>                               
+                        <p:inputText  id="nome" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.nome}"  style="width: 200px"/>
+
+                        <p:outputLabel value="Pai "/>                               
+                        <p:inputText  id="pai" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.pai}" style="width: 200px"/>
+
+                        <p:outputLabel value="Maê "/>                               
+                        <p:inputText  id="mae" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.mae}"  style="width: 200px"/>
+
+                        <p:outputLabel value="Bilhete de Identidade "/>                               
+                        <p:inputText  id="bi" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.numeroIdentificacao}" style="width: 200px"/>
+
+                        <p:outputLabel value="Data de Emissão"/> 
+                        <p:calendar id="button_1" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" value="#{transporteFuncionarioCadastrarBean.grlPessoa.dataEmissao}"/>
+
+                        <p:outputLabel value="Prazo de Validade"/> 
+                        <p:calendar id="button_2" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" value="#{transporteFuncionarioCadastrarBean.grlPessoa.prazoValidade}"/>
+
+
+
+                        <p:outputLabel value="Data de Nascimento"/> 
+                        <p:calendar id="button_3" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" value="#{transporteFuncionarioCadastrarBean.grlPessoa.dataNascimento}"/>
+
+                        <p:outputLabel value="Sexo"/>  
+                        <p:selectOneMenu id="id_sexo"  value="#{transporteFuncionarioCadastrarBean.codigoGrlSexo}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioSexoCadastrarBean.listaSexo()}"
+                                           itemLabel="#{tipo_transporte.nome}"
+                                           itemValue="#{tipo_transporte.pkGrlSexo}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Estado Civil"/>  
+                        <p:selectOneMenu id="estado_civil"  value="#{transporteFuncionarioCadastrarBean.codigoGrlEstadoCivil}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioEstadoCivilCadastrarBean.listaEstadoCivil()}"
+                                           itemLabel="#{tipo_transporte.nome}"
+                                           itemValue="#{tipo_transporte.pkGrlEstadoCivil}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="Número de Identificação Fiscal "/>                               
+                        <p:inputText  id="bim" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.nif}" style="width: 200px"/>
+
+                        <p:outputLabel value="Telefone "/>                               
+                        <p:inputText  id="telefone" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.telefonePrincipal}" style="width: 200px"/>
+
+                        <p:outputLabel value="E-mail "/>                               
+                        <p:inputText  id="email" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.grlPessoa.emailPrincipal}" style="width: 200px"/>
+
+                    </p:panelGrid>
+
+                    <br/>
+                    <br/>
+                    <br/>
+
+                </p:fieldset>    
+
+            </p:tab>
+
+
+
+            <p:tab title="Estrutura Lógica" >
+
+                <p:fieldset legend="Estrutura Lógica">
+
+                    <p:panelGrid id="panelLocal"  columns="1" layout="grid" style="margin-bottom:20px;" styleClass="ui-panelgrid-blank form-group">
+
+                        <div style="width: 20%;top: 0px !important;display: inline-block;">
+                            <p:outputLabel value="Estrutura Logica" />
+                            <p:tree value="#{estruturaLogicaFisicaCarregarBean.rootELogica}" var="node" id="treeLogica"
+                                    propagateSelectionUp="false" 
+                                    propagateSelectionDown="false"
+                                    selectionMode="single" 
+                                    dynamic="true" 
+                                    >
+                                <p:ajax 
+                                    event="select" 
+                                    listener="#{estruturaLogicaFisicaCarregarBean.onELogicaSelect}"
+                                    update="form_geral:tabPrincipal:eLogicaTreeSOM"
+                                    />
+                                <p:ajax 
+                                    event="unselect" 
+                                    listener="#{estruturaLogicaFisicaCarregarBean.onELogicaUnselect}"
+                                    update=""
+                                    />
+                                <p:treeNode>                        
+                                    <h:outputText value="#{node.getDesignacao()}" id="nodeELogicaSOM"/>
+                                </p:treeNode>
+                            </p:tree>
+                        </div>   
+
+                        <div style="width: 20%;padding-top: 0px !important;display: inline-block;">
+                            <p:outputLabel value="Estrutura Fisica" />
+                            <p:tree value="#{estruturaLogicaFisicaCarregarBean.rootEFisica}" var="node"
+                                    propagateSelectionUp="false" 
+                                    propagateSelectionDown="false"
+                                    selectionMode="checkbox" 
+                                    dynamic="true" 
+                                    id="eLogicaTreeSOM"
+                                    >
+                                <p:ajax 
+                                    event="select" 
+                                    listener="#{estruturaLogicaFisicaCarregarBean.onEFisicaSelect}"
+                                    update="eLogicaTreeSOM"
+                                    />
+                                <p:ajax 
+                                    event="unselect" 
+                                    listener="#{estruturaLogicaFisicaCarregarBean.onEFisicaUnselect}"
+                                    update="eLogicaTreeSOM"
+                                    />
+                                <p:treeNode>                        
+                                    <h:outputText value="#{node.getDesignacao()}" id="nodeEFisicaSOM"/>
+                                </p:treeNode>
+                            </p:tree>
+                            <p:commandButton ajax="false"
+                                             value="limpar" immediate="true"
+                                             actionListener="#{estruturaLogicaFisicaCarregarBean.limparEFisicaNodesListener()}" 
+                                             />
+                        </div>
+
+
+                        <h:panelGroup styleClass="card-w-title"  >
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="card-w-title" >
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="card-w-title" >
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+
+                </p:fieldset>  
+
+            </p:tab>
+
+            <p:tab title="Endereço" >
+
+                <p:fieldset legend="Endereço">
+
+                    <p:panelGrid columns="6" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+
+                        <p:outputLabel value="Pais" for="pais"/>
+                        <p:selectOneMenu  effect="fold" editable="true" filter="true"
+                                          style="width: 200px; height: 25px" id="pais" value="#{grlEnderecoBean.pais}">
+                            <f:selectItems var="pais"  value="#{grlEnderecoBean.locLocalidadeCache.listaPaisLocLocalidade}" 
+                                           itemLabel="#{pais.designacao}" itemValue="#{pais.pkLocLocalidade}"/>
+                            <p:ajax event="change" update="provincia" listener="#{grlEnderecoBean.locLocalidadeCache.getListaPaisByProvinciaLocLocalidade(grlEnderecoBean.pais)}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Provincia" for="provincia"/>
+                        <p:selectOneMenu  effect="fold" editable="true" id="provincia" filter="true"
+                                          value="#{grlEnderecoBean.provincia}" style="width: 200px; height: 25px">
+                            <f:selectItems var="prov" value="#{grlEnderecoBean.locLocalidadeCache.listaLocLocalidadeProvincia}" 
+                                           itemLabel="#{prov.designacao}" itemValue="#{prov.pkLocLocalidade}"/>
+                            <p:ajax event="change" update="municipio" listener="#{grlEnderecoBean.locLocalidadeCache.getListaProvinciaByMunicipioLocLocalidade(grlEnderecoBean.provincia)}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Municipio" for="municipio"/>
+                        <p:selectOneMenu value="#{grlEnderecoBean.municipio}"
+                                         effect="fold" editable="true"
+                                         id="municipio" filter="true"
+                                         style="width: 200px; height: 25px">
+                            <f:selectItems var="mun" value="#{grlEnderecoBean.locLocalidadeCache.listaLocLocalidadeMunicipio}" 
+                                           itemLabel="#{mun.designacao}" itemValue="#{mun.pkLocLocalidade}"/>
+                            <p:ajax event="change" update="lbcomuna,comuna" listener="#{grlEnderecoBean.locLocalidadeCache.getListaMunicipioByDistritoLocLocalidade(grlEnderecoBean.municipio)}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel id="lbcomuna" value="#{grlEnderecoBean.locLocalidadeCache.getDistritoLocLocalidade(grlEnderecoBean.municipio) eq true ? 'Distrito' : 'Comuna'}"
+                                       for="comuna"/>
+                        <p:selectOneMenu   effect="fold" editable="true" 
+                                           filter="true" id="comuna"
+                                           value="#{grlEnderecoBean.comunaOrDistrito}"
+                                           style="width: 200px; height: 25px">
+                            <f:selectItems var="comun" value="#{grlEnderecoBean.locLocalidadeCache.listaLocLocalidadeComuna}" 
+                                           itemLabel="#{comun.designacao}" 
+                                           itemValue="#{comun.pkLocLocalidade}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Bairro" for="designa"/>
+                        <p:inputText id="designa"  value="#{grlEnderecoBean.grlEndereco.bairro}" style="width: 200px; height: 25px" />
+
+                        <p:outputLabel value="Rua" for="rua"/>
+                        <p:inputText id="rua" value="#{grlEnderecoBean.grlEndereco.rua}" style="width: 200px; height: 25px"/>
+
+                    </p:panelGrid>
+
+
+                </p:fieldset>
+
+            </p:tab>
+
+            <p:tab title="Outros Dados" >
+
+                <p:fieldset legend="Outros Dados">
+
+                    <p:panelGrid columns="2" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Número de Segurança Social "/>                               
+                        <p:inputText  id="inss" size="45" maxlength="80" value="#{transporteFuncionarioCadastrarBean.rhFuncionario.numeroSegurancaSocial}" style="width: 200px"/>
+
+
+
+                        <p:outputLabel value="Função"/>  
+                        <p:selectOneMenu id="id_funcao"  value="#{transporteConfiguracoesBean.codigoRhFuncao}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioFuncaoBean.listaFuncao()}"
+                                           itemLabel="#{tipo_transporte.descricao}"
+                                           itemValue="#{tipo_transporte.pkFuncao}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Especialidade"/>  
+                        <p:selectOneMenu id="id_especialidade"  value="#{transporteFuncionarioCadastrarBean.codigoRhEspecialidade}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioEspecialidadeCadastrarBean.listaSolicitacao()}"
+                                           itemLabel="#{tipo_transporte.descricao}"
+                                           itemValue="#{tipo_transporte.pkEspecialidade}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Tipo de Funcionário"/>  
+                        <p:selectOneMenu id="id_tipofuncionario"  value="#{transporteFuncionarioCadastrarBean.codigoRhTipoFuncionario}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioTipoCadastrarBean.listatTipoFuncionario()}"
+                                           itemLabel="#{tipo_transporte.descricao}"
+                                           itemValue="#{tipo_transporte.pkTipoFuncionario}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Nicel Academico"/>  
+                        <p:selectOneMenu id="id_nivel"  value="#{transporteFuncionarioCadastrarBean.codigoRhNivelAcademico}" style="width: 200px; height: 25px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="tipo_transporte"
+                                           value="#{transporteFuncionarioNivelAcademicoCadastrarBean.listaSolicitacao()}"
+                                           itemLabel="#{tipo_transporte.descricao}"
+                                           itemValue="#{tipo_transporte.pkNivelAcademico}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Data do Cadastro" />
+                        <p:inputText value="#{transporteSolicitacoesCadastrarBean.dataSystem()}" readonly="true">
+                            <f:convertDateTime locale="pt" timeZone="GMT+1" pattern="dd/MM/yyyy "/> 
+                        </p:inputText>
+
+                    </p:panelGrid>
+
+                    <br />
+                    <br />
+
+                </p:fieldset>  
+
+            </p:tab>
+
+
+
+
+        </p:tabView>
+
+
+
+
+
+
+    </ui:define>   
+
+
+</ui:composition>
+
+
+
+

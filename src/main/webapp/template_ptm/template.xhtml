@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+
+    <h:head>
+
+
+        <f:facet name="first">
+            <meta Http-equiv="Cache-Control" Content="no-cache" />
+            <meta Http-equiv="Pragma" Content="no-cache" />
+            <meta Http-equiv="Expires" Content="0" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+        </f:facet>
+
+
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />
+        <h:outputScript name="js/locale-primefaces.js" library="ultima-layout"/>
+
+
+        <title>SISTEMA DE GESTÃO FROTAS</title>
+
+        <ui:insert name="head"/>
+
+        <style>
+            div[id="form_geral:msg_info_container"] > div 
+            {
+                background-color: greenyellow !important;
+                color: darkgreen !important;
+            }
+            div[id="form_geral:msg_warn_container"] > div 
+            {
+                background-color: yellow !important;
+                color: black !important;
+            }
+            div[id="form_geral:msg_error_container"] > div 
+            {
+                background-color: red !important;
+                color: yellow !important;
+            }
+            .ui-menu .ui-menu-parent .ui-icon-triangle-1-e, .ui-menu .ui-menu-parent .ui-icon-triangle-1-s, .ui-menubar .ui-menu-child .ui-icon-triangle-1-s, .ui-menubar .ui-menu-child .ui-icon-triangle-1-s {
+                float: left;
+                color: transparent;
+
+            }
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <p:growl id="msg_info" life="90000" severity="info">
+            <p:autoUpdate />
+        </p:growl>
+        <p:growl id="msg_warn" life="90000" severity="warn">
+            <p:autoUpdate />
+        </p:growl>
+        <p:growl id="msg_error" life="90000" severity="error">
+            <p:autoUpdate />
+        </p:growl>
+
+
+
+        <h:form 
+            id="form_geral" 
+            enctype="multipart/form-data"
+            >
+
+
+            <div id="top">
+                <ui:insert name="top">
+
+                    <p:menubar >
+
+                        <p:submenu 
+                            label="HOME"
+                            >
+                            <p:menuitem  
+                                icon="fa fa-home" id="home" value="HOME" outcome="/home?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(501)}"/>
+                        </p:submenu>
+
+                        <p:submenu 
+                            
+                            label="Carregar Tabelas"
+                            rendered="#{segLoginBean.renderedMenuById(1003)}"
+                            >
+
+                            <p:menuitem 
+                                icon="&#xE061;" id="idTabelas" value="Carregamento Excel" outcome="/modulos/ptmVisao/grl_tabelas_determinadas_carregar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1004)}"/>
+
+                        </p:submenu>
+
+
+
+
+
+
+
+
+                        <p:submenu 
+                            
+                            label="Registar Bem"
+                            rendered="#{segLoginBean.renderedMenuById(1006)}"
+                            >
+
+
+                            <p:menuitem 
+                                icon="&#xE061;" id="idAgendar" value="Registo" outcome="/modulos/ptmVisao/bem_entrada?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1007)}"/>
+                            
+                        </p:submenu>
+
+                        <p:submenu 
+                            label="Usuário e Perfil"
+                            >
+
+                            <p:menuitem
+
+                                id="idUsuario" icon="&#xE7FD;" 
+                                value="#{segLoginBean.sessaoActual.nomeUtilizador}">  
+
+
+                            </p:menuitem>
+
+                            <p:menuitem
+
+                                id="idPerfil" icon="&#xE7FD;" 
+                                value="#{segLoginBean.sessaoActual.fkSegPerfil.descricao}">  
+
+
+                            </p:menuitem>
+
+                        </p:submenu>
+
+
+
+                        <p:submenu 
+                            label="Sobre"
+                            >
+                            <p:menuitem 
+                                value="SIG_PATRIMONIO" 
+                                />
+                        </p:submenu>
+
+                        <p:submenu 
+                            label="Sair"
+                            >
+
+                            <p:menuitem
+
+                                id="idSair" icon="&#xE8AC;" value="Sair" action="#{segLoginBean.terminarSessao()}">
+
+                            </p:menuitem>
+
+                        </p:submenu>
+
+
+
+                    </p:menubar>
+
+                </ui:insert>
+
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+
+            <div id="content" class="center_content">
+                <ui:insert name="content">Content</ui:insert>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div id="bottom">
+                <ui:insert name="bottom">
+                    <ui:include src="./footer.xhtml" />
+                </ui:insert>
+            </div>
+
+
+
+            <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+                <f:facet name="start">
+                    <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+
+            </p:ajaxStatus>
+
+
+            <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+
+            <!--
+            TEMA ANTERIOR :
+            h:outputStylesheet name="css/layout-blue-grey.css" library="ultima-layout" / -->
+
+            <!--<h:outputStylesheet name="css/layout-purple-amber.css" library="ultima-layout" />-->
+            <h:outputStylesheet name="css/layout-dark-blue.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-cyan.css" library="ultima-layout" />
+
+        </h:form>
+
+    </h:body>
+
+</html>

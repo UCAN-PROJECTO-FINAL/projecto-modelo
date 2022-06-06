@@ -1,0 +1,92 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                template="/template_seg/template.xhtml">
+
+            <ui:define name="content">
+                <h2>Segurança -> Configuração -> Preferências</h2>
+
+                <p:fieldset legend="Preferência">
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel
+                            value="Tipo de Funcionalidade Preferido:"
+                            rendered="#{segTipoFuncionalidadeBean.renderedTipoFuncionalidade()}"
+                            />
+                        <p:selectOneMenu 
+                            id="tipoFuncionalidade1" 
+                            value="#{segPreferenciasUsuarioBean.idTipoFuncionalidadePadrao}"
+                            rendered="#{segTipoFuncionalidadeBean.renderedTipoFuncionalidade()}"
+                            >
+                            <f:selectItem 
+                                itemLabel="#{null}"
+                                itemValue="#{null}" 
+                                />
+
+                            <f:selectItems 
+                                value="#{segTipoFuncionalidadeBean.
+                                         listSegTipoFuncionalidadeOrderByNome}"
+                                var="tipoFuncionalidade" 
+                                itemLabel="#{tipoFuncionalidade.nome}"
+                                itemValue="#{tipoFuncionalidade.
+                                             pkSegTipoFuncionalidade}" 
+                                />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel 
+                            for="perfil" 
+                            value="Perfil Preferido:" 
+                            rendered="#{segPerfilBean.rendereListaPerfil()}" 
+                            />
+                        <p:selectOneMenu 
+                            id="perfil"
+                            value="#{segPreferenciasUsuarioBean.idPerfilPadrao}"
+                            filter="true" 
+                            filterMatchMode="contains"
+                            style="width: 200px"
+                            rendered="#{segPerfilBean.rendereListaPerfil()}" 
+                            >
+                            <f:selectItem 
+                                itemLabel="#{null}"
+                                itemValue="#{null}" 
+                                />
+                            <f:selectItems 
+                                value="#{segPerfilBean.listaPerfil}"
+                                var="perfil" 
+                                itemLabel="#{perfil.descricao}"
+                                itemValue="#{perfil.pkSegPerfil}" 
+                                />
+                        </p:selectOneMenu>
+
+                        <p:commandButton 
+                            value="Actualizar" 
+                            icon="fa fa-fw fa-refresh" 
+                            actionListener="#{segPreferenciasUsuarioBean.
+                                              editRegisterWithPersonalizedException()}"
+                            onstart="PF('w_dlgLoading').show();" 
+                            oncomplete="PF('w_dlgLoading').hide();"
+                            update="form_geral"
+                            rendered="#{segPreferenciasUsuarioBean.renderedBtnActualizar()}"
+                            />
+                        <p:commandButton 
+                            value="Repôr Configuração Padrão" 
+                            icon="fa fa-fw fa-home" 
+                            actionListener="#{segPreferenciasUsuarioBean.reporConfiguracoesPadrao()}"
+                            onstart="PF('w_dlgLoading').show();" 
+                            oncomplete="PF('w_dlgLoading').hide();"
+                            update="form_geral"
+                            /> 						
+
+
+
+                    </p:panelGrid>
+
+                </p:fieldset>
+
+            </ui:define>
+
+ </ui:composition>

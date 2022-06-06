@@ -1,0 +1,148 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_frt/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .cars-datalist .text-column p:last-child{
+                color:#757575;
+            }
+
+            .cars-datalist .car-item i, .cars-datalist .car-item .car-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .cars-datalist .car-item button {
+                float: right;
+            }
+
+            .cars-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .ui-car-display td:last-child {
+                font-weight: 700;
+            }
+
+            @media (max-width:640px) {
+                .cars-datalist .text-column {
+                    text-align: center;
+                }
+            }
+        </style>
+    </ui:define>
+ 
+    
+    <ui:define name="content">
+        
+         <h1> LISTA DE TRANSPORTES</h1>
+            
+         <br/>
+        
+    	<h:form id="form">
+                    <div class="ui-g ui-fluid" style=" filter:drop-shadow(1px 1px 2px black); margin-top: -2%; margin-bottom: -2%">
+                        <div class="ui-g-12 ui-lg-6" >
+
+                            <div class="card card-w-title" style="width: 203%; height: 100%">
+
+
+                                <p:messages id="messages"  showSummary="true"  closable="true" showDetail="true"  />
+
+                                <p:toolbar >
+                                            <p:toolbarGroup  align="right">    
+                                                <p:button icon="ui-icon-undo" value="Voltar" style="margin-bottom:10px; width: 150px" styleClass="flat" outcome="/index_frt.xhtml"/>    
+                                            </p:toolbarGroup>
+                                    
+                                </p:toolbar>    
+
+                            </div>
+                        </div>
+                    </div>
+     
+                    <br/>
+                    <br/>
+                    <br/>
+                    
+                    <p:dataTable id="tabela" emptyMessage="Nenhum Transporte Encontrado !!!" var="transporte" value="#{transporteListarBean.listaTransporte}"  paginator="true" rows="5">
+              
+                               
+                        
+                                <p:column headerText="Modulo" style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.fkModelo.descricao} #{transporte.fkModelo.descricao}" />
+
+
+                                </p:column>
+                        
+                                <p:column headerText="Marca" sortBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.fkMarca.descricao} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.fkMarca.descricao}" />
+
+
+                                </p:column>
+                        
+                        
+                                <p:column headerText="Matricula" sortBy="#{transporte.matricula} #{transporte.matricula} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.matricula} #{transporte.matricula}" />
+
+
+                                </p:column>
+                        
+                        
+                                                          
+                                <p:column headerText="Tipo" sortBy="#{transporte.fkTipoTransporte.descricao} #{transporte.fkTipoTransporte.descricao} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.fkTipoTransporte.descricao} #{transporte.fkTipoTransporte.descricao}" />
+
+
+                                </p:column>
+                        
+                                <p:column headerText="Lotacao" sortBy="#{transporte.lotacao} #{transporte.lotacao} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.lotacao} #{transporte.lotacao}" />
+
+
+                                </p:column>
+                        
+                                <p:column headerText="Estado" sortBy="#{transporte.fkEstado.descricao} #{transporte.fkEstado.descricao} " style="font-size: 12px; width: 200px" filterMatchMode="contains" filterBy="#{transporte.fkModelo.fkMarca.descricao} #{transporte.fkModelo.descricao} " >
+
+
+                                            <h:outputText value="#{transporte.fkEstado.descricao} #{transporte.fkEstado.descricao}" />
+
+
+                                </p:column>
+
+
+                                <p:column style="width: 90px; font-size: 12px" headerText="Opções" sortBy="">
+                                      <p:commandButton style="margin-left: 5px" icon="ui-icon-edit" />
+                                      <p:commandButton style="margin-left: 15px" icon="ui-icon-delete" />
+                                </p:column>
+            
+                    </p:dataTable>
+
+                
+	    	
+    	</h:form>
+        
+     </ui:define>   
+    
+        
+</ui:composition>
+
+
+
+

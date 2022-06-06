@@ -1,0 +1,257 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"
+                xmlns:cc_ct="http://xmlns.jcp.org/jsf/composite/cc_ct"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <ui:define name="title">Forms</ui:define>
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+       
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Contrapartida Interna</h1>
+                        
+                       
+
+                        <!-- início do formulário para Cadastrar  -->
+                        <p:tabView >
+
+
+                            <p:tab title="Transferência" >
+
+
+                                <p:outputPanel id="panelGeral">
+
+                                    <p:panelGrid  columns="2" layout="grid" style="margin-bottom:10px;" styleClass="ui-panelgrid-blank form-group">
+
+                                        <h:panelGroup>
+
+                                            <label style="font-size:118%">
+                                                <h:link target="_blank" outcome="/modulos/processos_administrativos/contabilidade/publica/anoeconomico/formAno/formAno.xhtml">
+                                                    <h:outputText id="lblExerciEcono" value="Exercício Económico"/>
+                                                </h:link>
+                                            </label>
+                                            <p:tooltip for="lblExerciEcono" value="Contabilidade / Ano Economico" trackMouse="true" position="bottom"/>
+
+                                            <br/>
+                                            <p:selectOneMenu id="ano"
+                                                             required="true"
+                                                             title="Menu para selecionar o exercício econômico."
+                                                             value="#{contraPartidaBean.codigoYear}" 
+                                                             filter="true" filterMatchMode="contains" 
+                                                             requiredMessage="Seleciona o exercício econômico, por favor! "
+                                                             style="">
+                                                <f:selectItem itemLabel="Seleciona o exercício econômico..."  />
+                                                <f:selectItems value="#{contraPartidaBean.listAnoEconomico}"
+                                                               var="ano" itemLabel="#{ano.anoEconomico}" 
+                                                               itemValue="#{ano.pkAnoEconomico}" />
+                                                <p:ajax event="change" update="categoria"  listener="#{contraPartidaBean.atualizarListarMontanteCategoria()}"  />
+                                            </p:selectOneMenu>
+<!--, rubrica, rubricatwo,groupValorDisponivelDestino, groupValorDisponivelOrigem-->
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+
+                                            <label style="font-size:118%">
+                                                <h:link target="_blank" outcome="/modulos/processos_administrativos/contabilidade/publica/class/formClass/formClass.xhtml">
+                                                    <h:outputText id="lblCategoria" value="Categoria"/>
+                                                </h:link>
+                                            </label>
+                                            <p:tooltip for="lblCategoria" value="Contabilidade / Categoria" trackMouse="true" position="bottom"/>
+
+                                            <br/>
+                                            <p:selectOneMenu id="categoria" 
+                                                             required="true" 
+                                                             value="#{contraPartidaBean.codigoCategoria}" 
+                                                             filter="true"
+                                                             title="Menu para selecionar a Categoria."
+                                                             filterMatchMode="contains"
+                                                             requiredMessage="Seleciona a categoria por favor! " 
+                                                             style="">
+                                                <f:selectItem itemLabel="Seleciona a categoria ..."  />
+                                                <f:selectItems value="#{contraPartidaBean.listarMontanteCategoria}"
+                                                               var="drio" itemLabel=" #{drio.fkClass.descricaoClass}" 
+                                                               itemValue="#{drio.fkClass.pkClass}" />
+
+                                                <p:ajax event="change" update="rubrica rubricatwo" listener="#{contraPartidaBean.atualizarMontanteRubricaOrigemDestino()}" />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+
+                                            <label style="font-size:118%">
+                                                <h:link target="_blank" outcome="/modulos/processos_administrativos/contabilidade/publica/rubrica/formRubrica/formRubrica.xhtml">
+                                                    <h:outputText id="lblRubricaOrigem" value="Rubrica de Origem"/>
+                                                </h:link>
+                                            </label>
+                                            <p:tooltip for="lblRubricaOrigem" value="Contabilidade / Rubrica" trackMouse="true" position="bottom"/>
+
+                                            <br/>
+                                            <p:selectOneMenu id="rubrica" 
+                                                             required="true" 
+                                                             value="#{contraPartidaBean.codigoRubricaOrigem}" 
+                                                             filter="true"
+                                                             title="Menu para selecionar a Rubrica de origem."
+                                                             filterMatchMode="contains"
+                                                             requiredMessage="Seleciona a Rubrica de origem por favor! " 
+                                                             style="">
+                                                <f:selectItem itemLabel="Seleciona a rubrica de origem ..."  />
+                                                <f:selectItems value="#{contraPartidaBean.listMontanteRubrica}"
+                                                               var="drio" itemLabel="#{drio.fkRubrica.numberRubrica} -  #{drio.fkRubrica.descricaoRubrica}" 
+                                                               itemValue="#{drio.fkRubrica.pkRubrica}" />
+                                                <p:ajax event="change" 
+                                                        listener="#{contraPartidaBean.calcularMontanteDisponivelOrigem()}" 
+                                                        update="groupValorDisponivelOrigem" />
+                                            </p:selectOneMenu>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+
+                                            <label style="font-size:118%">
+                                                <h:link target="_blank" outcome="/modulos/processos_administrativos/contabilidade/publica/rubrica/formRubrica/formRubrica.xhtml">
+                                                    <h:outputText id="lblRubricaDestino" value="Rubrica de Destino"/>
+                                                </h:link>
+                                            </label>
+                                            <p:tooltip for="lblRubricaDestino" value="Contabilidade / Rubrica" trackMouse="true" position="bottom"/>
+
+                                            <br/>
+                                            <p:selectOneMenu id="rubricatwo" 
+                                                             required="true" 
+                                                             value="#{contraPartidaBean.codigoRubricaDestino}" 
+                                                             filter="true"
+                                                             title="Menu para selecionar a Rubrica de destino."
+                                                             filterMatchMode="contains"
+                                                             requiredMessage="Seleciona a Rubrica de destino por favor! " 
+                                                             style="">
+                                                <f:selectItem itemLabel="Seleciona a rubrica de destino ..."  />
+                                                <f:selectItems value="#{contraPartidaBean.listMontanteRubrica}"
+                                                               var="drio" itemLabel="#{drio.fkRubrica.numberRubrica} - #{drio.fkRubrica.descricaoRubrica}" 
+                                                               itemValue="#{drio.fkRubrica.pkRubrica}" />
+                                                <p:ajax event="change" listener="#{contraPartidaBean.calcularMontanteDisponivelDestino()}" 
+                                                        update="groupValorDisponivelDestino" />
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+                                           <p:panel id="groupValorDisponivelOrigem">
+                                                <label style="font-size:100%;">Valor Anual Origem :  </label>
+                                                <h:outputText  value="#{contraPartidaBean.valorAnualOrigem}">
+                                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                                </h:outputText>
+                                                <br/><br/>
+
+                                                <label style="font-size:118%;">Valor Disponível Origem : </label>
+                                                <h:outputText value="#{contraPartidaBean.valorDisponivelOrigem}" style=" font-size:19px; text-align:right" >
+                                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                                </h:outputText>
+                                            </p:panel>                                     
+                                        </h:panelGroup>
+                                        
+                                        <h:panelGroup >
+                                            <p:panel id="groupValorDisponivelDestino">
+                                                <label style="font-size:100%;">Valor Anual Destino :  </label>
+                                                <h:outputText value="#{contraPartidaBean.valorAnualDestino}">
+                                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                                </h:outputText>
+                                                <br/><br/>
+
+                                                <label style="font-size:118%;">Valor Disponível Destino : </label>
+                                                <h:outputText value="#{contraPartidaBean.valorDisponivelDestino}" style=" font-size:19px; text-align:right" >
+                                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                                </h:outputText>
+                                            </p:panel>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+                                            <label style="font-size:118%;">Valor a tranferir</label><br/>
+                                            <p:inputNumber id="valorat"
+                                                           style="font-size:35px; text-align:right" 
+                                                           value="#{contraPartidaBean.contraPartidaInterna.valor}">
+                                            </p:inputNumber>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup >
+
+                                            <label style="font-size:118%;">Motivo da transferência</label><br/>
+                                            <p:inputTextarea required="true" requiredMessage="Informa o motivo da transferência!" 
+                                                             rows="3" style="font-size: 118%; " value="#{contraPartidaBean.contraPartidaInterna.motivoCpi}" />
+                                        </h:panelGroup>
+
+                                    </p:panelGrid>
+                                </p:outputPanel>
+
+                            </p:tab>
+
+                        </p:tabView>
+
+                        <!-- Início da tabela para vizualização os registros -->
+                        <p:dataTable  id="tabela" var="montante" value="#{contraPartidaBean.listContraPartidadeInterna}" paginatorAlwaysVisible="false"
+                                     paginator="true"  paginatorPosition="bottom" rows="8" emptyMessage="Não há registros!">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Reforços Financeiros</label> 
+                            </f:facet>
+
+
+                            <p:column filterMatchMode="contains" filterBy="#{montante.fkAnoEconomico.anoEconomico}" headerText="Exercício" style="text-align:center; width:70px;"  >
+                                <h:outputText value="#{montante.fkAnoEconomico.anoEconomico}" />
+                            </p:column>
+
+                            <p:column filterMatchMode="contains" filterBy="#{montante.origemCpi}" headerText="Rubrica de Origem"   >
+                                <h:outputText value="#{montante.origemCpi}" />
+                            </p:column>
+
+
+                            <p:column filterMatchMode="contains" filterBy="#{montante.destinoCpi}" headerText="Rubrica de Destino"   >
+                                <h:outputText value="#{montante.destinoCpi}" />
+                            </p:column>
+
+
+                            <p:column filterMatchMode="startsWith" filterBy="#{montante.valor}" headerText="Valor Transferido"   style="text-align:center;">
+                                <h:outputText value="#{montante.valor}"> 
+                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Data Movimento" style="text-align:center; width:100px;">
+                                <h:outputText value="#{montante.registroCpi}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy"  locale="pt" timeZone="GMT+1"/>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+                        <!-- Fim da tabela para vizualização os registros -->
+
+
+                    </div>
+                </div>
+
+
+            </div>
+           
+    </ui:define>
+
+</ui:composition>
+
+

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"> 
+
+    <ui:define name="content">
+
+                <p:panel header="Lista Câmbio">
+                    <p:dataTable id="datalist" value="#{finCambioBean.cambioCache.listaFinCambios}" var="item"
+                                 selectionMode="single" 
+                                 paginator="true"
+                                 rowKey="#{item.pkCambio}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 emptyMessage="Sem Registos"
+                                 >
+                        <p:column headerText="Moeda">
+                            <h:outputText value="#{item.fkMoeda.abreviatura}"/>
+                        </p:column>
+                        <p:column headerText="Valor Compra">
+                            <h:outputText value="#{item.valorCompra}">
+                                <f:convertNumber  currencyCode="AOA" locale="ANG"
+                                              currencySymbol="" type="currency" maxFractionDigits="2"   />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Valor Referência">
+                            <h:outputText value="#{item.referencia}">
+                                <f:convertNumber currencyCode="AOA" locale="ANG"
+                                                 currencySymbol="" type="currency" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Valor Venda">
+                            <h:outputText value="#{item.valorVenda}">
+                                <f:convertNumber currencySymbol="" currencyCode="AOA" locale="ANG"
+                                                type="currency" maxFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Data Cadastro">
+                            <h:outputText value="#{item.data}"/>
+                        </p:column>
+                       
+                         <p:column headerText="Utilizador">
+                             <h:outputText value="#{item.fkUtilizador}"/>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"  />
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" />
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil"  />
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  />
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+
+    </ui:define>
+
+</ui:composition>

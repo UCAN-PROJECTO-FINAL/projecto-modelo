@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_gs/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card" >
+                    <div id="contentor">
+                        <center>
+                            <p:panel style=" width: 100%; float: left;  height: 10%"
+                                     id="basic" header="MODULO DE GESTÃO DE SOFTWARES" >
+
+                                <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                                <f:view>
+
+                                    <h:panelGrid>
+
+                                        <h3 style="font-size:25px; 
+                                            font-weight:bold">Softwares</h3>
+                                        <p:dataTable value="#{gsSoftwareBean.listarTodos()}" var="item" style="margin: 2em;" rowKey="#{item.pkGsSoftware}">
+                                            <p:column headerText="Nome">    
+                                                <h:outputText value="#{item.nome}"/>
+                                            </p:column>
+                                            <p:column headerText="Data da Aquisicao">
+                                                <h:outputText value="#{item.dataAquisicao}"/>
+                                            </p:column>
+                                            <p:column headerText="Versão">
+                                                <h:outputText value="#{item.versao}"/>
+                                            </p:column>
+                                            <p:column headerText="Fornecedor">
+                                                <h:outputText value="#{item.fkGsFornecedor.nome}"/>
+                                            </p:column>
+                                            <p:column headerText="Categoria">
+                                                <h:outputText value="#{item.fkGsSubcategoria.fkGsCategoria.descricao}"/>
+                                            </p:column>
+
+                                        </p:dataTable>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid>
+
+                                        <h3 style="font-size:25px; 
+                                            font-weight:bold">Licenças</h3>
+                                        <p:dataTable value="#{gsLicencaBean.listarTodos()}" var="item" style="margin: 2em;" rowKey="#{item.pkGsLicenca}">
+                                            <p:column headerText="Chave">    
+                                                <h:outputText value="#{item.chaveLicenca}"/>
+                                            </p:column>
+                                            <p:column headerText="Data de Expiração">
+                                                <h:outputText value="#{item.dataExpiracao}"/>
+                                            </p:column>
+
+
+                                        </p:dataTable>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid>
+                                    </h:panelGrid>
+                                </f:view>
+                            </p:panel>
+                        </center> 
+                        <!-- 
+                                                <center>
+                                                    <p:panel style=" width: 100%; float: left;  height: 10%"
+                                                             id="basic" header="Sistema Integrado de Gestão da UCAN – SIG-UCAN" >
+                        
+                                                    </p:panel>
+                                                </center> -->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

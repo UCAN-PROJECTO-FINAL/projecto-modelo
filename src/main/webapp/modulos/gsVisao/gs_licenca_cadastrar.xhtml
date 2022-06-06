@@ -1,0 +1,206 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_gs/template.xhtml">
+
+    <ui:define name="title">Softwares</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]> 
+
+            }
+
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form_gslicenca">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px; 
+                            font-weight:bold">Universidade Católica de Angola | Licenças</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                        <!--      -->
+                        <p:messages id="context" showDetail="true" showSummary="false" closable="true" ><p:autoUpdate/></p:messages>
+
+                        <p:tab title="Cadastrar" >
+                            <p:panelGrid columns="3" layout="grid" 
+                                         style="margin-bottom:20px;" 
+                                         styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Software</label> <br/>
+                                    <p:selectOneMenu id="software" value="#{gsLicencaBean.software.pkGsSoftware}" >
+                                        <f:selectItem itemLabel="Indefinido" itemValue="#{0}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{gsSoftwareBean.listarTodos()}"
+                                                       var="item" itemLabel="#{item.nome}"
+                                                       itemValue="#{item.pkGsSoftware}" />                                        
+                                    </p:selectOneMenu>                               
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Tipo</label> <br/>
+                                    <p:selectOneMenu id="tipo" value="#{gsLicencaBean.tipo.pkGsTipo}" >
+                                        <f:selectItem itemLabel="Indefinido" itemValue="#{0}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{gsTipoBean.listarTodos()}"
+                                                       var="item" itemLabel="#{item.descricao}"
+                                                       itemValue="#{item.pkGsTipo}" />
+                                    </p:selectOneMenu> 
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Chave de Activação</label> <br/>
+                                    <p:inputText id="chaveLicenca" value="#{gsLicencaBean.chaveLicenca}" title="Chave de Activação" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Numero de Utilizador</label> <br/>
+                                    <p:spinner id="numeroUtilizadores" value="#{gsLicencaBean.numeroUtilizadores}" title="Numero de Utilizadoro"/>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Data de Emissão</label> <br/>
+                                    <p:inputText id="dataEmissao" type="date"  value="#{gsLicencaBean.dataEmissao}" title="Data de Emissão">
+                                        <f:convertDateTime locale="pt" timeZone="GMT+1" pattern="dd/MM/yyyy " /> 
+                                    </p:inputText>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Data de Expiração</label> <br/>
+                                    <p:inputText id="dataExpiracao" type="date" value="#{gsLicencaBean.dataExpiracao}" title="Data de Expiração">
+                                        <f:convertDateTime locale="pt" timeZone="GMT+1" pattern="dd/MM/yyyy " /> 
+                                    </p:inputText>
+                                </h:panelGroup>
+                                <h:panelGroup  layout="grid" >
+                                    <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-plus" 
+                                                     immediate="true" value="Gravar"  
+                                                     action="#{gsLicencaBean.gravar()}"
+                                                     />
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:tab>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <f:view>
+            <h:form id="form_gslicenca0">
+
+                <h:panelGrid>
+                    <p:dataTable value="#{gsLicencaBean.listarTodos()}" var="item" style="margin: 2em;">
+
+                        <p:column headerText="Chave">                                 
+                            <h:outputText value="#{item.chaveLicenca}"/>
+                        </p:column>
+                        <p:column headerText="Data de Emissão">
+                            <h:outputText value="#{item.dataEmissao}">
+                                <f:convertDateTime pattern = "dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Data de Expiracao">
+                            <h:outputText value="#{item.dataExpiracao}">
+                                <f:convertDateTime pattern = "dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Numero de Utilizadores">
+                            <h:outputText value="#{item.numeroUtilizadores}"/>
+                        </p:column>                       
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{item.fkGsTipo.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Software">
+                            <h:outputText value="#{item.fkGsSoftware.nome}"/>
+                        </p:column>
+                        <p:column style="width:100px;text-align: center">
+                            <p:commandButton icon="fa fa-pencil"  process="@this" 
+                                             oncomplete="PF('editDialog').show()">
+                                <f:setPropertyActionListener value="#{item}"
+                                                             target="#{gsLicencaBean.licencalSelecionado}"/>
+                            </p:commandButton>
+                            <p:commandButton action="#{gsLicencaBean.eliminar(item)}" icon="fa fa-trash"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog id="editDialog" widgetVar="editDialog" header="Actualizar licença" modal="true"  
+                              showEffect="fade" hideEffect="fade" resizable="false" 
+                              style=" height: 80%; width: 80%">
+                        <p:outputPanel id="actualizarlicenca" style="text-align:center" autoUpdate="">
+                            <p:autoUpdate/>
+                            <p:panelGrid columns="2" rendered="#{not empty gsLicencaBean.licencalSelecionado}" 
+                                         columnClasses="value,label">                              
+                                <h:outputText value="Software " />
+                                <p:selectOneMenu value="#{gsLicencaBean.licencalSelecionado.fkGsSoftware.pkGsSoftware}" >
+                                    <f:selectItem itemLabel="#{gsLicencaBean.licencalSelecionado.fkGsSoftware.nome}" 
+                                                  itemValue="#{gsLicencaBean.licencalSelecionado.fkGsSoftware.pkGsSoftware}" 
+                                                  noSelectionOption="true"
+                                                  />
+                                    <f:selectItems value="#{gsSoftwareBean.listarTodos()}"
+                                                   var="item" itemLabel="#{item.nome}"
+                                                   itemValue="#{item.pkGsSoftware}" />                                        
+                                </p:selectOneMenu> 
+                                <h:outputText value="Chave da Licença " />
+                                <p:outputLabel value="#{gsLicencaBean.licencalSelecionado.chaveLicenca}"/>
+                                <h:outputText value="Data de Emissão " />
+                                <p:inputText type="data" value="#{gsLicencaBean.licencalSelecionado.dataEmissao}">
+                                    <f:convertDateTime pattern = "dd/MM/yyyy" />
+                                </p:inputText>
+                                <h:outputText value="Data de Expiração " />
+                                <p:inputText type="data" value="#{gsLicencaBean.licencalSelecionado.dataExpiracao}">
+                                    <f:convertDateTime pattern = "dd/MM/yyyy" />
+                                </p:inputText>
+                                <h:outputText value="Tipo " />
+                                <p:selectOneMenu value="#{gsLicencaBean.licencalSelecionado.fkGsTipo.pkGsTipo}" >
+                                    <f:selectItem itemLabel="#{gsLicencaBean.licencalSelecionado.fkGsTipo.descricao}" 
+                                                  itemValue="#{gsLicencaBean.licencalSelecionado.fkGsTipo.pkGsTipo}" 
+                                                  noSelectionOption="true"
+                                                  />
+                                    <f:selectItems value="#{gsTipoBean.listarTodos()}"
+                                                   var="item" itemLabel="#{item.descricao}"
+                                                   itemValue="#{item.pkGsTipo}" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                            <p:commandButton style="margin-top: 5em" 
+                                             value="Actualizar" action="#{gsLicencaBean.actualizar()}"
+                                             />
+                            <p:commandButton oncomplete="PF('editDialog').hide()" 
+                                             title="Cancelar" value="Cancelar"
+                                             />
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:panelGrid>
+            </h:form>
+
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

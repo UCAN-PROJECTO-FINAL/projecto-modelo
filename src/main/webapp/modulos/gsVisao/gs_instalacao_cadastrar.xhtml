@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_gs/template.xhtml">
+
+    <ui:define name="title">Softwares</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]> 
+
+            }
+
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form_gsinstalacao">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px; 
+                            font-weight:bold">Universidade Católica de Angola | Instalações</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                        <!--      -->
+                        <p:messages id="context" showDetail="true" showSummary="false" closable="true" ><p:autoUpdate/></p:messages>
+                        <p:tab>
+                            <p:panelGrid columns="3" layout="grid" 
+                                         style="margin-bottom:20px;" 
+                                         styleClass="ui-panelgrid-blank form-group"
+                                         >
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Licença</label> <br/>
+                                    <p:selectOneMenu value="#{gsInstalacaoBean.fkGsLicenca.pkGsLicenca}" id="licenca">
+                                        <f:selectItem itemLabel="Selectionar" itemValue="Indefinido" noSelectionOption="true"/>
+                                        <f:selectItems value="#{gsLicencaBean.listarTodos()}"
+                                                       var="item" itemLabel="#{item.fkGsSoftware.nome}"
+                                                       itemValue="#{item.pkGsLicenca}" /> 
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Dispositivo</label> <br/>
+                                    <p:selectOneMenu value="#{gsInstalacaoBean.fkGsEquipamento.pkGsEquipamento}" >
+                                        <f:selectItem itemLabel="Indefinido" itemValue="Indefinido" noSelectionOption="true"/>
+                                        <f:selectItems value="#{gsEquipamentoBean.listarTodos()}"
+                                                       var="item" itemLabel="#{item.marca}"
+                                                       itemValue="#{item.pkGsEquipamento}" 
+                                                       />
+                                    </p:selectOneMenu> 
+                                </h:panelGroup>                               
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Localização</label> <br/>
+                                    <p:selectOneMenu value="#{gsInstalacaoBean.fkEstruturaLogica.pkEstruturaLogica}" >
+                                        <f:selectItem itemLabel="Indefinido" itemValue="Indefinido" noSelectionOption="true"/>
+                                        <f:selectItems value="#{gsInstalacaoBean.estruturaLogicaFacade.findAllOrderByNome()}"
+                                                       var="item" itemLabel="#{item.designacao}"
+                                                       itemValue="#{item.pkEstruturaLogica}" 
+                                                       />
+                                    </p:selectOneMenu> 
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:tab> 
+                        <h:panelGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" 
+                                             value="Gravar" icon="ui-icon-plus" 
+                                             action="#{gsInstalacaoBean.gravar()}"
+                                             process="@form"
+                                             />
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <f:view>
+
+            <h:form id="form_gsinstalacao0">
+
+                <h:panelGrid>
+                    <p:dataTable value="#{gsInstalacaoBean.listarTodos()}" var="item" style="margin: 2em;" 
+                                 rowKey="#{item.pkGsInstalação}">
+                        <p:column headerText="Data">    
+                            <h:outputText value="#{item.data}"/>
+                        </p:column>
+                        <p:column headerText="Licença">
+                            <h:outputText value="#{item.fkGsLicenca.chaveLicenca}"/>
+                        </p:column>
+                        <p:column headerText="Software">
+                            <h:outputText value="#{item.fkGsLicenca.fkGsSoftware.nome} V.#{item.fkGsLicenca.fkGsSoftware.versao}"/>
+                        </p:column>                        
+                        <p:column headerText="Equipamento">
+                            <h:outputText value="#{item.fkGsEquipamento.marca}"/>
+                        </p:column>
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{item.fkGsEquipamento.modelo}"/>
+                        </p:column>
+                        <p:column headerText="Departamento">
+                            <h:outputText value="#{item.fkEstruturaLogica.designacao}"/>
+                        </p:column>
+                        <p:column style="width:100px;text-align: center">
+                            <p:commandButton icon="fa fa-pencil" update="@none" process="@this" 
+                                             oncomplete="PF('editDialog').show()">
+                                <f:setPropertyActionListener value="#{item}"
+                                                             target="#{gsInstalacaoBean.instalacaoSelecionado}"/>
+                            </p:commandButton>
+                            <p:commandButton action="#{gsInstalacaoBean.eliminar(item)}" icon="fa fa-trash"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog widgetVar="editDialog" header="Actualizar o Registo de Instalação" modal="true"  
+                              showEffect="fade" hideEffect="fade" resizable="false" 
+                              style=" height: 90%; width: 90%">
+                        <p:outputPanel id="actualizarInstalacao" style="text-align:center">
+                            <p:autoUpdate/>
+                            <p:panelGrid columns="2" rendered="#{not empty gsInstalacaoBean.instalacaoSelecionado}" 
+                                         columnClasses="value,label">
+
+                                <h:outputText value="Data " />
+                                <p:inputText type="data" value="#{gsInstalacaoBean.instalacaoSelecionado.data}" />
+
+                                <h:outputText value="Licença " />
+                                <p:selectOneMenu value="#{gsInstalacaoBean.instalacaoSelecionado.fkGsLicenca.pkGsLicenca}" id="fornecedor">
+                                    <f:selectItem itemLabel="#{gsInstalacaoBean.instalacaoSelecionado.fkGsLicenca.fkGsSoftware.nome}" 
+                                                  itemValue="#{gsInstalacaoBean.instalacaoSelecionado.fkGsLicenca.pkGsLicenca}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{gsLicencaBean.listarTodos()}"
+                                                   var="itemLicença" itemLabel="#{itemLicença.fkGsSoftware.nome}"
+                                                   itemValue="#{itemLicença.pkGsLicenca}" /> 
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Marca " />
+                                <p:selectOneMenu value="#{gsInstalacaoBean.instalacaoSelecionado.fkGsEquipamento.pkGsEquipamento}" >
+                                    <f:selectItem itemLabel="#{gsInstalacaoBean.instalacaoSelecionado.fkGsEquipamento.marca} " 
+                                                  itemValue="#{gsInstalacaoBean.instalacaoSelecionado.fkGsEquipamento.pkGsEquipamento}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{gsEquipamentoBean.listarTodos()}"
+                                                   var="itemEquipamento" itemLabel="#{itemEquipamento.marca}"
+                                                   itemValue="#{itemEquipamento.pkGsEquipamento}" /> 
+                                </p:selectOneMenu> 
+
+                                <h:outputText value="Departamento " />
+                                <p:selectOneMenu value="#{gsInstalacaoBean.instalacaoSelecionado.fkEstruturaLogica.pkEstruturaLogica}" >
+                                    <f:selectItem itemLabel="#{gsInstalacaoBean.instalacaoSelecionado.fkEstruturaLogica.designacao}" 
+                                                  itemValue="#{gsInstalacaoBean.instalacaoSelecionado.fkEstruturaLogica.pkEstruturaLogica}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{gsInstalacaoBean.estruturaLogicaFacade.findAllOrderByNome()}"
+                                                   var="itemEstruturaLogica" itemLabel="#{itemEstruturaLogica.designacao}"
+                                                   itemValue="#{itemEstruturaLogica.pkEstruturaLogica}" 
+                                                   />
+                                </p:selectOneMenu>  
+                            </p:panelGrid>
+                            <p:commandButton style="margin-top: 5em" 
+                                             value="Actualizar" action="#{gsInstalacaoBean.actualizar()}"
+                                             />
+                            <p:commandButton oncomplete="PF('editDialog').hide()" 
+                                             title="Cancelar" value="Cancelar"
+                                             />
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

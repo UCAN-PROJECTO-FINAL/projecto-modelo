@@ -1,0 +1,94 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui"
+    template="/template_frt/template.xhtml">
+
+
+    <ui:define name="head">
+        <style type="text/css">
+
+
+            h5 {
+                font-size: 15px;
+                font-weight: 300;
+                padding: 0px;
+                margin: 0px
+            }
+
+            rotulo.rotulo {
+                width: 150px
+
+            }
+
+            .rotulo {
+                width: 150px
+            }
+
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+        <h5>Modulos -> Frotas -> Funcionários -> Lista de  Funcionários</h5>
+
+        <p:toolbar style="margin-top: 20px">
+
+            <p:toolbarGroup>
+                
+                <p:button value="Novo" outcome="/modulos/frtVisao/frtFuncionarios/funcionarios_cadastrar?faces-redirect=true"/>
+
+            </p:toolbarGroup>
+
+            <p:toolbarGroup align="right">
+
+
+                <p:separator/>
+
+                <p:button icon="ui-icon-arrow-back" value="Listar" outcome="/modulos/frtVisao/frt_home?faces-redirect=true"/>
+                
+            </p:toolbarGroup>
+
+        </p:toolbar>
+        
+        <br/>
+        <br/>
+        <br/>
+
+        <h:panelGrid>
+            
+            <p:tab title="Lista de funcionários" titleStyle="font-size: 16px" >
+
+            <!-- Início da tabela para vizualização de Tipo Documento -->
+                    <p:dataTable id="tabela" var="funcionario" value="#{frtTransporteFuncionarioListarBean.listaFuncionarios}" paginatorAlwaysVisible="false"
+                                 paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                        <f:facet name="header">
+                            <label style="font-size:140% ">Lista de Funcionários</label> 
+                        </f:facet>
+                        
+                        <p:column headerText="Data do Castro" style="text-align:center"  >
+                            <h:outputText value="#{funcionario.dataCadastro}" />
+                        </p:column>
+
+                        <p:column headerText="Nome" style="text-align:center"  >
+                            <h:outputText value="#{funcionario.fkPessoa.nome}" />
+                        </p:column>
+
+                    </p:dataTable>
+            
+            </p:tab>
+
+        </h:panelGrid>
+
+    </ui:define>   
+
+
+</ui:composition>
+
+
+
+

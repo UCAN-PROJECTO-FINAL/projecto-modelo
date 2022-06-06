@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title> PSGL - Erro ao Processar</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/style.css"/>
+        <h:outputStylesheet name="css/style.default.css"/>
+        <h:outputStylesheet name="css/pages/signin.css"/>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/bootstrap-responsive.min.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon/Logo-EGTI.png']}" />
+    </h:head>
+    <h:body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <span class="brand">
+                        <p:graphicImage url="/resources/Imagens/logoEGTI.pnj" width="5%"/>
+
+                    </span>
+                </div>
+            </div>
+        </div>
+        <br/><br/><br/><br/>
+        <h:form id="formSolicitacao">
+            <p:growl id="gr_geral" life="5000">
+                <p:autoUpdate />
+            </p:growl>
+            <p></p>
+            <p:fieldset style="width: 95%; margin: auto; background-color: #002a80">
+                <div style="height: 400px; width: 100%; background-color: #005580">
+
+                    <center>
+                        <div class="errortitle">
+                            <h1 class="animate0 fadeInUp">404 - PSGL</h1>
+                            <p style="font-size: 20px; color: #FFFFFF" >
+                                Ocorreu um Erro ao Processar a Operação Desejada.
+                            </p>
+                            <br/><br/>
+                                <p:commandLink 
+                                    style="color: #fff" 
+                                    class="btn btn-primary btn-large"
+                                    value="Efectuar Login" 
+                                    action="login.xhtml?faces-redirect=true"
+                                    />
+                           
+                        </div>
+                    </center>
+                </div>
+                
+            </p:fieldset>
+        </h:form>
+       
+    </h:body>
+
+</html>

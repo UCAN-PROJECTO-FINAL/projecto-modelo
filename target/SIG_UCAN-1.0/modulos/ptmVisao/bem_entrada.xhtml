@@ -1,0 +1,264 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_ptm/template.xhtml">
+ 
+    
+    <ui:define name="content">
+        <h:form id = "form">
+            <p:fieldset legend="Bem">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="" value="Forma de Aquisição" />
+                    <h:selectOneMenu 
+                        id="fkPtFormaAquisicaoSOM" 
+                        value="#{ptBemEntradaBean.fkPtFormaAquisicao}" 
+                        >
+                        <f:selectItems 
+                            var="fa" 
+                            value="#{ptBemEntradaBean.listaPtFormaAquisicao}"  
+                            itemLabel="#{fa.descricao}" itemValue="#{fa.pkPtFormaAquisicao}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Contrato de Compra" />
+                    <h:selectOneMenu 
+                        id="fkPtContratoCompraSOM" 
+                        value="#{ptBemEntradaBean.fkPtContratoCompra}" 
+                        >
+                        <f:selectItems 
+                            var="co" 
+                            value="#{ptBemEntradaBean.listaPtContratoCompra}"  
+                            itemLabel="#{co.descicao}" itemValue="#{co.pkPtContratoCompra}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Quantidade" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.quantidade}" 
+                        >
+                    </h:inputText>
+
+                    <p:outputLabel for="" value="Custo por unidade (aKz)" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.custoUnidade}" 
+                        >
+                    </h:inputText>
+
+                    <p:outputLabel for="" value="Data de registo" />
+                    <p:calendar value="#{ptBemEntradaBean.dataRegisto}" ></p:calendar>
+
+                    <p:outputLabel for="" value="Categria 1" />
+                    <h:selectOneMenu 
+                        id="categotia1SOM" 
+                        value="#{ptBemEntradaBean.fkPtCategoriaLevel1}" 
+                        >
+                        <f:selectItems 
+                            var="ct" 
+                            value="#{ptBemEntradaBean.listPtCategoriasLevel1}"  
+                            itemLabel="#{ct.descricao}" itemValue="#{ct.pkPtCategoria}"
+                            />
+                        <f:ajax listener="#{ptBemEntradaBean.actualizaListPtCategoriasLevel2()}" render="categotia2SOM bem_detalhes"/>
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Categria 2" />
+                    <h:selectOneMenu 
+                        id="categotia2SOM" 
+                        value="#{ptBemEntradaBean.fkPtCategoriaLevel2}" 
+                        >
+                        <f:selectItems 
+                            var="ct" 
+                            value="#{ptBemEntradaBean.listPtCategoriasLevel2}"  
+                            itemLabel="#{ct.descricao}" itemValue="#{ct.pkPtCategoria}"
+                            />
+                        <f:ajax listener="#{ptBemEntradaBean.actualizaListPtCategoriasLevel3()}" render="categotia3SOM bem_detalhes"/>
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Categria 3" />
+                    <h:selectOneMenu 
+                        id="categotia3SOM" 
+                        value="#{ptBemEntradaBean.fkPtCategoriaLevel3}" 
+                        >
+                        <f:selectItems 
+                            var="ct" 
+                            value="#{ptBemEntradaBean.listPtCategoriasLevel3}"  
+                            itemLabel="#{ct.descricao}" itemValue="#{ct.pkPtCategoria}"
+                            />
+                        <p:ajax listener="#{ptBemEntradaBean.changeFormStatus}" update="bem_detalhes"/>
+                    </h:selectOneMenu>
+
+                </p:panelGrid>
+
+            </p:fieldset>
+
+            <h:panelGroup id="bem_detalhes">
+            <p:fieldset legend="Bem Movel" rendered="#{ptBemEntradaBean.bemMovelEnabled}">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="" value="Marca" />
+                    <h:selectOneMenu 
+                        id="marcaSOM" 
+                        value="#{ptBemEntradaBean.fkPtMarca}" 
+                        >
+                        <f:selectItems 
+                            var="mc" 
+                            value="#{ptBemEntradaBean.listPtMarca}"  
+                            itemLabel="#{mc.descricao}" itemValue="#{mc.pkPtMarca}"
+                            />
+                        <f:ajax listener="#{ptBemEntradaBean.changeModeloList()}" render="modeloSOM"/>
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Modelo" />
+                    <h:selectOneMenu 
+                        id="modeloSOM" 
+                        value="#{ptBemEntradaBean.fkPtModelo}" 
+                        >
+                        <f:selectItems 
+                            var="md" 
+                            value="#{ptBemEntradaBean.listPtModelo}"  
+                            itemLabel="#{md.descricao}" itemValue="#{md.pkPtModelo}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Taxa de Depreciação Mensal (%)" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.taxaDepreciacaoMes}" 
+                        >
+                    </h:inputText>
+
+                    <p:outputLabel for="" value="Estado de Conservação" />
+                    <h:selectOneMenu 
+                        value="#{ptBemEntradaBean.fkPtEstadoConservacaoMovel}" 
+                        >
+                        <f:selectItems 
+                            var="ec" 
+                            value="#{ptBemEntradaBean.listPtEstadoConservacaoMovel}"  
+                            itemLabel="#{ec.descricao}" itemValue="#{ec.pkPtEstadoConservacao}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Detalhes" />
+                    <h:inputTextarea
+                        value="#{ptBemEntradaBean.detalhesMovel}" 
+                        >
+                    </h:inputTextarea>
+                </p:panelGrid>
+
+            </p:fieldset>
+
+            <p:fieldset legend="Bem Imovel" rendered="#{ptBemEntradaBean.bemImovelEnabled}">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="" value="Descrição no Cartório" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.descricaoCartorio}" 
+                        >
+                    </h:inputText>
+                    <p:outputLabel for="" value="Taxa Mensal (%)" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.taxaMes}" 
+                        >
+                    </h:inputText>
+
+                    <p:outputLabel for="" value="Valor Actual" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.valorActualImovel}" 
+                        >
+                    </h:inputText>
+
+                    <p:outputLabel for="" value="Data de Construção" />
+                    <p:calendar
+                        value="#{ptBemEntradaBean.dataConstrucao}" 
+                        >
+                    </p:calendar>
+
+                    <p:outputLabel for="" value="Estrutura FIsica" />
+                    <h:selectOneMenu 
+                        value="#{ptBemEntradaBean.fkEstruturaFisica}" 
+                        >
+                        <f:selectItems 
+                            var="ef" 
+                            value="#{ptBemEntradaBean.listEstruturaFisica}"  
+                            itemLabel="#{ef.designacao}" itemValue="#{ef.pkEstruturaFisica}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Estado de Conservação" />
+                    <h:selectOneMenu 
+                        value="#{ptBemEntradaBean.fkPtEstadoConservacaoImovel}" 
+                        >
+                        <f:selectItems 
+                            var="ec" 
+                            value="#{ptBemEntradaBean.listPtEstadoConservacaoImovel}"  
+                            itemLabel="#{ec.descricao}" itemValue="#{ec.pkPtEstadoConservacao}"
+                            />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="" value="Detalhes" />
+                    <h:inputTextarea
+                        value="#{ptBemEntradaBean.detalhesImovel}" 
+                        >
+                    </h:inputTextarea>
+
+                </p:panelGrid>
+
+            </p:fieldset>
+
+            <p:fieldset legend="Bem Intangivel" rendered="#{ptBemEntradaBean.bemItangivelEnabled}">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="" value="Nome" />
+                    <h:inputText
+                        value="#{ptBemEntradaBean.nome}" 
+                        >
+                    </h:inputText>
+                    <p:outputLabel for="" value="Descrição Detalhada" />
+                    <h:inputTextarea
+                        value="#{ptBemEntradaBean.descricaoDetalhada}" 
+                        >
+                    </h:inputTextarea>
+                </p:panelGrid>
+
+            </p:fieldset>
+
+            <p:fieldset legend="Ficheiros" rendered="#{ptBemEntradaBean.docFileEnabled || ptBemEntradaBean.imgFileEnabled}">
+                <p:panel rendered="#{ptBemEntradaBean.docFileEnabled}">
+                    <p:outputLabel value="Selecione o Documento do Bem (.pdf)" />
+                    <p:fileUpload  
+                        cancelLabel="Cancelar" label="Selecionar" uploadLabel="Carregar" 
+                        fileUploadListener="#{ptBemEntradaBean.carregarDocumento}" 
+                        skinSimple="true" sizeLimit="10485760" allowTypes="/(\.|\/)(pdf)$/" 
+                        fileLimitMessage="Só é possivel carregar um ficheiro de cada vez ..." 
+                        invalidFileMessage="O Tipo de ficheiro é Inválida, deve ser: pdf ..." 
+                        invalidSizeMessage="O tamanha do ficheiro excede o limite máximo (10 MB) ..." 
+                        messageTemplate="Ficheiro: {name} | Tamanho: {size}" style="width: 100%;" 
+                        value="#{ptBemEntradaBean.uploadedDocFile}"
+                        />
+                </p:panel>
+                <p:panel rendered="#{ptBemEntradaBean.imgFileEnabled}">
+                    <p:outputLabel value="Selecione a Imagem do Bem (.jpeg,jpg,png)" />
+
+                    <p:fileUpload  
+                        cancelLabel="Cancelar" label="Selecionar" uploadLabel="Carregar" 
+                        fileUploadListener="#{ptBemEntradaBean.carregarImagem}" 
+                        skinSimple="true" sizeLimit="10485760" allowTypes="/(\.|\/)({jpg|jpeg|png})$/" 
+                        fileLimitMessage="Só é possivel carregar um ficheiro de cada vez ..." 
+                        invalidFileMessage="O Tipo de ficheiro é Inválida, deve ser: jpeg,jpg ou ong ..." 
+                        invalidSizeMessage="O tamanha do ficheiro excede o limite máximo (10 MB) ..." 
+                        messageTemplate="Ficheiro: {name} | Tamanho: {size}" style="width: 100%;" 
+                        value="#{ptBemEntradaBean.uploadedImageFile}"
+                        />
+                </p:panel>
+            </p:fieldset>
+            </h:panelGroup>
+            <p:panel>
+                <h:commandButton actionListener="#{ptBemEntradaBean.salvar()}" value="salvar"/>
+            </p:panel>
+        </h:form>   
+
+    </ui:define>
+
+</ui:composition>

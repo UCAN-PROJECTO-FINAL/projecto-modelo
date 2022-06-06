@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+         <h4>Gestão de Contabilidade e Finanças  -> Contabilidade -> Balancete -> Diario </h4>
+
+       
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+
+
+
+
+                        <!-- início do formulário para Cadastrar  -->
+
+
+
+                        <p:dataTable id="tabela" var="movimento" value="#{movimentoBean.listBalancet}" paginatorAlwaysVisible="false"
+                                     paginator="true" paginatorPosition="bottom" rows="10" emptyMessage="Não há registros!">
+
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos movimentos de Débito e Crédito</label> 
+                            </f:facet>
+
+                            <p:column headerText="Conta" >
+                                <h:outputText value=" #{movimento.fkAccount.numeroAccount}- #{movimento.fkAccount.descricaoAccount}" />
+                            </p:column>
+
+                            <p:column headerText="Exercício"  style="text-align:center; width:90px;" >
+                                <h:outputText value=" #{movimento.fkLancamento.fkAnoEconomico.anoEconomico}" />
+                            </p:column>
+                            
+                            <p:column headerText="Débito"   style="text-align:center; width:125px;">
+                                <h:outputText value="#{movimento.debitoBalancet}"> 
+                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Crédito"   style="text-align:center; width:125px;">
+                                <h:outputText value="#{movimento.creditoBalancet}"> 
+                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Data Movi." style="text-align:center; width:100px;">
+                                <h:outputText value="#{movimento.dataBalancet}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy"  locale="pt" timeZone="GMT+1"/>
+                                </h:outputText>
+                            </p:column>
+
+
+
+
+                        </p:dataTable>
+
+
+
+
+
+                        <!-- fim do formulário para Cadastrar -->
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+           
+    </ui:define>
+
+</ui:composition>
+
+

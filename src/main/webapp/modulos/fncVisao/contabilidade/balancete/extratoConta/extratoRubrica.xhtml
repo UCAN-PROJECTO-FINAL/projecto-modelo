@@ -1,0 +1,202 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .cars-datalist .text-column p:last-child{
+                color:#757575;
+            }
+
+            .cars-datalist .car-item i, .cars-datalist .car-item .car-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .cars-datalist .car-item button {
+                float: right;
+            }
+
+            .cars-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .ui-car-display td:last-child {
+                font-weight: 700;
+            }
+
+            @media (max-width:640px) {
+                .cars-datalist .text-column {
+                    text-align: center;
+                }
+            }
+        </style>
+
+    </ui:define>
+
+    <ui:define name="content">
+             <h4>Gestão de Contabilidade e Finanças  -> Contabilidade -> Extracto Rubrica </h4>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-6">
+                    <!-- Left Side -->
+                    <div class="card card-w-title" style="width: 202%;">
+                        <h1 style="margin-left:2%">Extrato de Contas de Movimentos</h1>
+                        
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+                            <h:panelGroup  >
+                                <h:panelGroup>
+                                    
+                                    <p:selectOneMenu id="catg" 
+                                                     required="true"
+                                                      title="Menu para selecionar o fornecedor."
+                                                     requiredMessage="Seleciona a conta, por favor! " 
+                                                     value="#{extratoAccountBean.codigoAccount}"
+                                                     filter="true"
+                                                     filterMatchMode="contains" style="width: 300px">
+                                        <f:selectItem  itemLabel="Seleciona a conta..." itemValue="" />
+                                        <f:selectItems value="#{extratoAccountBean.listAccount}" 
+                                                       var="conta"
+                                                       itemLabel=" #{conta.numeroAccount} - #{conta.descricaoAccount}" 
+                                                       itemValue="#{conta.pkAccount}" />
+                                        <p:ajax event="change" listener="#{extratoAccountBean.listExtrato()}" update="panelGeral" />
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+<!--panelGeral-->
+                           
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+
+                            </h:panelGroup>
+                            <h:panelGroup>
+
+                            </h:panelGroup>
+                            <h:panelGroup>
+
+                            </h:panelGroup>
+
+
+                        </p:panelGrid>
+
+                        <p:outputPanel id="panelGeral">
+
+                            <p:dataTable id="tabela" style="margin-bottom:1%;"  var="account" value="#{extratoAccountBean.list}" paginatorAlwaysVisible="false"
+                                         emptyMessage="Não há movimentos de débitos e créditos nessa conta!" paginator="true" paginatorPosition="top" rows="10">
+                                <f:facet name="header">
+                                    <label style="font-size:140% ">Movimentos Diários</label> 
+                                </f:facet> 
+
+                                <p:column headerText="Conta" style="text-align:center; width:70px;">
+                                    <h:outputText value="#{account.numeroAccount} " />
+                                </p:column>
+
+                                <p:column filterMatchMode="contains" filterBy="#{account.diario}" headerText="Diário"   style="text-align:center">
+                                    <h:outputText value="#{account.diario} " />
+                                </p:column>
+
+                                <p:column filterMatchMode="contains" filterBy="#{account.documento}" headerText="Documento"   style="text-align:center">
+                                    <h:outputText value="#{account.documento} " />
+                                </p:column>
+
+                                <p:column headerText="Data Movi." style="text-align:center; width:100px;">
+                                    <h:outputText value="#{account.dataMovimento}">
+                                        <f:convertDateTime pattern="dd-MM-yyyy"  locale="pt" timeZone="GMT+1"/>
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column filterMatchMode="contains" filterBy="#{account.numero}" headerText="Nº do Document"   style="text-align:center">
+                                    <h:outputText value="#{account.numero} " />
+                                </p:column>
+
+                                <p:column filterMatchMode="startsWith" filterBy="#{account.debito}" headerText="Débito"   style="text-align:center; width:130px;">
+                                    <h:outputText value="#{account.debito}"> 
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column filterMatchMode="startsWith" filterBy="#{account.credito}" headerText="Crédito"   style="text-align:center; width:130px;">
+                                    <h:outputText value="#{account.credito}"> 
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </h:outputText>
+                                </p:column>
+
+
+                            </p:dataTable>
+                            <p:dataTable id="tabela2" style="margin-top:-1%;"  var="ttal" emptyMessage="" value="#{extratoAccountBean.list2}">
+
+                                <p:column headerText="Conta" rendered="false" style="text-align:center; width:70px;"/>
+
+                                <p:column headerText="Diário" rendered="false"  style="text-align:center"/>
+
+                                <p:column headerText="Documento"  rendered="false" style="text-align:center"/>
+
+                                <p:column headerText="Data Movi." rendered="false" style="text-align:center; width:100px;"/>
+
+                                <p:column headerText="TOTAIS"   style="text-align:center"/>
+
+                                <p:column headerText="Total de Débito"   style="text-align:center; width:130px;">
+                                    <h:outputText value="#{ttal.totalDebito}"> 
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column headerText="Total Crédito"   style="text-align:center; width:130px;">
+                                    <h:outputText value="#{ttal.totalCredito}"> 
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </h:outputText>
+                                </p:column>
+
+
+                            </p:dataTable>
+
+
+
+
+
+                            <p:panelGrid columns="2" id="resultado" >
+
+                                <h:panelGroup id="tipo"  style="float:left; font-weight:bold; margin-right:40px; text-align: center;">
+                                    <h:outputText value="#{extratoAccountBean.tipoSaldo}"/> 
+
+                                </h:panelGroup>
+
+                                <h:panelGroup id="valor"   style="float:left; font-weight:bold; margin-right:40px; text-align: center;">
+
+                                    <p:outputLabel value="#{extratoAccountBean.saldoCD}" style="color: blue">
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </p:outputLabel>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </div>
+
+                    
+                         <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="xls"  target="tabela" fileName="Extracto_Rubrica_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="pdf"  target="tabela" fileName="Extracto_Rubrica_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="csv"  target="tabela" fileName="Extracto_Rubrica_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                    </p:panelGrid>
+
+
+                </div>
+
+
+            </div>
+        
+    </ui:define>
+
+</ui:composition>

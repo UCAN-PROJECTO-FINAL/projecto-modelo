@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/master_template.xhtml">
+
+            <ui:define name="page_title">
+                page_title
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>Segurança -> Conta -> Criação de Nova Conta</h2>
+                <p></p>
+                <p:fieldset>
+
+                    <p:separator/>
+                    <p:commandButton 
+                        rendered="#{segLoginBean.renderedMenuById(305)}"
+                        value="Voltar" 
+                        process="@this" 
+                        action="/seg_visao/segUtilizador/seg_utilizadores_listar.xhtml?faces-redirect=true"
+                        style="margin-bottom: 12px"
+                        />
+                    <br/>
+
+                    <p:dataTable 
+                        id="dataTable" 
+                        rows="10" 
+                        paginator="true" 
+                        paginatorPosition="bottom" 
+                        style="width: 100%"
+                        var="colaborador" 
+                        value="#{segUtilizadorNovoBean.listaColaboradores}" 
+                        emptyMessage="Nenhum registro de funcionário encontrado"
+                        >
+
+                        <p:column 
+                            headerText="Nome Completo"
+                            filterBy="#{colaborador.fkGrlPessoa.nome}"
+                            >
+                            <center>
+                                <strong>
+                                    <h:outputText
+                                        value="#{colaborador.fkGrlPessoa.nome}"
+                                        />
+                                </strong>
+
+                            </center>                                
+                        </p:column>
+
+                        <p:column 
+                            headerText="Departamento"
+                            filterBy="#{colaborador.fkRhEgtiOrganograma.nome}"
+                            >
+                            <center>
+                                <h:outputText 
+                                    value="#{colaborador.fkRhEgtiOrganograma.nome}"
+                                    />
+                            </center>                                
+                        </p:column>
+
+                        <p:column 
+                            headerText="Cargo"
+                            filterBy="#{colaborador.fkRhEgtiCargo.nome}"
+                            >
+                            <center>
+                                <h:outputText 
+                                    value="#{colaborador.fkRhEgtiCargo.nome}"
+                                    />
+                            </center>                                
+                        </p:column>
+
+
+                        <p:column headerText="-----------------------------">
+                            <center>
+                                <p:commandButton 
+                                    rendered="#{segLoginBean.renderedMenuById(24)}"
+                                    value="Nova Conta" 
+                                    action="seg_utilizador_concluir_criacao_conta.xhtml?faces-redirect=true"
+                                    actionListener="#{segUtilizadorNovoBean.initProximaPagina(colaborador.fkGrlPessoa)}"
+                                    onstart="PF('w_dlgLoading').show();" 
+                                    oncomplete="PF('w_dlgLoading').hide();"
+                                    />
+
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+
+                </p:fieldset>
+                <p:dialog 
+                    id="dlg_criar_conta"
+                    header="Novo Utilizador" 
+                    closable="true" 
+                    showEffect="fade"
+                    widgetVar="dialogNovo" 
+                    closeOnEscape="true"
+                    width="50%" modal="true"
+                    >
+                    <center>
+                        <p:fieldset>
+                            <p style="font-size: 15px">
+                                Criando conta para o funcionario 
+                                <strong>
+
+                                </strong>.
+                                Selecione a opção abaixo para continuar.
+                            </p>
+                        </p:fieldset>
+                        <h:panelGrid 
+                            columns="2"
+                            >
+                            <p:commandButton 
+                                style="width: 155px; height: 50px "
+                                rendered="#{segLoginBean.renderedMenuById(306)}"
+                                icon="ui-icon-check" 
+                                value="Atribuir Perfil"
+                                action="seg_utilizador_concluir_criacao_conta.xhtml?faces-redirect=true"
+                                actionListener="#{segUtilizadorNovoBean.initProximaPagina(segLoginBean.sessaoActual)}"
+                                onclick="PF('dialogNovo').hide()"
+                                onstart="PF('w_dlgLoading').show();" 
+                                oncomplete="PF('w_dlgLoading').hide();"
+                                />
+
+                        </h:panelGrid>
+                    </center>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

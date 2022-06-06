@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+
+        <title>Univeridade Católica de Angola</title>
+
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+
+    </h:head>
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>#{utilsBean.tituloProjecto}</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+
+        <style>
+            #ajaxLoader{
+                width:32px;
+                height:32px;
+                position:fixed;
+                right:7px;bottom:7px;
+            }
+        </style>
+
+
+    </h:head>
+
+    <h:body styleClass="login-body">
+        
+        <h:form id="form" prependId="false">
+
+            <p:messages id="context" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:growl id="msg_info" life="90000" severity="info">
+                <p:autoUpdate />
+            </p:growl>
+            <p:growl id="msg_warn" life="90000" severity="warn">
+                <p:autoUpdate />
+            </p:growl>
+            <p:growl id="msg_error" life="90000" severity="error">
+                <p:autoUpdate />
+            </p:growl>
+
+            <div class="card login-panel ui-fluid" style="margin-top: 90px">
+                <div class="ui-g">
+                    <div class="ui-g-12" style="margin-top: -30px;">
+                        <p:graphicImage name="images/logologin.png" library="ultima-layout" />
+                    </div>
+
+                    <div class="ui-g-12" style="margin-top: -30px;">
+                        <h:panelGroup>
+                            <label style="float: left;">Nome de Utilizador</label>
+                            <p:inputText placeholder="Usuário" style="height: 32px;" required="true" 
+                                         requiredMessage="Usuário é obrigatório" id="nomelogin" value="#{segLoginBean.username}" />
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-12" style="margin-top: -45px;">
+                        <h:panelGroup>
+                            <label style="float: left;">Palavra-Passe</label>
+                            <p:password placeholder="Senha" style="height: 32px;" id="senhalogin" required="true"
+                                        requiredMessage="Palavra-Passe é obrigatório" value="#{segLoginBean.password}" />  
+                        </h:panelGroup>
+
+
+                    </div>
+                    <div class="ui-g-12" style="margin-top: -30px;">
+                        <p:commandButton id="btnEntrar" icon="ui-icon-person" 
+                                         action="#{segLoginBean.entraNoSistema()}" value="Entrar">
+                            <f:ajax execute="form" onevent="handleDisableButton"></f:ajax>
+                        </p:commandButton>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-footer" style="color: white;">#{utilsBean.tituloProjectoExtenso}</div>
+
+            <p:ajaxStatus id="ajaxLoader">
+                <f:facet name="start">
+                    <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+
+            <h:outputStylesheet name="css/estilosPersonalizados.css" library="ultima-layout"/>
+
+        </h:form>
+
+        <script>
+            function handleDisableButton(data) {
+                var buttonElement = data.source; // The HTML DOM element which invoked the ajax event.
+                var ajaxStatus = data.status; // Can be "begin", "complete" and "success".
+
+                var $btnEntrar = $("#btnEntrar");
+                console.log(buttonElement);
+
+                var texto = $btnEntrar.text();
+
+                switch (ajaxStatus) {
+                    case "begin": // This is called right before ajax request is been sent.
+                        //buttonElement.disabled = true;
+                        $btnEntrar.attr("disabled", "disabled");
+                        //$btnEntrar.text("Carregando");
+                        $btnEntrar.addClass("ui-state-disabled");
+                        //alert('begin');
+                        break;
+
+                    case "complete": // This is called right after ajax response is received.
+                        // We don't want to enable it yet here, right?
+                        //$btnEntrar.text(texto);
+                        $btnEntrar.removeAttr("disabled");
+                        $btnEntrar.removeClass("ui-state-disabled");
+                        break;
+
+                    case "success": // This is called when ajax response is successfully processed.
+                        //buttonElement.disabled = false;
+                        //$btnEntrar.text(texto);
+                        $btnEntrar.removeAttr("disabled");
+                        $btnEntrar.removeClass("ui-state-disabled");
+                        break;
+                }
+            }
+        </script>
+
+    </h:body>
+</html>

@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+
+        <h4>Gestão de Contabilidade e Finanças  -> Documento </h4>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1 style="font-size:25px">Novo Documento</h1>
+                    <p:tabView>
+                        <p:tab  title="Documento">
+                            <p:panelGrid columns="3" layout="grid" style="margin-bottom:10px;" styleClass="ui-panelgrid-blank form-group">
+
+                                <h:panelGroup   >
+                                    <label style="font-size: 118%">Diário</label><br/>
+                                    <p:selectOneMenu id="class" 
+                                                     required="true" 
+                                                     title="Menu para selecionar o diário."
+                                                     requiredMessage="Seleciona o diário, por favor! " 
+                                                     value="#{CtDocumentoBean.codigoDiario}"  
+                                                     >
+                                        <f:selectItem  itemLabel="Seleciona o diário..." itemValue="" />
+                                        <f:selectItems value="#{CtDocumentoBean.listDiario}" var="diario" itemLabel=" #{diario.pkDiario} - #{diario.descricaoDiario}" itemValue="#{diario.pkDiario}" />
+                                    </p:selectOneMenu>
+
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+
+                                    <label style="font-size: 118%">Nº do Documento</label><br/>
+                                    <p:selectOneMenu id="clnumber"
+                                                     value="#{CtDocumentoBean.documento.number}" 
+                                                     required="true"
+                                                     title="Menu para selecionar o número do documento."
+                                                     requiredMessage="Seleciona o número do documento, por favor!" 
+                                                     >
+                                        <f:selectItem itemLabel="Seleciona o número do documento..." itemValue="" />
+
+                                        <f:selectItems value="#{CtDocumentoBean.listNumero}" var="number" itemLabel="#{number.codigo}" itemValue="#{number.codigo}" />
+
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Descrição do Documento</label><br/>
+                                    <p:inputText  value="#{CtDocumentoBean.documento.descricaoDocumento}" 
+                                                  required="true" 
+                                                  title="Campo para digitar o documento."
+                                                  requiredMessage="O Documento precisa ser informado"
+                                                  />
+
+                                </h:panelGroup>
+
+
+
+                            </p:panelGrid>
+
+                        </p:tab>
+                    </p:tabView>
+
+
+
+                    <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="Guardar" action="#{CtDocumentoBean.gravar()}"  update="form_geral" styleClass="aqua-button" icon="fa fa-save"/>
+                    </p:panelGrid>
+                    <br />
+                    <br />
+
+                </div>
+            </div>
+            <p:dataTable  id="tabela" var="documento" value="#{CtDocumentoBean.listDocumento}" paginatorAlwaysVisible="false"
+                          paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                <f:facet name="header">
+                    <label >Visualização dos Registros - Documentos</label> 
+                </f:facet>
+
+
+                <p:column filterMatchMode="contains" headerText="Diário" style=" font-weight:bold" filterBy="#{documento.fkDiario.pkDiario}- #{documento.fkDiario.descricaoDiario}" >
+                    <h:outputText value="#{documento.fkDiario.pkDiario}- #{documento.fkDiario.descricaoDiario}" />
+                </p:column>
+
+                <p:column filterMatchMode="contains" headerText="Documentos"  filterBy="#{documento.numeroDocumento}- #{documento.descricaoDocumento}" >
+                    <h:outputText value="#{documento.numeroDocumento}- #{documento.descricaoDocumento}" />
+                </p:column>
+
+                <p:column headerText="Data de Registro" style="text-align:center">
+                    <h:outputText value="#{documento.dataRegistroDocumento}"> 
+
+                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" timeZone="GMT+1"/>
+
+                    </h:outputText>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton id="createButton" icon="ui-icon-plus"  />
+                    <p:commandButton id="editButton"   icon="ui-icon-pencil"  />
+                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  />
+                </f:facet>
+            </p:dataTable>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

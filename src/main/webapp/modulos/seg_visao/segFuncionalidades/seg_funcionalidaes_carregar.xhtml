@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_seg/template.xhtml">
+
+    <ui:define name="content">
+        
+                      <h:form>
+                           <p:fieldset legend="Carregar Tabelas Gerais">
+                               <h:panelGrid 
+                                   columns="2" 
+                                   style="width: 100%;"
+                                   >
+                                   <h:inputText 
+                                       disabled="#{grlTabelaDeterminadasCarregarBean.pathEditionDisabled}" 
+                                       style="width: 100%"
+                                       value="#{grlTabelaDeterminadasCarregarBean.path}"
+                                       id="pathSOM"
+                                       />
+                                   <p:commandButton 
+                                       style="margin-left: 5vw"
+                                       value="editar" 
+                                       actionListener="#{grlTabelaDeterminadasCarregarBean.changeStatePathInput}" 
+                                       update="pathSOM" 
+                                       />
+
+                                   <p:commandButton
+                                       style="width: 50%;"
+                                       value="Carregar Tabelas Gerais" 
+                                       actionListener="#{grlTabelaDeterminadasCarregarBean.carregarTabelas}"
+                                       />
+                               </h:panelGrid>
+                           </p:fieldset>
+                           <br/>
+
+                           <p:fieldset legend="Carregar Determinadas Tabelas">
+
+                               <p:panelGrid columns="2">
+                                   <p:outputLabel for="grupoSOM" value="Selecione o grupo de tabelas" />
+                                   <h:selectOneMenu 
+                                       id="grupoSOM" 
+                                       value="#{grlTabelaDeterminadasCarregarBean.grupo}" 
+                                       >
+                                       <f:selectItems 
+                                           var="gr" 
+                                           value="#{grlTabelaDeterminadasCarregarBean.grupos}"  
+                                           itemLabel="#{gr}" itemValue="#{gr}"
+                                           />
+                                       <f:ajax 
+                                           listener="#{grlTabelaDeterminadasCarregarBean.actualizarTabelas()}" 
+                                           render="tabelaSOM" 
+                                           />
+                                   </h:selectOneMenu>
+
+                                   <p:outputLabel for="tabelaSOM" value="Selecione a tabela" />
+                                   <h:selectOneMenu 
+                                       id="tabelaSOM" 
+                                       value="#{grlTabelaDeterminadasCarregarBean.tabela}" 
+                                       >
+                                       <f:selectItems 
+                                           var="gr" 
+                                           value="#{grlTabelaDeterminadasCarregarBean.listaTabelas}"  
+                                           itemLabel="#{gr}" itemValue="#{gr}"
+                                           />
+                                       <f:ajax 
+                                           listener="#{grlTabelaDeterminadasCarregarBean.listarTabela()}" 
+                                           />
+                                   </h:selectOneMenu>
+
+                                   <p:outputLabel for="fileUplCandidaturas" value="Selecione o Ficheiro (.xls)" />
+                                   <p:fileUpload  
+                                       id="fileUplCandidaturas" cancelLabel="Cancelar" label="Selecionar" uploadLabel="Carregar" 
+                                       fileUploadListener="#{grlTabelaDeterminadasCarregarBean.carrregarFicheiroExcel}" 
+                                       skinSimple="true" sizeLimit="10485760" allowTypes="/(\.|\/)(xls|xlsx)$/" 
+                                       fileLimitMessage="Só é possivel carregar um ficheiro de cada vez ..." 
+                                       invalidFileMessage="O Tipo de ficheiro é Inválida, deve ser: xls, xlsx ..." 
+                                       invalidSizeMessage="O tamanha do ficheiro excede o limite máximo (10 MB) ..." 
+                                       messageTemplate="Ficheiro: {name} | Tamanho: {size}" style="width: 100%;" 
+                                       value="#{grlTabelaDeterminadasCarregarBean.uploadedFile}"
+                                       />
+
+                               </p:panelGrid>
+
+                           </p:fieldset>
+                       </h:form>   
+
+       
+
+    </ui:define>
+
+</ui:composition>
+

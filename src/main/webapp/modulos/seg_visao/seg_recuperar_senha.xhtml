@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../templates/master_template.xhtml">
+
+            <ui:define name="page_title">
+                page_title
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="account-container">
+                    <div class="content clearfix">
+                        <center><h1>Recuperar a Password</h1></center>
+
+                        <f:event 
+                            type="javax.faces.event.PreRenderViewEvent"
+                            listener="#{segRecuperarSenhaBean.preRenderView()}" 
+                            />
+
+                        <div class="login-fields">
+                            <div class="field">
+                                <p:inputText  
+                                    id="user"
+                                    placeholder="User Name" 
+                                    value="#{segRecuperarSenhaBean.userName}" 
+                                    styleClass="input-xlarge"
+                                    />
+                            </div>
+
+                            <div class="field">
+                                <p:selectOneMenu 
+                                    id="perguntas" 
+                                    value="#{segRecuperarSenhaBean.pergunta}" 
+                                    styleClass="input-xlarge" 
+                                    >
+                                    <f:selectItems 
+                                        var="perguntasVar" 
+                                        value="#{grlPerguntaBean.listaPerguntas}" 
+                                        itemLabel="#{perguntasVar.nome}" 
+                                        itemValue="#{perguntasVar.pkPergunta}"
+                                        />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="field">
+                                <p:inputText  
+                                    id="resposta" 
+                                    placeholder="Resposta" 
+                                    value="#{segRecuperarSenhaBean.resposta}"
+                                    />
+                            </div>
+                        </div>
+                        <br/>
+                        <div align="center">
+                            <h:commandLink 
+                                class="button btn-success btn-large" 
+                                value="Finalisar"
+                                action="#{segRecuperarSenhaBean.findSenha()}"
+                                />
+                        </div>
+                    </div>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

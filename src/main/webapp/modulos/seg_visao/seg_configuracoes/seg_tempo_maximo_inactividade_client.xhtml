@@ -1,0 +1,57 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                template="/template_seg/template.xhtml">
+
+            <ui:define name="content">
+
+                <p:panelGrid columns="2" id="pg_tempo_maximo_inactividade">
+
+                    <p:selectBooleanCheckbox 
+                        value="#{segTempoMaximoInactividadeClientBean.activarTempoMaximoInactividade}" 
+                        itemLabel="Activar Tempo Máximo de Inactividade até a suspensão da sessão" 
+                        >
+                        <p:ajax 
+                            listener="#{segTempoMaximoInactividadeClientBean.processarTempoMaximoInactividade()}"
+                            onstart="PF('w_dlgLoading').show();" 
+                            oncomplete="PF('w_dlgLoading').hide();"
+                            update="pg_tempo_maximo_inactividade" 
+                            />
+                    </p:selectBooleanCheckbox> 
+                    <h:inputHidden/>
+
+                    <p:outputLabel
+                        rendered="#{segTempoMaximoInactividadeClientBean.activarTempoMaximoInactividade}"
+                        value="Tempo Máximo de Inactividade em minutos até a suspensão da sessão"
+                        />
+                    <p:inputNumber
+                        rendered="#{segTempoMaximoInactividadeClientBean.activarTempoMaximoInactividade}"
+                        value="#{segTempoMaximoInactividadeClientBean.tempo}"
+                        decimalPlaces="0"
+                        />
+
+                    <p:outputLabel
+                        value="Tempo Máximo de Inactividade em minutos sem suspensão da sessão"
+                        />
+                    <p:inputNumber
+                        value="#{segTempoMaximoInactividadeClientBean.maxIdleTime}"
+                        decimalPlaces="0"
+                        />
+
+                    <p:commandButton
+                        value="Guardar" 
+                        actionListener="#{segTempoMaximoInactividadeClientBean.guardar()}"
+                        onstart="PF('w_dlgLoading').show();" 
+                        oncomplete="PF('w_dlgLoading').hide();"
+                        update="@form"
+                        />
+
+                </p:panelGrid>
+
+            </ui:define>
+
+</ui:composition>

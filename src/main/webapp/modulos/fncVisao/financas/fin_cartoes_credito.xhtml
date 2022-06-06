@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <h4>Gestão de Contabilidade e Finanças  -> Cartão de Crédito </h4>
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Cartões de Crédito</h1>
+                   
+                        
+                        <p:tabView>
+
+                            <p:tab title="Contas e Carteiras - Cadastro">
+
+                                <p:panelGrid columns="1" layout="grid" style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+
+                                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Tipo Cartão *"/>
+                                            <p:selectOneMenu id="option1" effect="fold"  value="#{finContaBean.pkTipoCartao}"
+                                                             required="true" requiredMessage="Informe o tipo cartão">
+                                                <f:selectItem itemLabel="Selecione Uma Opção" itemValue=""/>
+                                                <f:selectItems value="#{finContaBean.listTipoCartao}" var="tipoc" itemLabel="#{tipoc.descricao}" itemValue="#{tipoc.pkTipoCartao}"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+
+                                         <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Moeda" for="moeda"/>
+                                            <p:selectOneMenu id="moeda" value="#{finContaBean.pkMoeda}" effect="fold" 
+                                                               required="true" 
+                                                             requiredMessage="Informe a Moeda">
+                                                <f:selectItem itemLabel="Selecione Uma Opção" itemValue=""/>
+                                                <f:selectItems var="moedas" value="#{finContaBean.finMoedaCache.listaFinMoedas}" itemLabel="#{moedas.abreviatura} - #{moedas.descricao}" itemValue="#{moedas.pkMoeda}"/>
+                                                <p:ajax event="change" listener="#{finContaBean.getAbreviaturaUpdate()}" update="limite"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Nome *"/>
+                                            <p:inputText value="#{finContaBean.contaEntidade.nome}" required="true" requiredMessage="Informe o nome" />
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Data Inicio :" for="dtinicio"/>
+                                            <p:calendar value="#{finContaBean.contaEntidade.dataInicio}" id="dtinicio" />
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Data Fim:" for="dfim"/>
+                                            <p:calendar value="#{finContaBean.contaEntidade.dataFim}"  id="dfim"/>
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Limite :"/>
+                                            <p:inputNumber value="#{finContaBean.contaEntidade.limite}" symbol="#{finContaBean.abreviatura}" 
+                                                           symbolPosition="s" decimalSeparator="," id="limite"
+                                                           emptyValue="0" />
+                                        </p:panelGrid>
+
+
+                                    </p:panelGrid>
+                                </p:panelGrid>
+
+                            </p:tab> 
+                        </p:tabView>
+                        <br/>
+                        <p:panelGrid columns="1"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                            <p:commandButton value="Guardar"   update="form_geral"  icon="fa fa-save" actionListener="#{finContaBean.salvar(2)}"/>
+                        </p:panelGrid>
+
+
+
+
+
+                        <br/>
+                        <p:dataTable id="art" var="c" value="#{finContaBean.contaCahe.listaFinContas}" paginator="true" emptyMessage="Nemhum item encontrado"
+                                     reflow="true" selectionMode="single" rowKey="#{c.pkConta}"
+                                     paginatorPosition="bottom" rows="5" rowsPerPageTemplate="5,10,15" rendered="#{c.fkTipoCartao ne null}">
+
+                            <p:column headerText="Tipo Cartão"  filterMatchMode="contains">
+                                <h:outputText value="#{c.fkTipoCartao.descricao}" />
+
+                            </p:column>
+
+                            <p:column headerText="Nome"  filterMatchMode="contains">
+                                <h:outputText value="#{c.nome}" />
+                            </p:column>
+
+                            <p:column headerText="Dia Inicio"  filterMatchMode="contains">
+                                <h:outputText value="#{c.dataInicio}"  >
+                                    <f:convertDateTime />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Dia Fim"  filterMatchMode="contains">
+                                <h:outputText value="#{c.dataFim}" >
+                                    <f:convertDateTime />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Limite"  filterMatchMode="contains">
+                                <h:outputText value="#{c.limite}" >
+                                    <f:convertNumber currencySymbol="AKZ" locale="AOA"  maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton id="editButton"   icon="ui-icon-pencil"  />
+                                <p:commandButton id="deleteButton" icon="ui-icon-trash"  />
+                            </f:facet>
+                        </p:dataTable>
+
+
+                    
+
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

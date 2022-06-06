@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .cars-datalist .text-column p:last-child{
+                color:#757575;
+            }
+
+            .cars-datalist .car-item i, .cars-datalist .car-item .car-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .cars-datalist .car-item button {
+                float: right;
+            }
+
+            .cars-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .ui-car-display td:last-child {
+                font-weight: 700;
+            }
+
+            @media (max-width:640px) {
+                .cars-datalist .text-column {
+                    text-align: center;
+                }
+            }
+        </style>
+
+    </ui:define>
+
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6">
+                <!-- Left Side -->
+                <div class="card card-w-title" style="width: 202%;">
+                    <h1 style="margin-left:2%">Saldo Anual</h1>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+                        <h:panelGroup  >
+                            <label style="font-size:118%">Exercício</label><br/>
+                            <p:selectOneMenu id="catg" required="true"
+                                             title="Menu para selecionar o exercício econômico."
+                                             requiredMessage="Seleciona exercício, por favor! " 
+                                             value="#{despesaBean.codigoYear}"  style=" width:210px ">
+                                <f:selectItem  itemLabel="Seleciona o exercício..." itemValue="" />
+                                <f:selectItems value="#{despesaBean.listYear}" var="year" itemLabel=" #{year.anoEconomico}" itemValue="#{year.pkAnoEconomico}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                        <p:commandButton action="#{despesaBean.listDespesaAnual()}" value="Listar" update="form_geral" icon="ui-icon-search" style="margin-bottom:5px; width:200px" styleClass="flat"/>
+                    </p:panelGrid>
+
+                    <p:dataTable id="tabela" style="margin-bottom:1%;"  var="despesa" value="#{despesaBean.listDespesaYear}" paginatorAlwaysVisible="false"
+                                 emptyMessage="Não há registros!" paginator="true" paginatorPosition="top" rows="3">
+                        <f:facet name="header">
+                            <label style="font-size:140% ">Quadro Detalhado de Despesa em Execução</label> 
+                        </f:facet> 
+
+                        <p:column headerText="Exercício" style="text-align:center; width:70px;">
+                            <h:outputText value="#{despesa.exercicio} " />
+                        </p:column>
+
+
+                        <p:column headerText="Saldo Anual"   style="text-align:right; width:130px;">
+                            <h:outputText value="#{despesa.saldoAnual}"> 
+                                <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Saldo Utilizado"   style="text-align:right; width:130px;">
+                            <h:outputText value="#{despesa.saldoUtilizado}"> 
+                                <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Saldo Disponível"   style="text-align:right; width:130px;">
+                            <h:outputText value="#{despesa.saldoDisponivel}"> 
+                                <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                            </h:outputText>
+                        </p:column>
+
+
+                    </p:dataTable>
+                    <br/>
+                    
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="xls"  target="tabela" fileName="Despesas_Ano_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="pdf"  target="tabela" fileName="Despesas_Ano_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="csv"  target="tabela" fileName="Despesas_Ano_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                </div>
+
+
+
+            </div>
+
+            <br/>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>
