@@ -1,0 +1,114 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_arq_mrt/template.xhtml">
+
+    <ui:define name="title">Forms</ui:define>
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            } 
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Periodo</h1>
+                        <p:messages id="context" showDetail="true" showSummary="false" autoUpdate="true" closable="true" />
+                        
+                        <p:toolbarGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-plus" immediate="true" value="Novo" action="#{arPeriodoCadastrarBean.novo()}"  update="@form" oncomplete="PF('cadastroDialog').show()" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-list" immediate="true" value="Listar" action="#{arPeriodoCadastrarBean.btnListar()}" update="@form" />
+                        </p:toolbarGroup>
+
+                       
+                        <!-- Início da tabela para vizualização de Tipo Documento -->
+                        <p:dataTable  id="tabela" var="tipo" value="#{arPeriodoCadastrarBean.listaPeriodo()}" paginatorAlwaysVisible="false"
+                                     paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Periodo</label> 
+                            </f:facet>
+
+                            <p:column headerText="Periodo" style="text-align:center"  >
+                                <h:outputText value="#{tipo.descricao}" />
+                            </p:column>
+
+                            <p:column headerText="Alterar" style="width: 100px;">
+                                <p:commandButton style="margin-left:30%;" icon="ui-icon-edit" immediate="true" update="@form" action="#{arPeriodoCadastrarBean.alterar(tipo)}" oncomplete="PF('cadastroDialog').show()" /> 
+                            </p:column>
+
+                            <p:column headerText="Eliminar" style="width: 100px;">
+                                <p:commandButton style="margin-left:30%;" immediate="true" action="#{arPeriodoCadastrarBean.eliminar(tipo)}"
+                                    update="tabela" icon="ui-icon-delete">
+
+                                    <p:confirm header="Confirmação" message="Desejas Realmente eliminar   #{tipo.descricao} ?" icon="ui-icon-warning" />
+                                </p:commandButton>
+
+
+                               <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </p:column>
+
+                        </p:dataTable>
+                        <!-- Fim da tabela para vizualização os registros -->
+                        
+                        
+                        <!-- Inicio cadastrarDialog  -->
+                        <p:dialog header="Periodo"  widgetVar="cadastroDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+                                  width="50%" responsive="true"
+                                  >
+                                      
+                            
+                            <p:toolbarGroup>
+                                <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" rendered="#{!arPeriodoCadastrarBean.estado}" value="Salvar" disabled="#{arPeriodoCadastrarBean.btnSalvar}" update="@form" action="#{arPeriodoCadastrarBean.gravar()}" />
+                                <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" value="Alterar" rendered="#{arPeriodoCadastrarBean.estado}" update="@form"  action="#{arPeriodoCadastrarBean.editar()}"/>
+                            </p:toolbarGroup>
+
+
+                                 <!-- Início do formulário para Cadastrar Faculdade-->
+                            <p:tabView >
+                                <p:tab title="Periodo" >
+
+                                    <h:panelGrid columns="1"  style="margin-bottom:20px" >
+
+                                        <label style="font-size: 118%">Descrição</label>
+                                        <h:panelGroup style="margin-top:4%; width:400px ">
+                                            <p:inputText  value="#{arPeriodoCadastrarBean.periodo.descricao}" required="true" label="Gestão de Periodo" requiredMessage="Periodo deve ser informada!" />
+
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+
+                                </p:tab>
+
+                            </p:tabView>
+                            <!-- Fim do formulário para Cadastrar Ano Curricular -->
+
+                            
+                        </p:dialog>
+                        
+                        
+
+                    </div>
+                </div>
+
+
+            </div>
+         
+    </ui:define>
+
+</ui:composition>

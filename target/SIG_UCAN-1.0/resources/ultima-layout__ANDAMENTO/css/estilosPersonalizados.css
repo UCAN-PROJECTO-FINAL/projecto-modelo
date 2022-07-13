@@ -1,0 +1,96 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 9/Abr/2018, 17:19:06
+    Author     : geff
+*/
+
+/*
+.landing-wrapper #header .header-content {
+    background-color: rgba(255,255,255,0.4) !important;
+    padding: 20px !important;
+}
+
+.landing-wrapper #header {
+  
+    background: none !important;
+}
+
+input[type=text], input[type=password]{
+    border: 1px solid #BEBEBE;
+    border-radius: 4px;
+}
+
+input[type=text]:focus, input[type=password]:focus{
+    border: 1px solid #BEBEBE;
+    border-radius: 4px;
+}
+
+input[type=text]:active, input[type=password]:active{
+    border: 1px solid #BEBEBE;
+    border-radius: 4px;
+}*/
+
+
+/*select {
+    border: 1px solid #BEBEBE;
+    border-radius: 4px;
+    
+}
+
+.ui-selectonemenu-label{
+    border: 1px solid #BEBEBE;
+    border-radius: 4px;
+}*/
+/*
+body .ui-inputfield {
+
+}
+
+
+body .ui-selectonemenu .ui-selectonemenu-label.ui-inputfield{
+    padding-top: 8px;
+    padding-left: 5px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label{
+    outline : 1px solid #BEBEBE !important;
+    height: 34px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container{
+    display: block !important;
+}
+
+body.layout-compact .ui-selectonemenu .ui-selectonemenu-trigger{
+    background-color: red !important;
+    width: 28px !important;
+    margin: 0 !important;
+padding: 0 !important;
+
+}
+
+
+body.layout-compact .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    color: white !important;
+}*/
+
+tr.ui-datatable-odd.ui-state-highlight{
+    background-color: #E91E63 !important;
+}
+
+.corColunaDocClassfied, .corColunaDocUsado, .bgEntidadeUsada, .bgBancoUsado{
+    background-color: #F2FFE3 !important;
+}
+
+.corColunaDocNotClassified, .corColunaDocNotUsado, .bgEntidadeNaoUsada, .bgBancoNaoUsado{
+    background-color: #FFE3E3 !important;
+    
+}
+
+
+ 
+                

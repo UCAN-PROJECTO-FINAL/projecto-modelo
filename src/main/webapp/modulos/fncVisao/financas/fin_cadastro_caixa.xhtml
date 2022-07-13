@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"
+                >
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+         <h4>Gestão de Contabilidade e Finanças  -> Caixa </h4>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Gerir Caixas</h1>
+                       
+                        <!-- início do formulário para Cadastrar a Classe -->
+                        <p:tabView >
+
+                            <p:tab title="Novo Caixa">
+
+                                <p:panelGrid 
+                                    columns="1" 
+                                    layout="grid" 
+                                    style="margin-bottom:20px;" 
+                                    styleClass="ui-panelgrid-blank form-group"
+                                    >
+
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Descrição</label> <br/>
+                                        <p:inputText  
+                                            value="#{finCaixaBean.caixa.nome}" 
+                                            required="true" label="Descrição" 
+                                            requiredMessage="A Descrição precisa ser informada!" 
+                                            style="width: 300px" />
+
+                                    </h:panelGroup>
+                                    
+                                </p:panelGrid>
+
+
+
+                            </p:tab>
+
+
+                        </p:tabView>
+
+                        <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                            <p:commandButton 
+                                value="Guardar" action="#{finCaixaBean.gravar()}"  
+                                update="form_geral,tabelaCaixa" styleClass="aqua-button"
+                                icon="fa fa-save"/>
+                        </p:panelGrid>
+                        <br/>
+                        <br/>
+
+                        <p:dataTable 
+                                     id="tabelaCaixa" style="margin-bottom:1%;"  
+                                     var="caixa" value="#{finCaixaBean.listCaixa}" 
+                                     paginatorAlwaysVisible="false"
+                                     emptyMessage="Não há registros!"
+                                     paginator="true"  
+                                     paginatorPosition="top" 
+                                     rows="10">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Caixas</label> 
+                            </f:facet> 
+
+                            <p:column headerText="Caixa" style="text-align:center; ">
+                                <h:outputText value="#{caixa.nome} " />
+                            </p:column>
+
+                          
+
+                            <p:column headerText="Data de Registro" style="text-align:center; width:200px;">
+                                <h:outputText value="#{caixa.dataRegistroCaixa}"> 
+
+                                    <f:convertDateTime pattern="dd-MM-yyyy hh:mm" timeZone="GMT+1"/>
+
+                                </h:outputText>
+                            </p:column>
+
+
+                            <p:column headerText="Alterar" style="width: 100px;">
+                                <p:commandButton style="margin-left:30%;" action="#{finCaixaBean.alterar()}"
+
+                                                 update="form_geral" icon="ui-icon-edit" 
+                                                 >
+
+                                    <p:confirm header="Confirmação" message="Desejas realmente alterar o Caixa?" icon="ui-icon-warning" />
+                                </p:commandButton>
+
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </p:column>
+                            
+                            
+                             <p:column headerText="Eliminar" style="width: 100px;">
+                                 <p:commandButton style="margin-left:30%; background: red" 
+                                                  action="#{finCaixaBean.eliminar(caixa)}"
+                                                 update=":form_geral:tabelaCaixa" 
+                                                 icon="ui-icon-delete" 
+                                                 >
+                                    <p:confirm header="Confirmação" message="Desejas Realmente eliminar o Caixa?" icon="ui-icon-warning" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </p:column>
+
+                        </p:dataTable>
+
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+

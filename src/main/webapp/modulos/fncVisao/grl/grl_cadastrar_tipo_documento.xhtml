@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Cadastro Tipo Documento</h1>
+
+                        <p:tabView>
+
+                            <p:tab title="...">
+
+                                <p:panelGrid columns="1" layout="grid" style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+
+                                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Descrição :"/>
+                                            <p:inputText  value="#{gdTipoDocumentoBean.gdTipoDocumento.descricao}" required="true" requiredMessage="Inserir o nome"/>
+                                        </p:panelGrid>
+
+                                         <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Modulo :" for="modulo"/>
+                                            <p:selectOneMenu id="modulo" value="#{gdTipoDocumentoBean.modulo}" effect="fold" editable="true">
+                                                <f:selectItem itemLabel="Select One" itemValue=""/>
+                                                <f:selectItems var="modul" value="#{['FIN','CONTAB']}" itemLabel="#{modul}" itemValue="#{modul}"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </p:panelGrid>
+                                </p:panelGrid>
+
+                            </p:tab>
+
+                        </p:tabView>
+                        <br/>
+                        <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                            <p:commandButton value="Guardar" action="#{gdTipoDocumentoBean.salvar()}" update="form_geral" styleClass="aqua-button" icon="fa fa-save"/>
+                        </p:panelGrid>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

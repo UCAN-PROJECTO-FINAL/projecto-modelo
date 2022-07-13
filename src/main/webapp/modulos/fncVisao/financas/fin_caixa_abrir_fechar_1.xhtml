@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/modulos/processos_administrativos/financas/templateFN.xhtml">
+
+    <ui:define name="title">Forms</ui:define>
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form id="form">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Caixas</h1>
+                        <p:messages id="context" showDetail="true" showSummary="false" autoUpdate="true" closable="true" />
+                        <p:toolbarGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-plus" rendered="true" immediate="true" value="Abrir" action="#{operacoesCaixaBean.open()}"  update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" rendered="true"  immediate="true" disabled="#{operacoesCaixaBean.estado}" value="Fechar"  update="@form" action="#{operacoesCaixaBean.close()}" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-list" rendered="true"  immediate="true" value="Listar" action="#{operacoesCaixaBean.btnListar()}" update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-undo" immediate="true" value="Voltar" action="#{operacoesCaixaBean.voltar()}" update="@form" />
+
+                        </p:toolbarGroup>
+
+                        <!-- início do formulário para Cadastrar a Classe -->
+                        <p:tabView rendered="#{operacoesCaixaBean.openCx}">
+
+                            <p:tab title="Abrir Caixa">
+
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px;" styleClass="ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup>
+                                        <label style="font-size: 118%">
+                                            
+                                            Caixa <h:outputText 
+                                                style="color: #cacaca; font-size: 90%;" 
+                                                id="nomeFuncionarioCaixaSelected" 
+                                                value="  (Fechados )"></h:outputText>
+                                        
+                                        </label> <br/>
+
+                                        <p:selectOneMenu id="ordem" 
+                                                         required="true" 
+                                                         value="#{operacoesCaixaBean.codigoCaixaFuncionario}"
+                                                         filter="true" filterMatchMode="contains"
+                                                         requiredMessage="Seleciona o Caixa por favor! " 
+                                                         style=" width:300px ">
+                                            <f:selectItem itemLabel="Seleciona o Caixa..."  noSelectionOption="true"/>
+                                            <f:selectItems value="#{operacoesCaixaBean.listCaixaFuncionariosFechados()}" var="os" 
+                                                           itemLabel="#{os.fkCaixa.nome} - #{os.fkFuncionario.fkPessoa.nome} #{os.fkFuncionario.fkPessoa.sobrenome}" 
+                                                           itemValue="#{os.pkCaixaFuncionario}" />
+
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Saldo Inicial</label> <br/>
+                                        <p:inputNumber  value="#{operacoesCaixaBean.operacoesCaixa.saldoInicial}" required="true" label="Saldo" 
+                                                        requiredMessage="O Saldo Inicial precisa ser informado!" style="float: left; width: 350px" />
+
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+
+                            </p:tab>
+
+
+                        </p:tabView>
+
+                        <p:panelGrid rendered="#{operacoesCaixaBean.openCx}"  columns="2" layout="grid" style="margin-left:-15px; width: 270px;" styleClass="ui-panelgrid-blank form-group">
+                            <p:commandButton icon="fa fa-check" action="#{operacoesCaixaBean.abrirCaixa()}" value="OK" update="@form" style="margin-bottom:10px;" styleClass="flat"/>
+                        </p:panelGrid>
+
+                        <p:tabView rendered="#{operacoesCaixaBean.closeCx}">
+
+                            <p:tab title="Fechar Caixa">
+
+                                <p:panelGrid columns="2" layout="grid" style="margin-bottom:20px;" styleClass="ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup>
+                                        <label style="font-size: 118%">
+                                            
+                                            Caixa <h:outputText 
+                                                style="color: #cacaca; font-size: 90%;" 
+                                                id="nomeFuncionarioCaixaSelected" 
+                                                value="  (Abertos )"></h:outputText>
+                                        </label> <br/>
+
+                                        <p:selectOneMenu id="ordem" 
+                                                         required="true" 
+                                                         value="#{operacoesCaixaBean.codigoCaixaFuncionario}"
+                                                         filter="true" filterMatchMode="contains"
+                                                         requiredMessage="Seleciona o Caixa por favor! " 
+                                                         style=" width:300px ">
+                                            <f:selectItem itemLabel="Seleciona o Caixa..."  />
+                                            <f:selectItems value="#{operacoesCaixaBean.listCaixaFuncionariosAbertos()}" var="os" 
+                                                           itemLabel="#{os.fkCaixa.nome} - #{os.fkFuncionario.fkPessoa.nome} #{os.fkFuncionario.fkPessoa.sobrenome}" 
+                                                           itemValue="#{os.pkCaixaFuncionario}" />
+                                            
+                                        </p:selectOneMenu>
+
+                                    </h:panelGroup>
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Saldo Contabilizado</label> <br/>
+                                        <p:inputNumber  value="#{operacoesCaixaBean.totalVendas}" readonly="true" required="true" label="Saldo" 
+                                                        requiredMessage="O Saldo Contabilizado precisa ser informada!" style="float: left; width: 300px; color: red" />
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Saldo Final</label> <br/>
+                                        <p:inputNumber  value="#{operacoesCaixaBean.saldoFinal}" required="true" label="Saldo" 
+                                                        requiredMessage="O Saldo Contabilizado precisa ser informada!" style="float: left; width: 300px" />
+
+                                        <p:ajax update="quebradecaixa" event="keyup" />
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Quebra de Caixa</label> <br/>
+                                        <p:inputNumber  id="quebradecaixa" readonly="true" 
+                                                        value="#{operacoesCaixaBean.quebraDeCaixa}" 
+                                                        required="true" label="Saldo" 
+                                                        requiredMessage="O Saldo Contabilizado precisa ser informada!"
+                                                        style="float: left; width: 300px" />
+
+                                    </h:panelGroup>
+
+                               
+                                    <h:panelGroup styleClass="md-inputfield" style=" width:300px " >
+
+
+                                        <p:inputTextarea required="true" requiredMessage="Faça uma observação sobre o fecho do caixa!" rows="3" style="font-size: 118%" value="#{operacoesCaixaBean.obsOperacoesCaixa}"  placeholder="Observação..."/>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+                            </p:tab>
+
+                        </p:tabView>
+
+
+                        <p:panelGrid rendered="#{operacoesCaixaBean.closeCx}"  columns="2" layout="grid" style="margin-left:-15px; width: 270px;" styleClass="ui-panelgrid-blank form-group">
+                            <p:commandButton icon="fa fa-check" 
+                                             action="#{operacoesCaixaBean.fecharCaixa(false)}" value="OK" update="@form" style="margin-bottom:10px;" styleClass="flat"/>
+                        </p:panelGrid>
+
+
+
+                        <p:dataTable id="tabela" rendered="#{operacoesCaixaBean.tabListar}" style="margin-bottom:1%;"  var="caixa" value="#{operacoesCaixaBean.cxOpenClose()}" paginatorAlwaysVisible="false"
+                                     emptyMessage="Não há registros!" paginator="true"  paginatorPosition="top" rows="10">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Caixas Funcionários </label> 
+                            </f:facet> 
+
+                            <p:column headerText="Caixa" style="text-align:center; ">
+                                <h:outputText value="#{caixa.cx} " />
+                            </p:column>
+
+                            <p:column headerText="Funcionário" style="text-align:center; ">
+                                <h:outputText value="#{caixa.user}"/> 
+
+                            </p:column>
+
+                            <p:column headerText="Estado" style="text-align:center; ">
+                                <h:outputText value="#{caixa.estado}"/> 
+
+                            </p:column>
+
+                            <p:column headerText="Data da Operação" style="text-align:center; width:200px;">
+                                <h:outputText value="#{caixa.data}"> 
+
+                                    <f:convertDateTime pattern="dd-MM-yyyy hh:mm" timeZone="GMT+1"/>
+
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </h:form>   
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+

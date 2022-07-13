@@ -1,0 +1,141 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <c:choose>
+
+        <c:when test="#{segLoginBean.controleAcessoViaURL()}">
+
+<!--    <h:form id="form_geral" enctype="multipart/form-data"> -->
+
+        <div class="layout-menu #{guestPreferences.menuClass}" >
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <!--ui:fragment rendered="#1{guestPreferences.profileMode == 'inline' and 'menu-layout-static menu-layout-horizontal' != 'menu-layout-static menu-layout-horizontal'}"-->
+
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+
+                        <div class="profile">
+                            <div class="profile-image">
+
+                                <p:graphicImage style="border-bottom-left-radius: 30px;
+                                                border-bottom-right-radius: 30px; border-top-left-radius: 30px; border-top-right-radius: 30px;"
+                                                width="60px" height="60px"  cache="false"
+
+                                                name="images/imagensperfil/#{utilizadorBean.tmpConta.imagemFoto}" 
+                                                library="ultima-layout" >
+                                    <!--value="http://# {sgUtilsBean.endereco()}:8080/imagens_perfil_users/# {utilizadorBean.tmpConta.imagemFoto}" />-->
+                                </p:graphicImage>
+
+                            </div>
+
+                            <a id="profile-options" href="#">
+                                <span>Olá</span> 
+                                <span class="topbar-item-name" style="color: #323232">#{segLoginBean.sessaoActual.nomeUtilizador}</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="../../editarContaUser.xhtml" class="ripplelink">
+                                    <i class="material-icons">&#xE7FD;</i>
+                                    <span>#{segLoginBean.sessaoActual.fkSegPerfil.descricao}</span>
+                                </a>
+                            </li>
+
+
+                            <li role="menuitem">
+                                <p:commandLink action="#{segLoginBean.terminarSessao()}" >
+                                    <i class="material-icons" >&#xE8AC;</i>
+                                    <span>Sair</span>
+                                </p:commandLink>
+
+                            </li>
+
+                        </ul>
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me">
+                        
+                        <p:menuitem  icon="fa fa-home" id="um_dashboard" value="HOME" outcome="/home?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(3)}"/>
+                        
+                       
+                        
+                        <p:submenu  icon="fa fa-cogs" id="idFRTConfiguracoes" label="Configurações" rendered="#{segLoginBean.renderedMenuById(1000)}">
+                            
+                            
+                            <p:menuitem icon="&#xE061;" id="idFRTPreferencia" value="Preferência" outcome="/modulos/frtVisao/frtConfiguracoes/configuracoes/frt_preferencia?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1001)}"/>
+                            <p:menuitem icon="&#xE061;" id="idFRTRepor" value="Repôr Configurações" outcome="/modulos/frtVisao/frtConfiguracoes/configuracoes/frt_reporconfigiuracoes?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1002)}"/>
+                            
+                        </p:submenu>
+                        
+                        
+                        <p:submenu  icon="fa fa-edit" id="idFRTCarregar" label="Carregar Tabelas" rendered="#{segLoginBean.renderedMenuById(1003)}">
+                            
+                            <p:menuitem icon="&#xE061;" id="idTipoSolicitacao" value="Tipo de Solicitação" outcome="/modulos/frtVisao/frtConfiguracoes/carregar/tipoSolicitacao/frt_transporte_tipo_solicitacao_listar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1004)}"/>
+                            <p:menuitem icon="&#xE061;" id="idTipoAgendamento" value="Tipo de Agendamento" outcome="/modulos/frtVisao/frtConfiguracoes/carregar/tipoAgendamento/frt_transporte_tipo_agendamento_listar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1005)}"/>
+                            
+                            
+                        </p:submenu>
+                        
+                        <p:submenu icon="fa fa-edit" id="idGestFuncionarios" label="Gestão de Funcionários" rendered="#{segLoginBean.renderedMenuById(1018)}">
+                            
+                             <p:menuitem icon="&#xE061;" id="idFuncionarios" value="Funcionários" outcome="/modulos/rhVisao/rhFuncionarios/rh_funcionarios_listar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1019)}"/>
+                            
+                        </p:submenu>
+                        
+                        
+                        
+                        <p:submenu icon="fa fa-edit" id="idTransporte" label="Transporte" rendered="#{segLoginBean.renderedMenuById(1006)}">
+                            
+                             
+                             <p:menuitem icon="&#xE061;" id="idAgendar" value="Agendar" outcome="/modulos/frtVisao/frtTransporte/frtTransporteAgendar/frt_agendar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1007)}"/>
+                             <p:menuitem icon="&#xE061;" id="idSolicitações" value="Solicitações" outcome="/modulos/frtVisao/frtTransporte/frtTransporteSolicitacoes/frt_transporte_solicitacoes_listar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1008)}"/>
+                             <p:menuitem icon="&#xE061;" id="idAtendimento" value="Atendimento" outcome="/modulos/frtVisao/frtTransporte/frtTransporteAtendimento/frt_transporte_atendimento_home?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1009)}"/>
+                            
+                        </p:submenu>
+                        
+                        <p:submenu icon="fa fa-edit" id="idManutencao" label="Gerir Manutenção" rendered="#{segLoginBean.renderedMenuById(1010)}">
+                            
+                            <p:menuitem icon="&#xE061;" id="idManutencao1" value="Manutenção" outcome="/modulos/frtVisao/frtManutencao/frt_manutencao_cadastrar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1011)}"/>
+                            
+                        </p:submenu>
+                        
+                         <p:submenu icon="fa fa-edit" id="idAbastecimento" label="Gerir Abastecimento" rendered="#{segLoginBean.renderedMenuById(1012)}">
+                             
+                             <p:menuitem icon="&#xE061;" id="idAbastecimento1" value="Abastecimento" outcome="/modulos/frtVisao/frtAbastecimento/frt_abastecimento_cadastrar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1013)}"/>
+                            
+                        </p:submenu>
+                        
+                        <p:submenu icon="fa fa-edit" id="idMultas" label="Gerir Multas" rendered="#{segLoginBean.renderedMenuById(1014)}">
+                            
+                             <p:menuitem icon="&#xE061;" id="idMultas1" value="Multas" outcome="/modulos/frtVisao/frtMultas/frt_multas_cadastrar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1015)}"/>
+                            
+                        </p:submenu>
+                        
+                        <p:submenu icon="fa fa-edit" id="idAcidentes" label="Gerir Acidentes" rendered="#{segLoginBean.renderedMenuById(1016)}">
+                            
+                             <p:menuitem icon="&#xE061;" id="idAcidentes1" value="Acidentes" outcome="/modulos/frtVisao/frtAcidentes/frt_acidentes_cadastrar?faces-redirect=true" rendered="#{segLoginBean.renderedMenuById(1017)}"/>
+                            
+                        </p:submenu>
+                       
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+<!--    </h:form>-->
+
+    </c:when>
+
+    <c:otherwise>
+
+    </c:otherwise>
+
+</c:choose>  
+</ui:composition>

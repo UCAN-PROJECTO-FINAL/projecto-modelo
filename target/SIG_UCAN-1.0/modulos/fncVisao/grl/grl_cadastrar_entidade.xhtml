@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+        <h4>Gestão de Contabilidade e Finanças  -> Entidade -> Cadastrar Entidade</h4>
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Cadastro De Entidade</h1>
+
+
+
+                    <p:tabView>
+
+                        <p:tab title="Entidade">
+
+                            <p:panelGrid columns="1" layout="grid" style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="Tipo Entidade" for="tentidade"/>
+                                        <p:selectOneMenu 
+                                            value="#{grlEntidadeBean.tipoEntidade}" effect="fold"  filter="true"
+                                            required="true" requiredMessage="Informe o Tipo Entidade" id="tentidade"
+                                            >
+                                            <f:selectItems var="tentidade" value="#{grlEntidadeBean.listEntidade}" 
+                                                           itemLabel="#{tentidade.descricao}" itemValue="#{tentidade.pkTipoEntidade}"/>
+                                        </p:selectOneMenu>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="Nome" for="nome"/>
+                                        <p:inputText id="nome"  value="#{grlEntidadeBean.grlEntidade.nome}" required="true" requiredMessage="Inserir o nome"/>
+                                    </p:panelGrid>
+
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="NIF" for="nif"/>
+                                        <p:inputText id="nif" value="#{grlEntidadeBean.grlEntidade.nifEntidade}" maxlength="15" 
+                                                     required="true" requiredMessage="Inserir o NIF"
+                                                     validatorMessage="O NIF deve ser Inferior a 15 caracteres" />
+                                    </p:panelGrid><br/>
+
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="Telefone" for="telefone"/>
+                                        <p:inputText id="telefone" value="#{grlEntidadeBean.grlEntidade.telefone}" 
+                                                     type="tel"/>
+                                    </p:panelGrid>
+
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="E-mail" for="email"/>
+                                        <p:inputText id="email" value="#{grlEntidadeBean.grlEntidade.email}" type="email"/>
+                                    </p:panelGrid>
+
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <p:outputLabel value="Usa Rubrica" for="useRubrrica"/>
+                                        <p:selectBooleanButton id="useRubrrica"
+                                            onLabel="Sim" offLabel="Não"  
+                                            value="#{grlEntidadeBean.useRubrica}"
+                                            
+                                            style="width:6rem"
+                                            
+                                            >
+                                            <p:ajax event="change" update="form_geral" />
+                                        </p:selectBooleanButton>
+                                    </p:panelGrid>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" id="griRubrica"
+                                             styleClass="ui-panelgrid-blank"
+                                             rendered="#{grlEntidadeBean.useRubrica}"
+                                             >
+                                    <h:panelGroup   >
+
+                                        <label style="font-size:118%">
+                                            Categoria
+                                        </label>
+                                        <br/>
+                                        <p:selectOneMenu id="class"
+                                                         required="true" 
+                                                         title="Menu para selecionar a categoria."
+                                                         requiredMessage="Seleciona a Categoria, por favor! "
+                                                         value="#{accountBean.codigoClasse}" 
+                                                         >
+                                            <f:selectItem  itemLabel="Seleciona a Categoria..." itemValue="" />
+                                            <f:selectItems value="#{accountBean.listClasse}" var="class" itemLabel="#{class.pkClass}- #{class.descricaoClass}" itemValue="#{class.pkClass}" />
+                                            <p:ajax event="change" update="rubrica"  />
+                                        </p:selectOneMenu>
+
+                                    </h:panelGroup>
+
+                                    <h:panelGroup   >
+
+                                        <label style="font-size:118%">
+                                            Rubrica
+                                        </label>
+                                        <br/>
+                                        <p:selectOneMenu id="rubrica" 
+                                                         required="true"
+                                                         title="Menu para selecionar a rubrica."
+                                                         requiredMessage="Seleciona a Rubrica, por favor! "
+                                                         value="#{grlEntidadeBean.numeroRubrica}"  
+                                                         >
+                                            <f:selectItem  itemLabel="Seleciona a Rubrica.." itemValue="" />
+                                            <f:selectItems value="#{accountBean.list}" var="rubrica" 
+                                                           itemLabel=" #{rubrica.numberRubrica}- #{rubrica.descricaoRubrica}" 
+                                                           itemValue="#{rubrica.pkRubrica}" />
+                                        </p:selectOneMenu>
+
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab title="Endereço">
+
+                            <ui:include src="grl_endereco.xhtml"/>
+
+                        </p:tab>
+
+                    </p:tabView>
+                    <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="Guardar" action="#{grlEntidadeBean.salvar()}" update="form_geral" styleClass="aqua-button" icon="fa fa-save"/>
+                    </p:panelGrid>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

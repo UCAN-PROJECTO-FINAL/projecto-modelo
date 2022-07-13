@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_doc/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card" >
+                    <div id="contentor">
+                        <center>
+                            <p:panel style=" width: 100%; float: left;  height: 10%"
+                                     id="basic" header="MODULO DE GESTÃO DOCUMENTAL" >
+
+
+                                <p:messages id="context" showDetail="true" showSummary="false" autoUpdate="true" closable="true" />
+                                <h1 style="font-size:25px">Caixa de Correspondência</h1>
+                                <br/>
+                                <!-- Início da tabela para vizualização de Documentos -->
+                                <p:dataTable var="doc" id="tabela1" value="#{gdDocumentoCadastrarBean.listarDocumento()}" paginatorAlwaysVisible="false"
+                                             paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!"
+                                             widgetVar="tabelaPesquisa">
+                                    <f:facet name="header">
+                                        <label style="font-size:140% ">Visualização dos Registros - Documentos</label><br/><br/>
+                                        <p:inputText 
+                                            id="globalFilter"
+                                            placeholder="Pesquisar Por: Titulo, Tipo Documento, Classificação, Entidade"
+                                            onkeyup="PF('tabelaPesquisa').filter()" 
+                                            style="width:400px; height:30px; border-radius: 20px; background-color: #ffffff; color: #000000" />
+                                    </f:facet>
+                                    <p:column style="width:16px">
+                                        <p:rowToggler />
+                                    </p:column>
+
+
+                                    <p:column headerText="Titulo" style="text-align:center" filterBy="#{doc.titulo}" filterMatchMode="contains">
+                                        <h:outputText value="#{doc.titulo}" />
+                                    </p:column>
+
+                                    <p:column headerText="Tipo Documento" style="text-align:center" filterBy="#{doc.fkTipoDocumento.descricao}" filterMatchMode="contains" >
+                                        <h:outputText value="#{doc.fkTipoDocumento.descricao}" />
+                                    </p:column>
+
+                                    <p:column headerText="Classificação" style="text-align:center" filterBy="#{doc.fkClassificacao.descricao}" filterMatchMode="contains" >
+                                        <h:outputText value="#{doc.fkClassificacao.descricao}" />
+                                    </p:column>
+
+                                    <p:column headerText="Estrutura Logica 1" style="text-align:center" filterBy="#{doc.fkEstruturaLogicaFisica.fkEstruturaLogica.fkEstruturaLogica.designacao}" filterMatchMode="contains" >
+                                        <h:outputText value="#{doc.fkEstruturaLogicaFisica.fkEstruturaLogica.fkEstruturaLogica.designacao}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Estrutura Logica 2" style="text-align:center" filterBy="#{doc.fkEstruturaLogicaFisica.fkEstruturaLogica.designacao}" filterMatchMode="contains" >
+                                        <h:outputText value="#{doc.fkEstruturaLogicaFisica.fkEstruturaLogica.designacao}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Data Registro" style="text-align:center" >
+                                        <h:outputText value="#{doc.dataCriacao}" >
+                                            <f:convertDateTime pattern="dd-MM-yyyy hh:mm:ss"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Ver" style="width: 100px;">
+                                        <p:commandButton style="margin-left: 30%"  icon="ui-icon-circle-zoomin" ajax="false" action="#{gdDocumentoCadastrarBean.fileDownloadView(doc.caminho)}" />
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar" style="width: 100px;">
+                                        <p:commandButton style="margin-left:30%;" action="#{gdDocumentoCadastrarBean.eliminar(doc)}"
+                                                         update="tabela1" icon="ui-icon-delete">
+
+                                            <p:confirm header="Confirmação" message="Desejas Realmente eliminar  #{doc.titulo} ?" icon="ui-icon-warning" />
+                                        </p:commandButton>
+
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                            <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:column>
+
+                                    <!--versões de cada Documento-->
+                                    <p:rowExpansion>
+
+                                        <p:dataTable id="tabela2" value="#{gdVersaoDocumentoCadastrarBean.findVersaoDocumentoByDocumento(doc.pkDocumento)}"  var="item"  rowKey="" paginatorPosition="bottom" paginator="true" rows="5" emptyMessage="Nenhuma versao encontrada">
+
+                                            <f:facet name="header" > versões </f:facet>
+
+                                            <p:column width="50" headerText="ID" style="text-align:center" >
+                                                <h:outputText value="#{item.pkVersaoDocumento}"/>
+                                            </p:column>
+
+                                            <p:column width="100" headerText="Data Registro" style="text-align:center" >
+                                                <h:outputText value="#{item.dataRegisto}" >
+                                                    <f:convertDateTime pattern="dd-MM-yyyy hh:mm:ss"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column width="240" headerText="Mudanças Realizadas" style="text-align:center" >
+                                                <h:outputText value="#{item.mudancaRealizada}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Ver" style="width: 100px;">
+                                                <p:commandButton style="margin-left: 30%"  icon="ui-icon-circle-zoomin" ajax="false" action="#{gdVersaoDocumentoCadastrarBean.fileDownloadView(item.caminhoFicheiro)}" />
+                                            </p:column>
+
+                                            <p:column headerText="Eliminar" style="width: 100px;">
+                                                <p:commandButton style="margin-left:30%;" action="#{gdVersaoDocumentoCadastrarBean.eliminar(item)}"
+                                                                 update="tabela2" icon="ui-icon-delete">
+                                                    <p:confirm header="Confirmação" message="Desejas Realmente eliminar essa versão:   #{item.pkVersaoDocumento} ?" icon="ui-icon-warning" />
+                                                </p:commandButton>
+
+                                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                                    <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                                </p:confirmDialog>
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                    </p:rowExpansion>
+
+                                </p:dataTable>
+                                <!-- Fim da tabela para vizualização de Documentos -->
+
+                            </p:panel>
+                        </center> 
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

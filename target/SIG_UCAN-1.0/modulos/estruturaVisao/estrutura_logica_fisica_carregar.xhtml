@@ -1,0 +1,243 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="/template_est/template.xhtml">
+ 
+    
+    <ui:define name="content">
+        <style>
+            .btn-time
+            {
+                background-color: #ccc;
+                border-radius: 0px;
+                border: 2px solid #000;
+                width: 39px;
+                height: 20px;
+            }
+            
+            .panelGridCenter td
+            {
+                text-align: center;
+            }
+            
+        </style>
+            <div>
+                <div style="width: 20%;top: 0px !important;display: inline-block;">
+                    <p:outputLabel value="Estrutura Logica" />
+                    <p:tree value="#{estruturaLogicaFisicaCarregarBean.rootELogica}" var="node"
+                            propagateSelectionUp="false" 
+                            propagateSelectionDown="false"
+                            selectionMode="single" 
+                            dynamic="true" 
+                            >
+                        <p:ajax 
+                            event="select" 
+                            listener="#{estruturaLogicaFisicaCarregarBean.onELogicaSelect}"
+                            update="form_geral:eLogicaTreeSOM"
+                            />
+                        <p:ajax 
+                            event="unselect" 
+                            listener="#{estruturaLogicaFisicaCarregarBean.onELogicaUnselect}"
+                            update=""
+                            />
+                        <p:treeNode>                        
+                            <h:outputText value="#{node.getDesignacao()}" id="nodeELogicaSOM"/>
+                        </p:treeNode>
+                    </p:tree>
+                </div>   
+
+                <div style="width: 20%;padding-top: 0px !important;display: inline-block;">
+                    <p:outputLabel value="Estrutura Fisica" />
+                    <p:tree value="#{estruturaLogicaFisicaCarregarBean.rootEFisica}" var="node"
+                            propagateSelectionUp="false" 
+                            propagateSelectionDown="false"
+                            selectionMode="checkbox" 
+                            dynamic="true" 
+                            id="eLogicaTreeSOM"
+                            >
+                        <p:ajax 
+                            event="select" 
+                            listener="#{estruturaLogicaFisicaCarregarBean.onEFisicaSelect}"
+                            update="eLogicaTreeSOM"
+                            />
+                        <p:ajax 
+                            event="unselect" 
+                            listener="#{estruturaLogicaFisicaCarregarBean.onEFisicaUnselect}"
+                            update="eLogicaTreeSOM"
+                            />
+                        <p:treeNode>                        
+                            <h:outputText value="#{node.getDesignacao()}" id="nodeEFisicaSOM"/>
+                        </p:treeNode>
+                    </p:tree>
+                    <h:commandButton 
+                        value="limpar" 
+                        actionListener="#{estruturaLogicaFisicaCarregarBean.limparEFisicaNodesListener()}" 
+                        />
+                </div>
+
+                <div style="width: 50%;display: inline-block;">
+
+                    <h:panelGroup layout="block">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Data Inicio:"/>
+                            <p:calendar 
+                                value="#{estruturaLogicaFisicaCarregarBean.dataInicio}" 
+                                locale="pt"
+                                >
+                                <p:ajax 
+                                    event="dateSelect" 
+                                    listener="#{estruturaLogicaFisicaCarregarBean.changeMonths}" 
+                                    update="months days"
+                                    />
+                            </p:calendar>
+                            <h:panelGroup>
+                                <h:selectBooleanCheckbox 
+                                    value="#{estruturaLogicaFisicaCarregarBean.dataFimDisabled}"
+                                    >
+                                    <f:ajax 
+                                        listener="#{estruturaLogicaFisicaCarregarBean.changeStatusDataFim}" 
+                                        render="dataFimSOM" 
+                                        />
+                                </h:selectBooleanCheckbox >
+                                <h:outputText value="Data Fim:"/>
+                            </h:panelGroup>
+                            <p:calendar 
+                                value="#{estruturaLogicaFisicaCarregarBean.dataFim}" 
+                                id="dataFimSOM" locale="pt" 
+                                disabled="#{estruturaLogicaFisicaCarregarBean.dataFimDisabled}"
+                                >
+                                <p:ajax 
+                                    event="dateSelect"  
+                                    listener="#{estruturaLogicaFisicaCarregarBean.changeMonths()}" 
+                                    update=":form_geral:months days"
+                                    />
+                            </p:calendar>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                    <p:scrollPanel style="width: 100%; max-height: 10vh;height: 8vh;" id="months">
+                        <p:panelGrid columns="#{estruturaLogicaFisicaCarregarBean.allMeses.size()}">
+                            <c:forEach var="mes" items="#{estruturaLogicaFisicaCarregarBean.allMeses}">
+                                <p:panel>
+                                    <div style="margin-left: 0%;display:flex;flex-direction: row;">
+                                        <h:selectBooleanCheckbox 
+                                            style="padding: 0%;margin: 0%; width: 25%;" 
+                                            disabled="#{estruturaLogicaFisicaCarregarBean.disableOrEnable(mes.isSelectedInDB)}"
+                                            >
+                                            <f:ajax 
+                                                listener="#{estruturaLogicaFisicaCarregarBean.selectUnselectMonth(mes.index)}" 
+                                                />
+                                        </h:selectBooleanCheckbox>
+                                        <h:commandButton 
+                                            value="#{mes.nome}" 
+                                            style="padding: 0%;margin: 0%;background-color:#{mes.cor}" 
+                                            >
+                                            <f:ajax 
+                                                listener="#{estruturaLogicaFisicaCarregarBean.changeDays(mes.index)}" 
+                                                render="days"
+                                                />
+                                        </h:commandButton>
+                                    </div>
+                                </p:panel>
+                            </c:forEach>
+                        </p:panelGrid>
+                    </p:scrollPanel>
+
+                    <h:panelGroup layout="block">
+                        <br/>
+                        <!--                        <h:outputLabel value="Maio"/> <br/>-->
+                                                <!--<h:outputText value="Atribuição Semanal?"/><h:selectBooleanCheckbox value="#{estruturaLogicaFisicaCarregarBean.seleccaoSemanal}"/>-->
+                    </h:panelGroup>
+
+                    <h:panelGroup id="days">
+                        <h:panelGrid columns="3" style="display: inline-block;">
+
+
+                            <p:scrollPanel style="width: 39%;" id="hourPanelSOM">
+                                <p:panelGrid columns="27" styleClass="panelGridCenter">
+                                        <h:commandButton value="replicar">
+                                            <f:ajax listener="#{estruturaLogicaFisicaCarregarBean.replicarDias}" render="hourPanelSOM"/>
+                                        </h:commandButton>
+                                    <h:commandButton value="#{estruturaLogicaFisicaCarregarBean.selectAllDiasLabel}" >
+                                            <f:ajax 
+                                                listener="#{estruturaLogicaFisicaCarregarBean.selectUnselectAllDays}" 
+                                                />
+                                        </h:commandButton>
+                                    <p:outputLabel value="Dias"/>
+                                    <p:outputLabel value="00H"/>
+                                    <p:outputLabel value="01H"/>
+                                    <p:outputLabel value="02H"/>
+                                    <p:outputLabel value="03H"/>
+                                    <p:outputLabel value="04H"/>
+                                    <p:outputLabel value="05H"/>
+                                    <p:outputLabel value="06H"/>
+                                    <p:outputLabel value="07H"/>
+                                    <p:outputLabel value="08H"/>
+                                    <p:outputLabel value="09H"/>
+                                    <p:outputLabel value="10H"/>
+                                    <p:outputLabel value="11H"/>
+                                    <p:outputLabel value="12H"/>
+                                    <p:outputLabel value="13H"/>
+                                    <p:outputLabel value="14H"/>
+                                    <p:outputLabel value="15H"/>
+                                    <p:outputLabel value="16H"/>
+                                    <p:outputLabel value="17H"/>
+                                    <p:outputLabel value="18H"/>
+                                    <p:outputLabel value="19H"/>
+                                    <p:outputLabel value="20H"/>
+                                    <p:outputLabel value="21H"/>
+                                    <p:outputLabel value="22H"/>
+                                    <p:outputLabel value="23H"/>
+
+
+                                    <c:forEach var="dia" items="#{estruturaLogicaFisicaCarregarBean.allDias}" varStatus="dayIndex">
+
+
+                                        <p:selectBooleanCheckbox value="#{dia.radioSelected}"> 
+                                            <f:selectItem
+                                                itemValue="#{dia.radioSelected}" 
+                                                itemLabel=""
+                                                />
+                                            <p:ajax event="change" 
+                                                    listener="#{estruturaLogicaFisicaCarregarBean.selectUnselectCopyDia(dia)}"
+                                                    update=":form_geral:hourPanelSOM"
+                                                    />
+                                        </p:selectBooleanCheckbox>
+                                        <p:selectBooleanCheckbox value="#{dia.checkboxSelected}"> 
+                                            <f:selectItem
+                                                itemValue="#{dia.checkboxSelected}" 
+                                                itemLabel=""
+                                                />
+                                            <f:ajax event="change" 
+                                                    listener="#{estruturaLogicaFisicaCarregarBean.selectUnselectTargetDias(dia)}"
+                                                    />
+                                        </p:selectBooleanCheckbox>
+
+                                        <h:commandButton value="#{dia.diaSemana}" style="width: 100px;" disabled="#{dia.isSelectedInDB}"
+                                                         actionListener="#{estruturaLogicaFisicaCarregarBean.selectUnselecDay(dayIndex.index)}"/>
+
+                                        <c:forEach var="hora" items="#{dia.horas}" varStatus="horaIndex">
+                                            <h:commandButton value="#{hora.hora} H" style="width: 80px;border:2px solid #333;background-color:#{hora.cor}" 
+                                                             actionListener="#{estruturaLogicaFisicaCarregarBean.selectUnselectHora(dayIndex.index,horaIndex.index)}"/>
+                                        </c:forEach>
+                                    </c:forEach>
+                                </p:panelGrid>
+                            </p:scrollPanel>
+
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </div>
+
+
+                <h:panelGroup>
+                    <h:commandButton value="salvar" style="width: 100%;" actionListener="#{estruturaLogicaFisicaCarregarBean.salvar}" />
+                </h:panelGroup>
+            </div>
+
+    </ui:define>
+
+</ui:composition>

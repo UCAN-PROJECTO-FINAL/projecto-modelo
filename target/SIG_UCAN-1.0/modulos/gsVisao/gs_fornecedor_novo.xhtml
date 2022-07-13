@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_gs/template.xhtml">
+
+    <ui:define name="title">Softwares</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]>  
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form_gsfornecedor1">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px; 
+                            font-weight:bold">Universidade Católica de Angola | Fornecedores</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                        <!--  dcc    -->
+                        <p:messages id="context" showDetail="true" showSummary="false" closable="true"><p:autoUpdate/></p:messages>
+                        <p:tab>
+                            <p:panelGrid columns="3" layout="grid"
+                                         style="margin-bottom:20px;" 
+                                         styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup>
+                                    <h:outputLabel value="NIF:" for="nif" />
+                                    <p:inputText id="nif" value="#{(gsFornecedorBean.nif)}" title="Nif"  required="true"
+                                                 requiredMessage="O NIF é obrigatorio!"
+                                                 />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Nome:" for="nome" />
+                                    <p:inputText id="nome" value="#{gsFornecedorBean.nome}" title="Nome" required="true" 
+                                                 requiredMessage="O Nome é obrigatorio!"
+                                                 />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Contacto:" for="contacto" />
+                                    <p:inputText id="contacto" value="#{gsFornecedorBean.contacto}" title="Contacto" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Endereço:" for="endereco" />
+                                    <p:inputText id="endereco" value="#{gsFornecedorBean.endereco}" title="Endereço" required="true"                                                
+                                                 />
+                                </h:panelGroup>
+                            </p:panelGrid> 
+                        </p:tab>
+                        <h:panelGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" 
+                                             value="Gravar"
+                                             action="#{gsFornecedorBean.gravar()}"
+                                             >
+                                <f:ajax execute="@form" render="@form :form_gsfornecedor0" />
+                            </p:commandButton>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" 
+                                             value="Voltar" icon="ui-icon-undo"   
+                                             immediate="true" 
+                                             
+                                             action="#{parametrosEntreFormulariosBean.redirectBackForm('/modulos/gsVisao/gs_fornecedor_novo')}"
+                                             />
+                        </h:panelGroup>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <f:view>
+            <h:form id="form_gsfornecedor2">
+                <p:autoUpdate />
+                <h:panelGrid>
+                    <p:dataTable value="#{gsFornecedorBean.listarTodos()}" var="item" style="margin: 2em;" 
+                                 rowKey="#{item.pkGsFornecedor}">
+                        <p:column headerText="Nome">
+                            <h:outputText value="#{item.nome}"/>
+                        </p:column>
+                        <p:column headerText="NIF">    
+                            <h:outputText value="#{item.nif}"/>
+                        </p:column>
+                        <p:column headerText="Contacto">
+                            <h:outputText value="#{item.contacto}"/>
+                        </p:column>
+                        <p:column headerText="Endereço">
+                            <h:outputText value="#{item.endereco}"/>
+                        </p:column>
+                        <p:column style="width:100px;text-align: center">
+                            <p:commandButton icon="fa fa-pencil"  update="@none" process="@this" 
+                                             oncomplete="PF('editDialog').show()">
+                                <f:setPropertyActionListener value="#{item}"
+                                                             target="#{gsFornecedorBean.fornecedorSelecionado}"/>
+                            </p:commandButton>
+                            <p:commandButton action="#{gsFornecedorBean.eliminar(item)}" icon="fa fa-trash"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog widgetVar="editDialog" header="Actualizar Fornecedor" modal="true"  
+                              showEffect="fade" hideEffect="fade" resizable="false" 
+                              style=" height: 80%; width: 80%">
+                        <p:outputPanel id="actualizarFornecedor" style="text-align:center">
+                            <p:autoUpdate />
+                            <p:panelGrid columns="2" rendered="#{not empty gsFornecedorBean.fornecedorSelecionado}" 
+                                         columnClasses="value,label">                              
+                                <h:outputText value="Nome " />
+                                <p:inputText value="#{gsFornecedorBean.fornecedorSelecionado.nome}" />
+                                <h:outputText value="Contacto " />
+                                <p:inputText value="#{gsFornecedorBean.fornecedorSelecionado.contacto}" />
+                                <h:outputText value="Endereço " />
+                                <p:inputText value="#{gsFornecedorBean.fornecedorSelecionado.endereco}" />
+                                <h:outputText value="NIF " />
+                                <p:inputText value="#{gsFornecedorBean.fornecedorSelecionado.nif}" />
+                            </p:panelGrid>
+                            <p:commandButton style="margin-top: 5em" 
+                                             value="Actualizar" action="#{gsFornecedorBean.actualizar()}"
+                                             update="@none" process="@this" 
+                                             >
+                                <f:ajax execute="@form" render="@form :form_gsfornecedor0" />
+                            </p:commandButton>
+                            <p:commandButton oncomplete="PF('editDialog').hide()" 
+                                             title="Cancelar" value="Cancelar"
+                                             />
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:panelGrid>
+            </h:form>
+
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

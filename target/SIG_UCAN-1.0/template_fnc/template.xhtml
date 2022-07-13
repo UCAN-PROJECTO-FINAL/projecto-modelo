@@ -1,0 +1,468 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+
+    <h:head>
+
+
+        <f:facet name="first">
+            <meta Http-equiv="Cache-Control" Content="no-cache" />
+            <meta Http-equiv="Pragma" Content="no-cache" />
+            <meta Http-equiv="Expires" Content="0" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+        </f:facet>
+
+
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />
+        <h:outputScript name="js/locale-primefaces.js" library="ultima-layout"/>
+
+
+        <title>SISTEMA DE GESTÃO DE CONTABILIDADE E FINANÇAS</title>
+
+        <ui:insert name="head"/>
+
+        <style>
+            div[id="form_geral:msg_info_container"] > div 
+            {
+                background-color: greenyellow !important;
+                color: darkgreen !important;
+            }
+            div[id="form_geral:msg_warn_container"] > div 
+            {
+                background-color: yellow !important;
+                color: black !important;
+            }
+            div[id="form_geral:msg_error_container"] > div 
+            {
+                background-color: red !important;
+                color: yellow !important;
+            }
+            .ui-menu .ui-menu-parent .ui-icon-triangle-1-e, .ui-menu .ui-menu-parent .ui-icon-triangle-1-s, .ui-menubar .ui-menu-child .ui-icon-triangle-1-s, .ui-menubar .ui-menu-child .ui-icon-triangle-1-s {
+                float: left;
+                color: transparent;
+
+            }
+        </style>
+
+    </h:head>
+
+    <h:body>
+
+        <p:growl id="msg_info" life="90000" severity="info">
+            <p:autoUpdate />
+        </p:growl>
+        <p:growl id="msg_warn" life="90000" severity="warn">
+            <p:autoUpdate />
+        </p:growl>
+        <p:growl id="msg_error" life="90000" severity="error">
+            <p:autoUpdate />
+        </p:growl>
+
+         #{finFavoritosBeans.init()}
+
+        <h:form 
+            id="form_geral" 
+            enctype="multipart/form-data"
+            >
+
+
+            <div id="top">
+                <ui:insert name="top">
+
+                    <p:menubar>
+                       
+                            <p:menuitem  
+                                icon="fa fa-home" id="home" value="HOME" outcome="/home?faces-redirect=true" 
+                                rendered="#{segLoginBean.renderedMenuById(501)}"/>
+                        
+                        <p:submenu 
+                            label="Finanças"
+                            >
+                            <p:submenu
+                                label="Contas Pagar"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro" 
+                                    action="#{finContasPagarBean.abrirPagina()}"
+                                    />
+                                    
+                                <p:menuitem 
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/financas/fin_listar_contas_pagar?faces-redirect=true" 
+                                    
+                                    />
+                            </p:submenu>
+                            <p:separator/>
+
+                            <p:submenu 
+                                label="Contas Receber"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro" 
+                                    action="#{finContasReceberBean.abrirPagina()}"
+                                    />
+                                <p:menuitem 
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/financas/fin_listar_contas_receber?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            
+                            <p:submenu 
+                                label="Caixa"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_caixa?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Abertura/Fecho" 
+                                    outcome="/modulos/fncVisao/financas/fin_caixa_abrir_fechar?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            
+                            <p:submenu 
+                                label="Documento"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_documento?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/financas/fin_listar_documento?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            
+                            <p:submenu 
+                                label="Contrato Compra"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro" 
+                                    outcome="/modulos/fncVisao/financas/fin_contrato_compra_registar?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/financas/fin_contrato_compra_listar?faces-redirect=true"
+                                    />
+                            </p:submenu>
+
+                            <p:separator rendered="false" />
+                            <p:menuitem 
+                                value="Conciliação Bancária"
+                                outcome="/modulos/fncVisao/financas/fin_conciliacao_bancaria" 
+                                rendered="false"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Contas e Carteiras" 
+                                outcome="/modulos/fncVisao/financas/fin_cadastro_conta?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Cartões de Crédito" 
+                                outcome="/modulos/fncVisao/financas/fin_cartoes_credito?faces-redirect=true" 
+                                />
+                            <p:separator rendered="false" />
+                            <p:submenu 
+                                label="Transfêrencia Contas"
+                                >
+                                <p:menuitem 
+                                    value="Cadastro"
+                                    outcome="/modulos/fncVisao/financas/fin_conta_transferencia?faces-redirect=true"
+                                    />
+                                <p:menuitem
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/financas/fin_lista_conta_transferencia?faces-redirect=true"
+                                    />
+                            </p:submenu>
+
+                            <p:menuitem 
+                                value="Movimentações Contas" 
+                                outcome="/modulos/fncVisao/financas/fin_movimentacoes_contas_cartoes?faces-redirect=true"  
+                                />
+
+                            <p:submenu 
+                                label="Tabelas Suporte"
+                                >
+                                <p:menuitem 
+                                    value="Conta" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_conta?faces-redirect=true" 
+                                    rendered="false"
+                                    />
+                                <p:menuitem 
+                                    value="Carregar Tabelas"
+                                    outcome="/modulos/fncVisao/grl/grl_tabelas_determinadas_carregar?faces-redirect=true" 
+                                    />
+                                <p:menuitem
+                                    value="Banco"
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_banco?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Tipo Cartao" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_tipo_cartao?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Tipo Conta" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_tipo_conta?faces-redirect=true"
+                                    />
+                                <p:menuitem
+                                    value="Tipo Categoria"
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_tipo_categoria?faces-redirect=true" 
+                                    />
+                                <p:menuitem 
+                                    value="Categoria" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_categoria?faces-redirect=true"
+                                    />
+                                <p:menuitem 
+                                    value="Sub-Categoria"
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_sub_categoria?faces-redirect=true"
+                                    />
+                            </p:submenu>
+
+                        </p:submenu> 
+
+                        <p:submenu 
+                            label="Contabilidade"
+                            >
+                            <p:menuitem 
+                                value="Ano Economico"
+                                outcome="/modulos/fncVisao/contabilidade/anoeconomico/contab_ano_economico_cadastro?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Conta" 
+                                outcome="/modulos/fncVisao/contabilidade/account/contab_account_cadastro?faces-redirect=true" 
+                                />
+                            <p:separator/>
+                            <p:menuitem
+                                value="Categoria" 
+                                outcome="/modulos/fncVisao/contabilidade/class/contab_class_cadastro?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Diario" 
+                                outcome="/modulos/fncVisao/contabilidade/diario/contab_diario_cadastro?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Documento"
+                                outcome="/modulos/fncVisao/contabilidade/documento/contab_documento_cadastro?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Rubrica"
+                                outcome="/modulos/fncVisao/contabilidade/rubrica/contab_rubrica_cadastro?faces-redirect=true"
+                                />
+                            <p:separator/>
+                            <p:submenu 
+                                label="Lançamento"
+                                >
+                                <p:menuitem 
+                                    value="Lançamento" 
+                                    outcome="/modulos/fncVisao/contabilidade/launch/lancamento/lancamento?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            <p:separator/>
+                            <p:submenu
+                                label="Balancete"
+                                >
+                                <p:menuitem 
+                                    value="Geral" 
+                                    outcome="/modulos/fncVisao/contabilidade/balancete/balanceteGeral/balanceteGeral?faces-redirect=true"
+                                    />
+                                <p:menuitem 
+                                    value="Razão"
+                                    outcome="/modulos/fncVisao/contabilidade/balancete/balanceteRazao/balanceteRazao?faces-redirect=true" 
+                                    />
+                                <p:menuitem
+                                    value="Extrato"
+                                    outcome="/modulos/fncVisao/contabilidade/balancete/extratoConta/extratoRubrica?faces-redirect=true"
+                                    />
+                                <p:menuitem
+                                    value="Movimento Diario" 
+                                    outcome="/modulos/fncVisao/contabilidade/balancete/movimentoDiario/balancete_movimentos_diarios?faces-redirect=true" 
+                                    />
+                                <p:menuitem
+                                    value="Movimento Data"
+                                    outcome="/modulos/fncVisao/contabilidade/balancete/movimentoData/balancete_movimentoPorData?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            <p:separator/>
+                            <p:submenu 
+                                label="Despesas"
+                                >
+                                <p:menuitem
+                                    value="Categoria"
+                                    outcome="/modulos/fncVisao/contabilidade/despesa/despesaCategoria/despesaCategoria?faces-redirect=true"
+                                    />
+                                <p:menuitem 
+                                    value="Rubrica"
+                                    outcome="/modulos/fncVisao/contabilidade/despesa/despesaRubrica/despesaRubrica?faces-redirect=true"
+                                    />
+                                <p:menuitem 
+                                    value="Anual" 
+                                    outcome="/modulos/fncVisao/contabilidade/despesa/despesaYear/despesaYear?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            <p:separator/>
+                            <p:submenu 
+                                label="Mapa"
+                                >
+                                <p:menuitem 
+                                    value="Execução" 
+                                    outcome="/modulos/fncVisao/contabilidade/mapas/cateGrauExecucao/despesaCategoriaNatureza" />
+                                <p:menuitem 
+                                    value="Bens" 
+                                    outcome="/modulos/fncVisao/contabilidade/mapas/despNaturEconomica/despesaBenServicos" />
+                                <p:menuitem 
+                                    value="Programação" 
+                                    outcome="/modulos/fncVisao/contabilidade/mapas/programacao/mapa" />
+                            </p:submenu>
+                            <p:separator/>
+                            <p:submenu
+                                label="Montante"
+                                >
+                                <p:menuitem
+                                    value="Classe"
+                                    outcome="/modulos/fncVisao/contabilidade/montante/montanteClasse/montanteClasse" />
+                                <p:menuitem 
+                                    value="Rubrica" 
+                                    outcome="/modulos/fncVisao/contabilidade/montante/montanteRubrica/montanteRubrica" />
+                                <p:menuitem 
+                                    value="Movimento" 
+                                    outcome="/modulos/fncVisao/contabilidade/montante/movimentoData/movimentoData" />
+                            </p:submenu>
+                            <p:separator/>
+                            <p:menuitem 
+                                value="Plano Contas"
+                                outcome="/modulos/fncVisao/contabilidade/pc/formPlanoConta/formPlanoConta?faces-redirect=true"
+                                />
+
+                        </p:submenu> 
+
+                        <p:submenu 
+                            label="Contactos"
+                            >
+                            <p:submenu
+                                label="Entidade"
+                                >
+                                <p:menuitem 
+                                    value="Cadastrar" 
+                                    outcome="/modulos/fncVisao/grl/grl_cadastrar_entidade?faces-redirect=true"
+                                    />
+                                <p:menuitem 
+                                    value="Listar" 
+                                    outcome="/modulos/fncVisao/grl/listar_grl_entidade?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            
+                            
+
+                        </p:submenu> 
+
+                        <p:submenu 
+                            label="Tabelas de Suporte"
+                            >
+                            <p:menuitem 
+                                value="Movimentação" 
+                                rendered="false"
+                                />
+                            <p:menuitem 
+                                value="Moeda"
+                                outcome="/modulos/fncVisao/financas/fin_cadastro_moeda?faces-redirect=true" 
+                                />
+                            <p:submenu
+                                label="Câmbio"
+                                >
+                                <p:menuitem 
+                                    value="Cadastrar" 
+                                    outcome="/modulos/fncVisao/financas/fin_cadastro_cambio?faces-redirect=true"
+                                    />
+                                <p:separator/>
+                                <p:menuitem 
+                                    value="Listar"
+                                    outcome="/modulos/fncVisao/financas/fin_listar_cambio?faces-redirect=true"
+                                    />
+                            </p:submenu>
+                            <p:menuitem 
+                                value="Tipo Documento"
+                                outcome="/modulos/fncVisao/grl/grl_cadastrar_tipo_documento?faces-redirect=true"
+                                />
+
+                        </p:submenu>
+
+
+
+                    </p:menubar>
+
+                </ui:insert>
+
+            </div>
+
+            <br/>
+            <br/>
+
+
+            <div id="content" class="center_content">
+                <ui:insert name="content">Content</ui:insert>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div id="bottom">
+                <ui:insert name="bottom">
+                    <ui:include src="./footer.xhtml" />
+                </ui:insert>
+            </div>
+
+
+
+            <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+                <f:facet name="start">
+                    <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+
+            </p:ajaxStatus>
+
+
+            <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+
+            <!--
+            TEMA ANTERIOR :
+            h:outputStylesheet name="css/layout-blue-grey.css" library="ultima-layout" / -->
+
+            <!--<h:outputStylesheet name="css/layout-purple-amber.css" library="ultima-layout" />-->
+            <h:outputStylesheet name="css/layout-dark-blue.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-cyan.css" library="ultima-layout" />
+
+        </h:form>
+
+    </h:body>
+
+</html>

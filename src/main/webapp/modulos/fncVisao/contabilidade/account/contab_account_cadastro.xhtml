@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h4>Gestão de Contabilidade e Finanças  -> Contabilidade -> Conta -> Cadastrar Conta</h4>
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1 style="font-size:25px">Nova Conta</h1>
+
+
+                    <p:tabView>
+
+                        <p:tab title="...">
+                            <p:panelGrid columns="3" layout="grid" style="margin-bottom:10px;" styleClass="ui-panelgrid-blank form-group">
+
+                                <h:panelGroup   >
+
+                                    <label style="font-size:118%">
+                                        Categoria
+                                    </label>
+                                    <br/>
+                                    <p:selectOneMenu id="class"
+                                                     required="true" 
+                                                     title="Menu para selecionar a categoria."
+                                                     requiredMessage="Seleciona a Categoria, por favor! "
+                                                     value="#{accountBean.codigoClasse}" 
+                                                     >
+                                        <f:selectItem  itemLabel="Seleciona a Categoria..." itemValue="" />
+                                        <f:selectItems value="#{accountBean.listClasse}" var="class" itemLabel="#{class.pkClass}- #{class.descricaoClass}" itemValue="#{class.pkClass}" />
+                                        <p:ajax event="change" update="rubrica"  />
+                                    </p:selectOneMenu>
+
+                                </h:panelGroup>
+
+                                <h:panelGroup   >
+
+                                    <label style="font-size:118%">
+                                        Rubrica
+                                    </label>
+                                    <br/>
+                                    <p:selectOneMenu id="rubrica" 
+                                                     required="true"
+                                                     title="Menu para selecionar a rubrica."
+                                                     requiredMessage="Seleciona a Rubrica, por favor! "
+                                                     value="#{accountBean.numeroRubrica}"  
+                                                     >
+                                        <f:selectItem  itemLabel="Seleciona a Rubrica.." itemValue="" />
+                                        <f:selectItems value="#{accountBean.list}" var="rubrica" 
+                                                       itemLabel=" #{rubrica.numberRubrica}- #{rubrica.descricaoRubrica}" 
+                                                       itemValue="#{rubrica.pkRubrica}" />
+                                    </p:selectOneMenu>
+
+                                </h:panelGroup>
+
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Descrição da Conta</label><br/>
+                                    <p:inputText  value="#{accountBean.account.descricaoAccount}" 
+                                                  title="Campo para digitar a conta."
+                                                  required="true" requiredMessage="A Conta precisa ser informada!"
+                                                  />
+                                </h:panelGroup>
+
+                                <p:panelGrid>
+                                    <p:outputLabel value="Fornecedor" for="forn"/>
+                                    <p:selectOneMenu id="forn" value="#{accountBean.pkEntidade}" effect="fold" 
+                                                     required="true" requiredMessage="Informe o fornecedor">
+                                        <f:selectItem itemLabel="Select One" itemValue=""/>
+                                        <f:selectItems var="fornecedor" value="#{finContasPagarBean.listaFornecedores}" itemLabel="#{fornecedor.nome}" itemValue="#{fornecedor.pkEntidade}"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+
+                            </p:panelGrid>
+
+                        </p:tab>
+                    </p:tabView>
+                    <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="Guardar" action="#{accountBean.gravar()}"  update="form_geral" styleClass="aqua-button" icon="fa fa-save"/>
+                    </p:panelGrid>
+                    <br/>
+                    <br/>
+
+
+
+                </div>
+            </div>
+
+            <p:dataTable  id="tabela" var="account" value="#{accountBean.listAccount}" paginatorAlwaysVisible="false"
+                          paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                <f:facet name="header">
+                    <label >Visualização dos Registros - Contas de Movimentos</label> 
+                </f:facet>
+
+
+                <p:column filterMatchMode="contains" headerText="Rubrica" style=" font-weight:bold" filterBy="#{account.fkRubrica.numberRubrica} - #{account.fkRubrica.descricaoRubrica}" >
+                    <h:outputText value="#{account.fkRubrica.numberRubrica} - #{account.fkRubrica.descricaoRubrica}" />
+                </p:column>
+
+                <p:column filterMatchMode="contains" headerText="Conta" filterBy="#{account.numeroAccount}- #{account.descricaoAccount}" >
+                    <h:outputText value="#{account.numeroAccount}- #{account.descricaoAccount}" />
+                </p:column>
+
+
+
+                <p:column headerText="Data de Registro" style="text-align:center; width:150px; "  >
+                    <h:outputText value="#{account.dataRegistro}"> 
+
+                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" timeZone="GMT+1"/>
+
+                    </h:outputText>
+                </p:column>
+
+
+            </p:dataTable>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

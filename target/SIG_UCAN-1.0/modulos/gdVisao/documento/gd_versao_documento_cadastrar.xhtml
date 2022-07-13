@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_doc/template.xhtml">
+                
+    <ui:define name="title">Gestão de Documento</ui:define>
+        
+   
+    
+    <ui:define name="content">
+        
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <div class="card card-w-title">
+                <h1>Versão de Documento</h1>
+                <p:messages id="context" showDetail="true" showSummary="false" autoUpdate="true" closable="true" />
+                        <p:toolbarGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-plus" immediate="true" value="Novo" action="#{gdVersaoDocumentoCadastrarBean.novo()}"  update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" rendered="#{!gdVersaoDocumentoCadastrarBean.estado}" value="Salvar" disabled="#{gdVersaoDocumentoCadastrarBean.btnSalvar}" update="@form" action="#{gdVersaoDocumentoCadastrarBean.gravar()}" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-list" immediate="true" value="Listar" action="#{gdVersaoDocumentoCadastrarBean.btnListar()}" update="@form" rendered="false" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-undo" immediate="true" value="Voltar" action="#{gdVersaoDocumentoCadastrarBean.voltar()}" ajax="false" />
+
+                </p:toolbarGroup>
+                
+                
+    <!-- Cadastro de um novo documento-->
+    <p:tabView  rendered="#{gdVersaoDocumentoCadastrarBean.btnFormularioCadastro}" >
+
+        <p:tab title="Nova Versão" id="tabDadosDocumento">
+            <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px;" styleClass="ui-panelgrid-blank form-group">
+                
+                <h:panelGroup >
+                    <p:outputLabel for="cmbDocumento" value="Documento"  /><br/>
+                    <p:selectOneMenu   style="width:400px" id="cmbDocumento" label=" documento" required="true"   requiredMessage="Documento: campo obrigatório" value="#{gdVersaoDocumentoCadastrarBean.codigoDocumento}" >
+                        <f:selectItem itemLabel="Selecione Documento" noSelectionOption="true" />
+                        <f:selectItems value="#{gdVersaoDocumentoCadastrarBean.listaDocumento}" var="doc" itemLabel="#{doc.titulo}" itemValue="#{doc.pkDocumento}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+                
+                <h:panelGroup>
+                    <p:outputLabel for="txtTituloDocumento" value="Mudanças Realizadas" /><br/>
+                    <p:inputTextarea id="txtTituloDocumento"  label="Mudanças Realizadas"  required="true"  requiredMessage="Mudanças Realizadas: campo obrigatório" value="#{gdVersaoDocumentoCadastrarBean.mudancaRealizada}" style="width:385px;" />
+                </h:panelGroup>
+                
+                <p:fieldset legend="Anexar Ficheiros">
+                    
+                <h:panelGroup >
+                    <p:outputLabel value="Carregar Documento" /><br/>
+                    <p:fileUpload fileUploadListener="#{gdVersaoDocumentoCadastrarBean.uploadListener}"
+                        cancelLabel="Cancelar"
+                        uploadLabel="Enviar o documento"
+                        label="Escolher"
+                        mode="advanced"
+                        sizeLimit="30000000"
+                        allowTypes="/(\.|\/)(gif|pdf|PDF|jpe?g|png|doc|docx|xls|xlsx|odt|pptx|ppt)$/"
+                        style="width:100%"
+                        invalidFileMessage="São permitidos somente os seguintes documentos: PDF,png,jpe"
+                        />
+                </h:panelGroup>
+                    
+               </p:fieldset>     
+            </p:panelGrid>
+        </p:tab>
+
+        </p:tabView>
+
+            
+          </div>
+        </div>
+        </div>
+       
+    </ui:define>
+
+</ui:composition>

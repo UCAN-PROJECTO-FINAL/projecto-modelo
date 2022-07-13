@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+         <h4>Gestão de Contabilidade e Finanças  -> Contabilidade -> Balancete -> Movimento </h4>
+       
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        
+                        
+                        
+                        <h1>Movimentos por Data</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+
+                        <p:panel>
+                            <h:panelGroup>
+                                <p:selectOneRadio id="opcao" value="#{ctMovimentoDataBean.opcao}">
+                                    <f:selectItem itemLabel="Data" itemValue="0" />
+                                    <f:selectItem itemLabel="Data Com Movimentos" itemValue="1" />
+                                    <f:ajax render="panelOpcoes" execute="@this" event="change"/>
+                                </p:selectOneRadio>
+                            </h:panelGroup>
+                        </p:panel>
+                        
+                        <br/>
+                        <p:panelGrid id="panelOpcoes" columns="3" layout="grid" style="margin-top:0px;" 
+                                     styleClass="ui-panelgrid-blank form-group">
+                            <h:panelGroup id="datadocument" rendered="#{ctMovimentoDataBean.opcao == 0}">
+                                <p:calendar id="calendariodoc"
+                                            showOn="both"
+                                            title="Campo para selecionar a data do movimento."
+                                            required="true" 
+                                            yearRange="c-70:c+10" pattern="dd/MM/yyyy"
+                                            maxdate="now()" 
+                                            navigator="true"
+                                            requiredMessage="Informa a Data do movimento!" 
+                                            label="Data" locale="pt"
+                                            value="#{ctMovimentoDataBean.dataMovimento}">
+                                    <f:ajax execute="@this"/>
+                                </p:calendar>
+                            </h:panelGroup>
+                            <h:panelGroup id="groupDataExistente" rendered="#{ctMovimentoDataBean.opcao == 1}">
+                                <p:selectOneMenu id="combofc"
+                                                 value="#{ctMovimentoDataBean.dataComboSelected}" 
+                                                 valueChangeListener="#{ctMovimentoDataBean.subjectSelectionChanged}" 
+                                                 filter="true" 
+                                                 filterMatchMode="contains" 
+                                                 style="">
+                                    <f:selectItem itemLabel="Seleciona a data..."  />
+                                    <f:selectItems
+                                        value="#{ctMovimentoDataBean.listaDatasComMovimentos()}"
+                                        var="var" itemLabel="#{var}" 
+                                        itemValue="#{var}" />
+                                    
+
+                                    <p:ajax update="tabela"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup></h:panelGroup>
+                            <h:panelGroup></h:panelGroup>
+                            
+                            <h:panelGroup id="datadocumentbots" >
+                                <p:commandButton icon="fa fa-search"  
+                                                 action="#{ctMovimentoDataBean.verMovimento()}" 
+                                                 ajax="true" type="submint" update="tabela"
+                                                 value="Listar"
+                                                 style="margin-top:0px;" styleClass="flat"/>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:dataTable id="tabela" var="movimento" value="#{ctMovimentoDataBean.listaMovData}" paginatorAlwaysVisible="false"
+                                     paginator="true" paginatorPosition="bottom" rows="10" emptyMessage="Não há registros!">
+
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos movimentos de Débito e Crédito</label> 
+                            </f:facet>
+
+                            <p:column headerText="Conta" >
+                                <h:outputText value=" #{movimento.fkAccount.numeroAccount}- #{movimento.fkAccount.descricaoAccount}" />
+                            </p:column>
+
+                            <p:column headerText="Exercício"  style="text-align:center; width:90px;" >
+                                <h:outputText value=" #{movimento.fkLancamento.fkAnoEconomico.anoEconomico}" />
+                            </p:column>
+
+                            <p:column headerText="Débito"   style="text-align:center; width:125px;">
+                                <h:outputText value="#{movimento.debitoBalancet}"> 
+                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Crédito"   style="text-align:center; width:125px;">
+                                <h:outputText value="#{movimento.creditoBalancet}"> 
+                                    <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Data Movi." style="text-align:center; width:100px;">
+                                <h:outputText value="#{movimento.dataBalancet}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy"  locale="pt" timeZone="GMT+1"/>
+                                </h:outputText>
+                            </p:column>
+
+
+
+
+                        </p:dataTable>
+
+                    </div>
+                </div>
+                
+                         <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="xls"  target="tabela" fileName="Balancete_Mov_Data_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="pdf"  target="tabela" fileName="Balancete_Mov_Data_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2" ajax="false">
+                            <p:dataExporter type="csv"  target="tabela" fileName="Balancete_Mov_Data_#{dataUtilsBean.dataAgora()}" />
+                        </p:commandButton>
+                    </p:panelGrid>
+
+
+            </div>
+           
+    </ui:define>
+
+</ui:composition>
+
+

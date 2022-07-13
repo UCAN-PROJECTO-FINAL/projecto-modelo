@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_bbt/template.xhtml">
+
+    <ui:define name="title">Softwares</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]> 
+
+            }
+
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form_gsinstalacao">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px; 
+                            font-weight:bold">Universidade Católica de Angola | Instalações</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                        <!--      -->
+                        <p:messages id="context" showDetail="true" showSummary="false" closable="true" ><p:autoUpdate/></p:messages>
+                        <p:tab>
+                            <p:panelGrid columns="2" layout="grid" 
+                                         style="margin-bottom:20px;" 
+                                         styleClass="ui-panelgrid-blank form-group"
+                                         >
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Designação</label> <br/>
+                                    <p:inputText value="#{bbtNovaAutoridadeBean.designacao}"/>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">País</label> <br/>
+                                    <p:selectOneMenu id="pais" value="#{bbtNovaAutoridadeBean.pkPais}" 
+                                                     effect="fade" filter="true" >
+                                        <f:selectItems value="#{bbtNovaAutoridadeBean.paises}" var="loc" 
+                                                       itemLabel="#{loc.designacao}" 
+                                                       itemValue="#{loc.pkLocLocalidade}"  />
+
+                                        <p:ajax 
+                                            listener="#{bbtNovaAutoridadeBean.updateProvinciaLista()}"
+                                            update="provincia"
+                                            />
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Província/Estado</label> <br/>
+                                    <p:selectOneMenu id="provincia" value="#{bbtNovaAutoridadeBean.pkProvincia}" 
+                                                     effect="fade" filter="true" >
+                                        <f:selectItems value="#{bbtNovaAutoridadeBean.provincias}" var="prov" 
+                                                       itemLabel="#{prov.designacao}" 
+                                                       itemValue="#{prov.pkLocLocalidade}"  />
+
+
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Tipo de autoridade</label> <br/>
+                                    <p:selectOneMenu id="tipo_aut" value="#{bbtNovaAutoridadeBean.pkBbtTipoAutoridade}" 
+                                                     effect="fade"  filter="true" >
+                                        <f:selectItems value="#{bbtNovaAutoridadeBean.bbtTipoAutoridades}" var="aut" 
+                                                       itemLabel="#{aut.designacao}" 
+                                                       itemValue="#{aut.pkBbtTipoAutoridade}"  />
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                            </p:panelGrid>
+                        </p:tab> 
+                        <h:panelGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" 
+                                             value="Gravar" icon="ui-icon-plus" 
+                                             action="#{bbtNovaAutoridadeBean.salvar()}"
+                                             process="@form"
+                                             />
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

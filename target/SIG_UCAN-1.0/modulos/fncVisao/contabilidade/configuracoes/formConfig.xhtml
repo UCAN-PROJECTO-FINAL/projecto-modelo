@@ -1,0 +1,181 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+
+       
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Nova Configuração</h1>
+                        
+                        <p:toolbarGroup>
+
+                            <!--                            <p:commandButton style="width:150px; margin-bottom: 10px;"
+                                                                         icon="ui-icon-save"
+                                                                         rendered="# {!ctConfiguracaoBean.estado}"
+                                                                         value="Salvar"
+                                                                         disabled="# {ctConfiguracaoBean.btnSalvar}"
+                                                                         update="@form"
+                                                                         action="# {ctConfiguracaoBean.salvar()}" />-->
+
+                            <p:commandButton style="width:150px; margin-bottom: 10px;"
+                                             icon="ui-icon-save"
+                                             value="Salvar"
+                                             rendered="#{ctConfiguracaoBean.estado}"
+                                             update="@form"
+                                      
+                                             action="#{ctConfiguracaoBean.updateFields()}"/>
+
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-list"
+                                             immediate="true" value="Listar" action="#{ctConfiguracaoBean.btnListar()}"
+                                             update="@form" />
+
+                            <p:commandButton style="width:150px; margin-bottom: 10px;"
+                                             icon="ui-icon-undo" immediate="true" value="Voltar"
+                                             action="#{ctConfiguracaoBean.voltar()}" update="@form" />
+
+                            <p:commandButton style="width:150px; margin-bottom: 10px;"
+                                             value="Editar" rendered="#{ctConfiguracaoBean.tabListar}"
+                                             icon="ui-icon-edit" update="@form" action="#{ctConfiguracaoBean.alterar()}"/>
+
+                        </p:toolbarGroup>
+
+                        <!-- Início do formulário para alterar o Ano Econômico -->
+                        <p:tabView rendered="#{ctConfiguracaoBean.estado}">
+                            <p:tab title="Alterar Configurações" >
+
+                                <p:panelGrid columns="3" layout="grid" style="margin-bottom:20px;" styleClass="ui-panelgrid-blank form-group">
+
+
+                                    <h:panelGroup >
+                                        <label style="font-size: 118%">Fatura</label> <br/>
+                                        <p:selectOneMenu  value="#{ctConfiguracaoBean.ctTermo}"
+                                                          title="Campo para digitar o exercício econômico."
+                                                          required="true" label="Ano Econômico"
+                                                          requiredMessage="O Ano Econômico deve ser informado!" style="width:285px" >
+                                            <f:selectItem itemLabel="Seleciona a #{ctLancamentoDiarioCadastrarBean.tipoDocuSelecionado}..."  />
+                                            <f:selectItems
+                                                value="#{ctLancamentoDiarioCadastrarBean.fnDocumentoNaoClass}"
+                                                var="fc" itemLabel="#{fc.numeroBancario eq null ? fc.numeroDocumento : fc.numeroBancario} - #{fc.fkEntidade.nome}"
+                                                itemValue="#{fc.pkDocumento}-#{fc.fkEntidade.nome}" />
+                                        </p:selectOneMenu>
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup>
+                                        <label style="font-size: 118%">Diário Contábil</label> <br/>
+                                        <p:selectOneMenu  value="#{ctConfiguracaoBean.ctDiario}"
+                                                          title="Campo para digitar o exercício econômico."
+                                                          required="true" label="Ano Econômico"
+                                                          requiredMessage="O Ano Econômico deve ser informado!" style="width:285px"
+                                                          >
+                                            <f:selectItem itemLabel="Seleciona o diário contábil..."  />
+                                            <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listDiario}"
+                                                           var="drio" itemLabel=" #{drio.pkDiario}- #{drio.descricaoDiario}"
+                                                           itemValue="#{drio.pkDiario}-#{drio.descricaoDiario}" />
+                                            
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <label style="font-size: 118%">Fornecedor</label> <br/>
+                                        <p:selectOneMenu  value="#{ctConfiguracaoBean.ctAccout}"
+                                                          title="Campo para digitar o exercício econômico."
+                                                          required="true" label="Ano Econômico"
+                                                          requiredMessage="O Ano Econômico deve ser informado!" style="width:285px" >
+                                            <f:selectItem itemLabel="Seleciona a conta..." itemValue="#{null}" />
+
+                                            <f:selectItems value="#{extratoAccountBean.listAccount}"
+                                                           var="conta"
+                                                           itemLabel=" #{conta.numeroAccount} - #{conta.descricaoAccount}"
+                                                           itemValue="#{conta.pkAccount}-#{conta.descricaoAccount}" />
+                                            <p:ajax event="change"  />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+                                    
+                                    <h:panelGroup>
+                                        <label style="font-size: 118%">Rubrica</label> <br/>
+                                        <p:selectOneMenu  value="#{ctConfiguracaoBean.ctRubrica}"
+                                                          title="Campo para digitar o exercício econômico."
+                                                          required="true" label="Ano Econômico"
+                                                          requiredMessage="O Ano Econômico deve ser informado!" style="width:285px" >
+                                            <f:selectItem  itemLabel="Seleciona a Rubrica..." itemValue="" />
+                                            <f:selectItems value="#{mapaBean.listRubrica}" var="conta" itemLabel=" #{conta.numberRubrica}-#{conta.descricaoRubrica}" itemValue="#{conta.pkRubrica}-#{conta.numberRubrica}-#{conta.descricaoRubrica}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+
+                                </p:panelGrid>
+
+                            </p:tab>
+                        </p:tabView>
+                        <!-- Fim do formulário para alterar o Ano Econômico -->
+
+
+
+                        <!-- Início da tabela para vizualização os registros -->
+                        <p:dataTable rendered="#{ctConfiguracaoBean.tabListar}" id="tabela" var="config" value="#{ctConfiguracaoBean.items}" paginatorAlwaysVisible="false"
+                                     paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Configurações</label>
+                            </f:facet>
+
+
+                            <p:column headerText="Módulo" style="text-align:center; width:120px;" filterBy="#{config.fkModulo.nome}" >
+                                <h:outputText value="#{config.fkModulo.nome}" />
+                            </p:column>
+
+
+                            <p:column headerText="Campo"   style="text-align:center; width:125px;">
+                                <h:outputText value="#{config.chaveCampo}"/>
+                            </p:column>
+
+
+
+                            <p:column headerText="Valor" style="text-align:center; width:120px;">
+                                <h:outputText value="#{config.valor}"/>
+                            </p:column>
+
+                            <p:column headerText="Nome do Campo" style="text-align:center; width:120px;">
+                                <h:outputText value="#{config.nome}"/>
+                            </p:column>
+
+
+
+
+
+                        </p:dataTable>
+                        <!-- Fim da tabela para vizualização os registros -->
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        
+    </ui:define>
+
+</ui:composition>

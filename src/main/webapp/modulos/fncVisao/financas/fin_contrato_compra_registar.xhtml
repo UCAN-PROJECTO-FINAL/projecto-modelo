@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <h4>Gestão de Contabilidade e Finanças  -> Contrato Compra </h4>
+
+
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Contrato Compra</h1>
+
+
+                    <p:tabView>
+
+                        <p:tab title="Contrato Compra - Cadastro">
+                            <p:fieldset legend="Form">
+
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel for="grupoSOM" value="Selecione o fornecedor" />
+                                    <p:selectOneMenu 
+                                        id="grupoSOM" 
+                                        value="#{finContratoCompraRegistarBean.fkFornecedor}" 
+                                        >
+                                        <f:selectItems 
+                                            var="pt" 
+                                            value="#{finContratoCompraRegistarBean.grlEntidadeList}"  
+                                            itemLabel="#{pt.nome} | #{pt.nifEntidade}" itemValue="#{pt.pkEntidade}"
+                                            />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel for="" value="Data" />
+                                    <p:calendar
+                                        value="#{finContratoCompraRegistarBean.data}" 
+                                        >
+                                    </p:calendar>
+
+                                    <p:outputLabel for="" value="Descricão" />
+                                    <p:inputTextarea
+                                        value="#{finContratoCompraRegistarBean.descricao}" 
+                                        >
+                                    </p:inputTextarea>
+
+                                    <p:outputLabel for="fileUplCandidaturas" value="Selecione o Ficheiro (.pdf)" />
+                                    <p:fileUpload  
+                                        id="fileUplCandidaturas" cancelLabel="Cancelar" label="Selecionar" uploadLabel="Carregar" 
+                                        fileUploadListener="#{finContratoCompraRegistarBean.carrregarFicheiro}" 
+                                        skinSimple="true" sizeLimit="10485760" allowTypes="/(\.|\/)(pdf)$/" 
+                                        fileLimitMessage="Só é possivel carregar um ficheiro de cada vez ..." 
+                                        invalidFileMessage="O Tipo de ficheiro é Inválida, deve ser: pdf ..." 
+                                        invalidSizeMessage="O tamanha do ficheiro excede o limite máximo (10 MB) ..." 
+                                        messageTemplate="Ficheiro: {name} | Tamanho: {size}" style="width: 100%;" 
+                                        value="#{finContratoCompraRegistarBean.uploadedFile}"
+                                        />
+
+                                </p:panelGrid>
+
+
+                            </p:fieldset>
+                        </p:tab> 
+                    </p:tabView>
+                    <br/>
+                    <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                        <p:commandButton 
+                            value="Guardar" action="#{finContratoCompraRegistarBean.salvar()}" 
+                            update="form_geral" styleClass="aqua-button" icon="fa fa-save"
+                            />
+                    </p:panelGrid>
+                    
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+    
+</ui:composition>

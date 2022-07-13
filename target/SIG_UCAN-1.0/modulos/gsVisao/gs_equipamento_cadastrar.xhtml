@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_gs/template.xhtml">
+
+    <ui:define name="title">Softwares</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#EEEEEE',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#212121'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+            //]]> 
+
+            }
+
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form_gsequipamento">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px; 
+                            font-weight:bold">Universidade Católica de Angola | Equipamentos</h1>
+                        <p:separator style="border: 1px solid #c7c7cc; margin-top: -6px;" />
+                        <!--      -->
+                        <p:messages id="context" showDetail="true" showSummary="false" closable="true" ><p:autoUpdate/></p:messages>
+                        <p:tab>
+                            <p:panelGrid columns="3" layout="grid" 
+                                         style="margin-bottom:20px;" 
+                                         styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Marca</label> <br/>
+                                    <p:inputText id="marca" value="#{gsEquipamentoBean.marca}" required="true" label="Marca"/>
+                                    <p:message for="marca" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Modelo</label> <br/>
+                                    <p:inputText id="modelo" value="#{gsEquipamentoBean.modelo}" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Numero de Serie</label> <br/>
+                                    <p:inputText id="numeroSerie" value="#{gsEquipamentoBean.numeroSerie}" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">Endereço MAC</label> <br/>
+                                    <p:inputText id="macAdress" value="#{gsEquipamentoBean.macAdress}" required="true" label="Endereço MAC"/>
+                                    <p:message for="macAdress" />
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:tab> 
+                        <h:panelGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" 
+                                             value="Gravar" icon="ui-icon-plus" 
+                                             action="#{gsEquipamentoBean.gravar()}" 
+                                             />
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <f:view>
+
+            <h:form id="form_gsequipamento0">
+
+                <h:panelGrid>
+                    <p:dataTable value="#{gsEquipamentoBean.listarTodos()}" var="item" style="margin: 2em;" 
+                                 rowKey="#{item.pkGsEquipamento}">
+                        <p:column headerText="Marca">    
+                            <h:outputText value="#{item.marca}"/>
+                        </p:column>
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{item.modelo}"/>
+                        </p:column>
+                        <p:column headerText="Numero de Serie">
+                            <h:outputText value="#{item.numeroSerie}"/>
+                        </p:column>
+                        <p:column headerText="Endereço MAC">
+                            <h:outputText value="#{item.macAdress}"/>
+                        </p:column>
+                        <p:column style="width:100px;text-align: center">
+                            <p:commandButton icon="fa fa-pencil" update="form_gsequipamento0:actualizarEquipamento"
+                                             oncomplete="PF('editDialog').show()">
+                                <f:setPropertyActionListener value="#{item}"
+                                                             target="#{gsEquipamentoBean.equipamentoSelecionado}"/>
+                            </p:commandButton>
+                            <p:commandButton action="#{gsEquipamentoBean.eliminar(item)}" icon="fa fa-trash" />                            
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog widgetVar="editDialog" header="Actualizar Equipamento" modal="true"  
+                              showEffect="fade" hideEffect="fade" resizable="false" 
+                              style=" height: 80%; width: 80%">
+                        <p:outputPanel id="actualizarEquipamento" style="text-align:center">
+                            <p:panelGrid columns="2" rendered="#{not empty gsEquipamentoBean.equipamentoSelecionado}" 
+                                         columnClasses="value,label">                              
+                                <h:outputText value="Marca " />
+                                <p:inputText value="#{gsEquipamentoBean.equipamentoSelecionado.marca}" />
+                                <h:outputText value="Modelo " />
+                                <p:inputText value="#{gsEquipamentoBean.equipamentoSelecionado.modelo}" />
+                                <h:outputText value="Numero de Serie " />
+                                <p:inputText value="#{gsEquipamentoBean.equipamentoSelecionado.numeroSerie}" />                               
+                                <h:outputText value="Endereço Fisico " />
+                                <p:inputText value="#{gsEquipamentoBean.equipamentoSelecionado.macAdress}" />  
+                            </p:panelGrid>
+                            <p:commandButton style="margin-top: 5em" 
+                                             value="Actualizar" action="#{gsEquipamentoBean.actualizar()}"
+                                             />
+                            <p:commandButton oncomplete="PF('editDialog').hide()" 
+                                             title="Cancelar" value="Cancelar"
+                                             />
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </ui:define>
+
+</ui:composition>

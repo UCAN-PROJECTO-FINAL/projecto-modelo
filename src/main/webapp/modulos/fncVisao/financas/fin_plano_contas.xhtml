@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Plano de Contas</h1>
+                   
+                        
+                        <p:tabView>
+
+                            <p:tab title="Plano de Contas">
+
+                                <p:panelGrid columns="1" layout="grid" style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                                    
+                                </p:panelGrid>
+                            </p:tab> 
+                        </p:tabView>
+                        <br/>
+                      <p:panelGrid columns="1"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                          <p:commandButton value="Guardar"   update="form_geral" icon="fa fa-save"/>
+                        </p:panelGrid>
+
+
+ 
+                    
+
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

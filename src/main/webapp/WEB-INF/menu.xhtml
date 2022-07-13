@@ -1,0 +1,67 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform" >
+      <div class="layout-menu #{guestPreferences.menuClass}" >
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <!--ui:fragment rendered="#1{guestPreferences.profileMode == 'inline' and 'menu-layout-static menu-layout-horizontal' != 'menu-layout-static menu-layout-horizontal'}"-->
+
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+
+                        <div class="profile">
+                            <div class="profile-image">
+
+                                <p:graphicImage style="border-bottom-left-radius: 30px;
+                                                border-bottom-right-radius: 30px; border-top-left-radius: 30px; border-top-right-radius: 30px;"
+                                                width="60px" height="60px"  cache="false"
+
+                                                name="images/imagensperfil/#{utilizadorBean.tmpConta.imagemFoto}" 
+                                                library="ultima-layout" >
+                                    <!--value="http://# {sgUtilsBean.endereco()}:8080/imagens_perfil_users/# {utilizadorBean.tmpConta.imagemFoto}" />-->
+                                </p:graphicImage>
+
+                            </div>
+
+                            <a id="profile-options" href="#">
+                                <span>Olá</span> 
+                                <span class="topbar-item-name" style="color: #323232">#{segLoginBean.sessaoActual.nomeUtilizador}</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="../../editarContaUser.xhtml" class="ripplelink">
+                                    <i class="material-icons">&#xE7FD;</i>
+                                    <span>#{segLoginBean.sessaoActual.fkSegPerfil.descricao}</span>
+                                </a>
+                            </li>
+
+
+                            <li role="menuitem">
+                                <p:commandLink action="#{segLoginBean.terminarSessao()}" >
+                                    <i class="material-icons" >&#xE8AC;</i>
+                                    <span>Sair</span>
+                                </p:commandLink>
+
+                            </li>
+
+                        </ul>
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me">
+                        
+                        
+                       
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

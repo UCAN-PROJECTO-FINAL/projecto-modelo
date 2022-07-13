@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+               template="/template_arq_mrt/template.xhtml">
+
+    <ui:define name="title">Forms</ui:define>
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            } 
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1 style="font-size:25px">Configurações de Preferências</h1>
+                        <p:messages id="context" showDetail="true" showSummary="false" autoUpdate="true" closable="true" />
+                        
+                        <p:toolbarGroup>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-plus" immediate="true" value="Novo" rendered="false" action="#{aRconfiguracaoBean.novo()}"  update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" rendered="#{!aRconfiguracaoBean.estado}" value="Salvar" disabled="#{aRconfiguracaoBean.btnSalvar}" update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" value="Alterar" rendered="#{aRconfiguracaoBean.estado}" update="@form"  action="#{aRconfiguracaoBean.salvarRegister()}"/>
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-list" immediate="true" value="Listar" action="#{aRconfiguracaoBean.btnListar()}" update="@form" />
+                            <p:commandButton style="width:150px; margin-bottom: 10px;" icon="ui-icon-undo" immediate="true" value="Voltar" action="#{aRconfiguracaoBean.voltar()}" update="@form" />
+
+                        </p:toolbarGroup>
+
+                       
+                        <!-- Início do formulário para alterar Tipo Documento-->
+                       <p:tabView rendered="#{aRconfiguracaoBean.estado}">
+                            <p:tab title="Alerar Preferências" >
+
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px" >
+                                    
+                                    <h:panelGroup styleClass="card-w-title" >
+                                        <p:outputLabel for="cmbTipoDocumento" value="Tipo de Documento" styleClass="outputLabelEstilo" /><br/>
+                                        <p:selectOneMenu   style="width:400px" id="cmbTipoDocumento" label="Tipo de documento" required="true" requiredMessage="Tipo de Documento: campo obrigatório"  value="#{aRconfiguracaoBean.codigoTipoDocumento}" >
+                                            <f:selectItem itemLabel="Selecione tipo documento" noSelectionOption="true" />
+                                            <f:selectItems var="tipo"  value="#{aRconfiguracaoBean.listaTipoDocumento()}" itemValue="#{tipo.pkTipoDocumento}" itemLabel="#{tipo.descricao}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px" >
+                                    
+                                    <h:panelGroup styleClass="card-w-title" >
+                                        <p:outputLabel for="cmbAnoLectivo" value="Ano Lectivo" styleClass="outputLabelEstilo" /><br/>
+                                        <p:selectOneMenu   style="width:400px" id="cmbAnoLectivo" label="Tipo de documento" required="true" requiredMessage="Ano Lectivo: campo obrigatório"  value="#{aRconfiguracaoBean.codigoAnoLectivo}" >
+                                            <f:selectItem itemLabel="Selecione Ano Lectivo" noSelectionOption="true" />
+                                            <f:selectItems var="anoLectivo"  value="#{aRconfiguracaoBean.listaAnoLectivo()}" itemValue="#{anoLectivo.pkAnoLectivo}" itemLabel="#{anoLectivo.descricao}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px" >
+                                    
+                                    <h:panelGroup styleClass="card-w-title" >
+                                        <p:outputLabel for="cmbAnoCurricular" value="Ano Curricular" styleClass="outputLabelEstilo" /><br/>
+                                        <p:selectOneMenu   style="width:400px" id="cmbAnoCurricular" label="Ano Curricular" required="true" requiredMessage="Ano Curricular: campo obrigatório"  value="#{aRconfiguracaoBean.codigoAnoCurricular}" >
+                                            <f:selectItem itemLabel="Selecione ano Curricular" noSelectionOption="true" />
+                                            <f:selectItems var="anoCurricular"  value="#{aRconfiguracaoBean.listaAnoCurricular()}" itemValue="#{anoCurricular.pkAnoCurricular}" itemLabel="#{anoCurricular.descricao}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px" >
+                                    
+                                    <h:panelGroup styleClass="card-w-title" >
+                                        <p:outputLabel for="cmbTurma" value="Turma" styleClass="outputLabelEstilo" /><br/>
+                                        <p:selectOneMenu   style="width:400px" id="cmbTurma" label="Turma" required="true" requiredMessage="Turma: campo obrigatório"  value="#{aRconfiguracaoBean.codigoTurma}" >
+                                            <f:selectItem itemLabel="Selecione turma" noSelectionOption="true" />
+                                            <f:selectItems var="turma"  value="#{aRconfiguracaoBean.listaTurma()}" itemValue="#{turma.pkTurma}" itemLabel="#{turma.descricao}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" style="margin-bottom:20px" >
+                                    
+                                    <h:panelGroup styleClass="card-w-title" >
+                                        <p:outputLabel for="cmbPeriodo" value="Periodo" styleClass="outputLabelEstilo" /><br/>
+                                        <p:selectOneMenu   style="width:400px" id="cmbPeriodo" label="Periodo" required="true" requiredMessage="Periodo: campo obrigatório"  value="#{aRconfiguracaoBean.codigoPeriodo}" >
+                                            <f:selectItem itemLabel="Selecione tipo documento" noSelectionOption="true" />
+                                            <f:selectItems var="periodo"  value="#{aRconfiguracaoBean.listaPeriodo()}" itemValue="#{periodo.pkPeriodo}" itemLabel="#{periodo.descricao}" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+                            </p:tab>
+
+                        </p:tabView>
+                        <!-- Fim do formulário para alterar o Tipo Documento -->
+
+                        <!-- Início da tabela para vizualização de Tipo Documento -->
+                        <p:dataTable rendered="#{aRconfiguracaoBean.tabListar}" id="tabela" var="tipo" value="#{aRconfiguracaoBean.listarConfiguracao()}" paginatorAlwaysVisible="false"
+                                     paginator="true"  paginatorPosition="bottom" rows="5" emptyMessage="Não há registros!">
+                            <f:facet name="header">
+                                <label style="font-size:140% ">Visualização dos Registros - Configurações</label> 
+                            </f:facet>
+
+                            <p:column headerText="Tipo de Documento" style="text-align:center"  >
+                                <h:outputText value="#{tipo.fkTipoDocumento.descricao}" />
+                            </p:column>
+                            
+                            <p:column headerText="Ano Lectivo" style="text-align:center"  >
+                                <h:outputText value="#{tipo.fkAnoLectivo.descricao}" />
+                            </p:column>
+                            
+                            <p:column headerText="Ano Curricular" style="text-align:center"  >
+                                <h:outputText value="#{tipo.fkAnoCurricular.descricao}" />
+                            </p:column>
+                            
+                            <p:column headerText="Turma" style="text-align:center"  >
+                                <h:outputText value="#{tipo.fkTurma.descricao}" />
+                            </p:column>
+                            
+                            <p:column headerText="Periodo" style="text-align:center"  >
+                                <h:outputText value="#{tipo.fkPeriodo.descricao}" />
+                            </p:column>
+
+                            <p:column headerText="Alterar" style="width: 100px;">
+                                <p:commandButton style="margin-left:30%;" icon="ui-icon-edit" update="@form" action="#{aRconfiguracaoBean.alterar(tipo)}"> 
+                                    <p:confirm header="Confirmação" message="Desejas realmente alterar   #{tipo.fkTipoDocumento.descricao} ?" icon="ui-icon-warning" />
+                                </p:commandButton>
+                               <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button"  styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </p:column>
+
+                        </p:dataTable>
+                        <!-- Fim da tabela para vizualização os registros -->
+
+                    </div>
+                </div>
+
+
+            </div>
+        
+    </ui:define>
+
+</ui:composition>

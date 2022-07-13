@@ -1,0 +1,319 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"
+                xmlns:cc_ct="http://xmlns.jcp.org/jsf/composite/cc_ct"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1 style="font-size:25px">Lançamentos Financeiros</h1>
+
+
+
+                    <!-- início do formulário para Cadastrar  -->
+                    <p:tabView>
+                        <p:tab title="Lançamento">
+
+                            <p:panel>
+
+                                <p:panelGrid columns="2" layout="grid" style="margin-bottom:10px;" 
+                                             styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:selectOneRadio 
+                                            id="modoPag" 
+                                            value="#{ctLancamentoDiarioCadastrarBean.opcao}">
+                                            <f:selectItem 
+                                                itemLabel="Facturas"
+                                                itemValue="Fact" />
+                                            <f:selectItem 
+                                                itemLabel="Ordens de Saques" 
+                                                itemValue="Ordem" />
+                                            <p:ajax 
+                                                event="change" 
+                                                update="panelGeral combofc" 
+                                                listener="#{ctLancamentoDiarioCadastrarBean.alterarTipoDoc()}" />
+                                        </p:selectOneRadio>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                                <p:outputPanel id="panelGeral">
+
+                                    <p:panelGrid  
+                                        columns="2" layout="grid" 
+                                        style="margin-bottom:10px;" 
+                                        styleClass="ui-panelgrid-blank form-group">
+
+                                        <h:panelGroup>
+                                            <label style="font-size:118%">Exercício Económico</label>
+
+                                            <br/>
+
+                                            <p:selectOneMenu id="ano"
+                                                             required="true"
+                                                             title="Selecionar o exercício econômico."
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoYear}" 
+                                                             filter="true" filterMatchMode="contains" 
+                                                             requiredMessage="Seleciona o exercício econômico, por favor! "
+                                                             style="width:350px">
+                                                <f:selectItem itemLabel="Seleciona o exercício econômico..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listYear}"
+                                                               var="ano" itemLabel="#{ano.anoEconomico}" 
+                                                               itemValue="#{ano.pkAnoEconomico}" />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup id="factura">
+                                            <label style="font-size:118%">
+                                                <h:outputText 
+                                                    id="lblValorDoc" 
+                                                    value="#{ctLancamentoDiarioCadastrarBean.tipoDocuSelecionado}"/>
+                                                <h:outputText 
+                                                    style="color:#999999;font-size:80%; padding-left: 15px" 
+                                                    id="valorDocSelected" 
+                                                    value="#{ctLancamentoDiarioCadastrarBean.valorFacturaSelecionada}"
+                                                    >
+                                                    <f:convertNumber minFractionDigits="2"/>
+                                                </h:outputText>
+                                            </label>
+
+                                            <h:commandLink style="padding: 5px" target="_blank">
+                                                <h:outputText value=" " class="fa fa-refresh"/>
+                                                <f:ajax render="combofc" event="click"></f:ajax> 
+                                            </h:commandLink>
+
+                                            <br/>
+                                            <p:selectOneMenu id="combofc"
+                                                             required="true"
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoTermo}" 
+                                                             filter="true" 
+                                                             filterMatchMode="contains" 
+                                                             requiredMessage="A #{ctLancamentoDiarioCadastrarBean.tipoDocuSelecionado} não foi selecionada!" 
+                                                             style="width:350px "
+                                                             >
+                                                <f:selectItem 
+                                                    itemLabel="Seleciona a #{ctLancamentoDiarioCadastrarBean.tipoDocuSelecionado}..."
+                                                    />
+
+                                                <f:selectItems
+                                                    rendered="#{ctLancamentoDiarioCadastrarBean.opcao eq 'Fact'}"
+                                                    value="#{ctLancamentoDiarioCadastrarBean.documentoNaoClass}"
+                                                    var="fc" itemLabel="#{fc.numDoc} - #{fc.fkEntidade.nome}" 
+                                                    itemValue="#{fc.pkDocumento}" />
+
+                                                <f:ajax render="lblValorDoc valorDocSelected 
+                                                        contaspassivooss contasactivoos 
+                                                        contaspassivofact contasactivofac" event="change"></f:ajax> 
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+                                            <label style="font-size:118%">
+                                                Diário Contábil
+                                            </label>
+
+                                            <br/>
+                                            <p:selectOneMenu id="diario" 
+                                                             required="true" 
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoDiario}" 
+                                                             filter="true"
+                                                             title="Menu para selecionar o diário contábil."
+                                                             filterMatchMode="contains"
+                                                             requiredMessage="Seleciona o diário, por favor! " 
+                                                             style="width:350px ">
+                                                <f:selectItem itemLabel="Seleciona o diário contábil..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listDiario}"
+                                                               var="drio" itemLabel=" #{drio.pkDiario}- #{drio.descricaoDiario}" 
+                                                               itemValue="#{drio.pkDiario}" />
+
+                                                <p:ajax event="change" update="documento"  />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+
+                                            <label style="font-size:118%">
+                                                Documento
+                                            </label>
+
+                                            <br/>
+                                            <p:selectOneMenu id="documento" 
+                                                             label="Documento" 
+                                                             required="true"
+                                                             title="Menu para selecionar o documento."
+                                                             requiredMessage="Seleciona o documento"
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoDocumento}" 
+                                                             filter="true" filterMatchMode="contains"
+                                                             style=" width:350px
+                                                             ">
+                                                <f:selectItem itemLabel="Seleciona o documento..." itemValue="Não"  />
+                                                <f:selectItems var="doc" 
+                                                               value="#{ctLancamentoDiarioCadastrarBean.listDocumento}"
+                                                               itemLabel="#{doc.numeroDocumento}- #{doc.descricaoDocumento}" 
+                                                               itemValue="#{doc.pkDocument}" />
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+
+
+                                        <h:panelGroup id="contasactivofac" rendered="#{ctLancamentoDiarioCadastrarBean.opcao == 'Fact'}">
+
+
+                                            <label style="font-size:118%">
+                                                Conta a Debitar
+                                            </label>
+
+                                            <br/>
+                                            <p:selectOneMenu id="debitoo" 
+                                                             required="true"
+                                                             title="Menu para selecionar a conta a debitar."
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoAccountDebitar}" 
+                                                             filter="true" filterMatchMode="contains"
+                                                             requiredMessage="Seleciona a conta a debitar, por favor! " style="width:350px" >
+                                                <f:selectItem itemLabel="Seleciona a conta debitar ..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listAccountActivoDebitoCredito}"
+                                                               var="conta" itemLabel="#{conta.numeroAccount} - #{conta.descricaoAccount}" 
+                                                               itemValue="#{conta.pkAccount}" />
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup id="contaspassivofact" rendered="#{ctLancamentoDiarioCadastrarBean.opcao == 'Fact'}">
+                                            <p:outputLabel value="Conta a Creditar" />
+                                            <br/>
+                                            <p:selectOneMenu id="creditoo" 
+                                                             required="true"
+                                                             title="Menu para selecionar a conta creditar."
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoAccountCreditar}" 
+                                                             filter="true" filterMatchMode="contains" 
+                                                             requiredMessage="Seleciona a conta a creditar, por favor! " 
+                                                             style="width:350px">
+                                                <f:selectItem itemLabel="Seleciona a conta creditar..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listAccountPassivoDebitoCredito}"
+                                                               var="conta" itemLabel="#{conta.numeroAccount} - #{conta.descricaoAccount}" 
+                                                               itemValue="#{conta.pkAccount}" />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup id="contasactivoos" rendered="#{ctLancamentoDiarioCadastrarBean.opcao == 'Ordem'}">
+                                            <p:outputLabel value="Conta a Debitar" />
+
+                                            <p:selectOneMenu id="debito" 
+                                                             required="true"
+                                                             title="Menu para selecionar a conta a debitar."
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoAccountDebitar}" 
+                                                             filter="true" filterMatchMode="contains"
+                                                             requiredMessage="Seleciona a conta a debitar, por favor! " style="width:350px" >
+                                                <f:selectItem itemLabel="Seleciona a conta debitar..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listAccountPassivoDebitoCredito}"
+                                                               var="conta" itemLabel="#{conta.numeroAccount} - #{conta.descricaoAccount}" 
+                                                               itemValue="#{conta.pkAccount}" />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+                                        <h:panelGroup id="contaspassivooss" rendered="#{ctLancamentoDiarioCadastrarBean.opcao == 'Ordem'}">
+
+                                            <label style="font-size:118%">
+                                                Conta a Creditar
+                                            </label>
+
+                                            <br/>
+                                            <p:selectOneMenu id="credito" 
+                                                             required="true" 
+                                                             title="Menu para selecionar a conta a creditar."
+                                                             value="#{ctLancamentoDiarioCadastrarBean.codigoAccountCreditar}" 
+                                                             filter="true" filterMatchMode="contains" 
+                                                             requiredMessage="Seleciona a conta a creditar, por favor! " 
+                                                             style="width:350px">
+                                                <f:selectItem itemLabel="Seleciona a conta creditar..."  />
+                                                <f:selectItems value="#{ctLancamentoDiarioCadastrarBean.listAccountActivoDebitoCredito}"
+                                                               var="conta" itemLabel="#{conta.numeroAccount} - #{conta.descricaoAccount}" 
+                                                               itemValue="#{conta.pkAccount}" />
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup>
+
+
+                                    </p:panelGrid>
+                                </p:outputPanel>
+
+                                <p:panelGrid columns="3"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                                    <p:commandButton 
+                                        value="Guardar" action="#{ctLancamentoDiarioCadastrarBean.gravar()}"  
+                                        update="form_geral" styleClass="aqua-button" icon="fa fa-save"
+                                        />
+                                </p:panelGrid>
+                            </p:panel>
+
+
+                        </p:tab>
+                    </p:tabView>
+
+                    <br/>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <p:dialog draggable="true"  header="Nova Conta Movimento" widgetVar="pfDlContaMovimento" 
+                  closable="true" resizable="false" modal="true">
+            <p:messages  showDetail="true" showSummary="false"  closable="true" />
+
+            <!--                <cc_ct:formNovaContaMovimento/>-->
+
+            <p:commandButton 
+                style="width:150px; margin-bottom: 10px;" icon="ui-icon-save" 
+                value="Salvar"  update=":form_geral" 
+                action="#{accountBean.gravar()}" />
+            <p:commandButton
+                immediate="true" 
+                style="width:150px; margin-bottom: 10px; background-color: red" 
+                value="Cancelar" icon="fa fa-times" onclick="PF('pfDlContaMovimento').hide();">
+            </p:commandButton>
+
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
+
+

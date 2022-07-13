@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml">
+
+    <ui:define name="content">
+
+        <h4>Gestão de Contabilidade e Finanças  -> Contas e Carteiras </h4>
+        <div class="ui-g ui-fluid">
+
+            <div class="ui-g-12">
+                <div class="card">
+                    <h1>Contas e Carteiras </h1>
+                   
+                        
+                        <p:tabView>
+
+                            <p:tab title="Contas e Carteiras - Cadastro">
+
+                                <p:panelGrid columns="1" layout="grid" style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+
+                                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Tipo Conta :"/>
+                                            <p:selectOneMenu id="option1" effect="fold" >
+                                                <f:selectItem itemLabel="Select One" itemValue=""/>
+                                                <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                                                <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                                                <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Banco :"/>
+                                            <p:selectOneMenu id="option" effect="fold" >
+                                                <f:selectItem itemLabel="Select One" itemValue=""/>
+                                                <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                                                <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                                                <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Saldo Inicial :"/>
+                                            <p:inputNumber />
+                                        </p:panelGrid>
+
+                                        <p:panelGrid columns="1" layout="grid">
+                                            <p:outputLabel value="Observação :"/>
+                                            <p:inputTextarea/>
+                                        </p:panelGrid>
+
+                                    </p:panelGrid>
+                                </p:panelGrid>
+
+                            </p:tab> 
+                        </p:tabView>
+                        <br/>
+                        <p:panelGrid columns="1"  style="border:0px; background:none;" styleClass="ui-panelgrid-blank">
+                            <p:commandButton value="Guardar"   update="form_geral" icon="fa fa-save"/>
+                        </p:panelGrid>
+
+
+
+                    
+
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

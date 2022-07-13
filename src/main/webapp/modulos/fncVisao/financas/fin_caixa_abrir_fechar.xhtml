@@ -1,0 +1,269 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"
+                >
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1 style="font-size:25px">Caixas</h1>
+
+                    <p:tabView rendered="#{finOperacoesCaixaBean.openCx}">
+
+                        <p:tab title="Abrir Caixa">
+
+                            <p:panelGrid 
+                                columns="3" 
+                                layout="grid" 
+                                style="margin-bottom:20px;" 
+                                styleClass="ui-panelgrid-blank form-group"
+                                >
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">
+                                        Caixa Disponivel 
+                                    </label> 
+                                    <br/>
+                                    <p:selectOneMenu id="ordem" 
+                                                     required="true" 
+                                                     value="#{finOperacoesCaixaBean.caixa.pkCaixa}"
+                                                     filter="true" filterMatchMode="contains"
+                                                     requiredMessage="Seleciona o Caixa por favor! " 
+                                                     style=" width:300px ">
+                                        <f:selectItem 
+                                            itemLabel="Seleciona o Caixa..." 
+                                            noSelectionOption="true"/>
+                                        <f:selectItems 
+                                            value="#{finOperacoesCaixaBean.listCaixa}" 
+                                            var="caixa" 
+                                            itemLabel="#{caixa.nome}" 
+                                            itemValue="#{caixa.pkCaixa}" />
+
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">
+                                        Moeda 
+                                    </label> 
+                                    <br/>
+                                    <p:selectOneMenu id="moeda" 
+                                                     value="#{finOperacoesCaixaBean.idMoeda}"
+                                                     filter="true"
+                                                     filterMatchMode="contains"
+                                                     style=" width:300px ">
+                                        <f:selectItem 
+                                            itemLabel="Seleciona a Moeda"  
+                                            noSelectionOption="true"/>
+                                        <f:selectItems 
+                                            value="#{finOperacoesCaixaBean.moedaCache.listaFinMoedas}" 
+                                            var="moeda" 
+                                            itemLabel="#{moeda.descricao}" 
+                                            itemValue="#{moeda.pkMoeda}" />
+
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+                                <h:panelGroup >
+                                    <label style="font-size: 118%">Saldo Inicial</label> <br/>
+                                    <p:inputNumber 
+                                        value="#{finOperacoesCaixaBean.operacoesCaixa.saldoInicial}" 
+                                        required="true" label="Saldo" 
+                                        requiredMessage="O Saldo Inicial precisa ser informado!"
+                                        style="float: left; width: 350px" />
+
+                                </h:panelGroup>
+
+                            </p:panelGrid>
+
+
+
+                        </p:tab>
+
+
+                    </p:tabView>
+
+
+                    <p:tabView rendered="#{finOperacoesCaixaBean.closeCx}">
+
+                        <p:tab title="Fechar Caixa">
+
+                            <p:panelGrid 
+                                columns="2" layout="grid" 
+                                style="margin-bottom:20px;" 
+                                styleClass="ui-panelgrid-blank form-group">
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">
+                                        Caixa Disponivel 
+                                    </label> 
+                                    <br/>
+                                    <p:inputText 
+                                        value="#{finOperacoesCaixaBean.caixa.nome}" 
+                                        readonly="true"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <label style="font-size: 118%">
+                                        Moeda 
+                                    </label> 
+                                    <br/>
+                                    <p:inputText
+                                        value="#{finOperacoesCaixaBean.operacoesCaixa.fkMoeda.descricao}"  
+                                        readonly="true"
+                                        />
+                                </h:panelGroup>
+
+                                <h:panelGroup >
+                                    <label style="font-size: 118%">Saldo Contabilizado</label> <br/>
+                                    <p:inputNumber 
+                                        value="#{finOperacoesCaixaBean.operacoesCaixa.saldoCaixa}" 
+                                        readonly="true" 
+                                        required="true" label="Saldo" 
+                                        requiredMessage="O Saldo Contabilizado precisa ser informada!" 
+                                        style="float: left; width: 300px; color: red" />
+
+                                </h:panelGroup>
+
+
+                                <h:panelGroup >
+                                    <label style="font-size: 118%">Saldo Final</label> <br/>
+                                    <p:inputNumber  value="#{finOperacoesCaixaBean.operacoesCaixa.saldoFinal}" 
+                                                    required="true" label="Saldo" 
+                                                    requiredMessage="O Saldo Contabilizado precisa ser informada!" 
+                                                    style="float: left; width: 300px"
+                                                    />
+
+                                    <p:ajax update="quebradecaixa" event="keyup" />
+
+                                </h:panelGroup>
+
+
+                                <h:panelGroup >
+                                    <label style="font-size: 118%">Quebra de Caixa</label> <br/>
+                                    <p:inputNumber  id="quebradecaixa" readonly="true" 
+                                                    value="#{finOperacoesCaixaBean.quebraDeCaixa}" 
+                                                    required="true" label="Saldo" 
+                                                    requiredMessage="O Saldo Contabilizado precisa ser informada!"
+                                                    style="float: left; width: 300px" />
+
+                                </h:panelGroup>
+
+
+                                <h:panelGroup styleClass="md-inputfield" style=" width:300px " >
+
+
+                                    <p:inputTextarea
+                                        required="true" 
+                                        requiredMessage="Faça uma observação sobre o fecho do caixa!" 
+                                        rows="3" style="font-size: 118%" 
+                                        value="#{finOperacoesCaixaBean.operacoesCaixa.obsOperacoesCaixa}"  
+                                        placeholder="Observação..."
+                                        />
+                                </h:panelGroup>
+
+                            </p:panelGrid>
+
+                        </p:tab>
+
+                    </p:tabView>
+
+
+                    <p:panelGrid   
+                        columns="2" 
+                        layout="grid" 
+                        style="margin-left:-15px; width: 270px;" 
+                        styleClass="ui-panelgrid-blank form-group">
+                        <p:commandButton 
+                            icon="fa fa-check" 
+                            actionListener="#{finOperacoesCaixaBean.abrirCaixa()}" 
+                            value="Abrir Caixa" update="form_geral" 
+                            style="margin-bottom:10px;" 
+                            styleClass="flat"
+                            rendered="#{finOperacoesCaixaBean.openCx}"
+                            />
+
+                        <p:commandButton 
+                            icon="fa fa-check" 
+                            actionListener="#{finOperacoesCaixaBean.fechoCaixa()}" 
+                            value="Fechar Caixa" update="form_geral" style="margin-bottom:10px;" 
+                            styleClass="flat" rendered="#{finOperacoesCaixaBean.closeCx}" 
+                            />
+                    </p:panelGrid>
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:dataTable id="tabela" 
+                                 style="margin-bottom:1%;"  var="caixa" 
+                                 paginatorAlwaysVisible="false"
+                                 value="#{finOperacoesCaixaBean.listaCxOperacoes}"
+                                 emptyMessage="Não há registros!" paginator="true"  
+                                 paginatorPosition="top" rows="10"
+                                 >
+                        <f:facet name="header">
+                            <label style="font-size:140% ">Visualização dos Registros - Caixas Utilizador Logado</label> 
+                        </f:facet> 
+
+                        <p:column headerText="Caixa" style="text-align:center; ">
+                            <h:outputText value="#{caixa.fkCaixa.nome} " />
+                        </p:column>
+
+                        <p:column headerText="Utilizador" style="text-align:center; ">
+                            <h:outputText value="#{caixa.fkUtilizadorOpen.fkSegPessoa.nome}"/> 
+
+                        </p:column>
+
+                        <p:column headerText="Estado" style="text-align:center; ">
+                            <h:outputText value="#{caixa.openClose eq true ? 'Aberto' : 'Fechado'}"/> 
+
+                        </p:column>
+
+                        <p:column headerText="Data da Operação" style="text-align:center; width:200px;">
+                            <h:outputText value="#{caixa.dataMovimento}"> 
+
+                                <f:convertDateTime pattern="dd-MM-yyyy hh:mm" timeZone="GMT+1"/>
+
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </ui:define>
+
+</ui:composition>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/template_frt/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+
+
+            h5 {
+                font-size: 15px;
+                font-weight: 300;
+                padding: 0px;
+                margin: 0px
+            }
+
+            rotulo.rotulo {
+                width: 150px
+
+            }
+
+            .rotulo {
+                width: 150px
+            }
+
+        </style>
+    </ui:define>
+
+
+    <ui:define name="content">
+
+
+        <h5>Modulos -> Frotas -> Transporte -> Finalizar Atendimentto</h5>
+
+        <p:growl id="messagese" showDetail="true"/> 
+
+        <br/>
+        <br/>
+
+
+        <p:messages id="messages"  showSummary="true"  closable="true" showDetail="true"  autoUpdate="true"/>
+
+        <p:toolbar >
+
+            <p:toolbarGroup>    
+                <p:commandButton icon="ui-icon-save" value="Finalizar" style="margin-bottom:10px; width: 150px" styleClass="flat" action="#{transporteAtendimentoBean.finalizarAtendimento()}"/>    
+            </p:toolbarGroup>
+
+            <p:toolbarGroup align="right">
+                <p:separator/>
+                <p:button icon="ui-icon-list" value="Voltar" outcome="/modulos/frtVisao/frtTransporte/frtTransporteAtendimento/frt_transporte_atendimento_home?faces-redirect=true"/>
+            </p:toolbarGroup>
+
+        </p:toolbar> 
+
+
+
+        <p:tabView style="height: auto" orientation="left">
+
+            <p:tab title="Finalizar Atendimento" >
+
+                <p:fieldset legend="Dados da Chegada">
+
+                    <p:panelGrid columns="2" layout="grid" style="padding: 1% 1%" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Data do Atendimento"/>
+                        <p:inputText value="#{transporteAtendimentoBean.dataSystem()}" readonly="true">
+                            <f:convertDateTime locale="pt" timeZone="GMT+1" pattern="dd/MM/yyyy " /> 
+                        </p:inputText>
+
+
+                        <p:outputLabel value="Data da Chegada"/> 
+                        <p:calendar id="button_1" value="#{transporteAtendimentoBean.frtTransporteAtendimento.dataChegada}" showOn="button" locale="pt" yearRange="c-70:c+10" pattern="dd/MM/yyyy" navigator="true" required="true"   requiredMessage="Deve selecionar a Data de Saida"/>
+
+                        <p:outputLabel for="time" value="Hora da Chegada" />
+                        <p:calendar id="time" value="#{transporteAtendimentoBean.frtTransporteAtendimento.horaChegada}" pattern="HH:mm a" locale="pt" timeOnly="true"  requiredMessage="Deve selecionar a Hora de Chegada"/>
+
+
+                        <p:outputLabel value="Km Final"/>
+                        <p:inputText id="kmfinal" value="#{transporteAtendimentoBean.frtTransporteAtendimento.quilometroFinal}" size="45" maxlength="80" required="true" requiredMessage="O preenchimento do KM final é obrigatório" style="width: 200px"/>
+
+                        <p:outputLabel value="Percurso Percorrido"/>
+                        <p:inputText id="percurso" value="#{transporteAtendimentoBean.frtTransporteAtendimento.percursoPercorrido}" size="45" maxlength="80" required="true" requiredMessage="O preenchimento do Percurso é obrigatório" style="width: 200px"/>
+
+                    </p:panelGrid>
+
+                </p:fieldset>    
+
+            </p:tab>
+
+            <p:tab title="Observação">
+
+                <br/>
+                <br/>
+                <br/>
+
+                <p:fieldset legend="Observação">
+
+                    <p:panelGrid columns="2" id="painelObservacao" style="width: 100%; margin-top: 20px">
+
+                        <label> Observação</label><br /><br /><br />
+                        <h:inputTextarea styleClass="txtArea" value="#{transporteAtendimentoBean.frtTransporteAtendimento.observacao}" style="width: 500px; height: 200px" rows="3"/>
+
+                    </p:panelGrid> 
+
+                </p:fieldset>    
+
+            </p:tab> 
+
+
+        </p:tabView>    
+
+
+
+
+
+
+
+
+    </ui:define>   
+
+
+</ui:composition>
+

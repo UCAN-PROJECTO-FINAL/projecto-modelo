@@ -1,0 +1,232 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template_fnc/template.xhtml"
+                xmlns:cc_ct="http://xmlns.jcp.org/jsf/composite/cc_ct"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child{
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1 style="font-size:25px">Adicionar Valor à Categoria</h1>
+
+
+                    <!-- Início do formulário para Cadastrar o Ano Econômico -->
+                    <p:tabView >
+                        <p:tab title="Novo Montante" >
+
+                            <p:panelGrid columns="2" 
+                                         layout="grid" style="margin-bottom:0px;" 
+                                         styleClass="ui-panelgrid-blank form-group">
+
+                                <h:panelGroup>
+
+                                    <p:selectOneMenu id="ano" 
+                                                     required="true" 
+                                                     value="#{montanteClasseBean.codigoYear}"
+                                                     filter="true"
+                                                     title="Menu para escolher o exercício econômico."
+                                                     filterMatchMode="contains" 
+                                                     requiredMessage="Seleciona o exercício econômico, por favor! " 
+                                                     style="width:300px ">
+                                        <f:selectItem itemLabel="Seleciona..."  />
+                                        <f:selectItems value="#{montanteClasseBean.listYear}"
+                                                       var="ano" itemLabel="#{ano.anoEconomico}" 
+                                                       itemValue="#{ano.pkAnoEconomico}" />
+
+                                        <p:ajax event="change" listener="#{montanteClasseBean.valorDisponivelYear()}" 
+                                                update="montante, class" />
+
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+
+
+
+
+                                <h:panelGroup>
+                                    <label style="font-size:118%;">Valor Disponível</label><br/>
+                                    <p:inputText id="montante" 
+                                                 style="width:300px" 
+                                                 readonly="true"   
+                                                 value="#{montanteClasseBean.montanteDisponivel}"
+                                                 title="O montante do exercício que ainda não foi alocado">
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="AOA" />
+                                    </p:inputText>                                        
+                                </h:panelGroup>
+
+
+
+
+
+                                <h:panelGroup >
+
+                                    <p:selectOneMenu 
+                                        id="class" required="true" 
+                                        title="Menu para escolher a categoria." 
+                                        requiredMessage="Seleciona a Categoria, por favor! " 
+                                        value="#{montanteClasseBean.codigoClasse}"  
+                                        style="width:300px ">
+                                        <f:selectItem  
+                                            itemLabel="Seleciona a Categoria.."
+                                            itemValue="" />
+                                        <f:selectItems 
+                                            value="#{montanteClasseBean.getListClasseSemValorNoExercicioEconomico()}" 
+                                            var="class" itemLabel="#{class.pkClass}- #{class.descricaoClass}" 
+                                            itemValue="#{class.pkClass}" 
+                                            />
+                                    </p:selectOneMenu>
+
+                                </h:panelGroup>
+
+
+                                <h:panelGroup >
+                                    <label style="font-size:118%;">Valor Anual(AOA)</label><br/>
+                                    <p:inputNumber  value="#{montanteClasseBean.montante.valorAnualClasse}" 
+                                                    required="true" 
+                                                    title="Campo para digitar o valor anual da categoria."
+                                                    requiredMessage="O Valor Anual precisa ser informado." 
+                                                    style="float: left; width: 300px"
+                                                    />
+                                </h:panelGroup>
+
+
+
+
+                            </p:panelGrid>
+
+                        </p:tab>
+
+                    </p:tabView>
+                    <br/>
+                    <p:panelGrid
+                        columns="3"  style="border:0px; background:none;" 
+                        styleClass="ui-panelgrid-blank">
+                        <p:commandButton 
+                            value="Guardar" action="#{montanteClasseBean.gravar()}"  
+                            update="form_geral" styleClass="aqua-button" icon="fa fa-save"
+                            />
+                    </p:panelGrid>
+                    <br/>
+                    <br/>
+
+
+
+
+
+
+                </div>
+            </div>
+
+            <!-- Início da tabela para vizualização os registros -->
+            <p:dataTable  
+                id="tabela" var="montante" 
+                value="#{montanteClasseBean.listMontanteClasse}" 
+                paginatorAlwaysVisible="false"
+                paginator="true"  paginatorPosition="bottom" 
+                rows="5" emptyMessage="Não há registros!">
+                <f:facet name="header">
+                    <label style="font-size:140% ">Visualização dos Registros - Montante Disponível</label> 
+                </f:facet>
+
+
+                <p:column 
+                    filterBy="#{montante.fkAnoEconomico.anoEconomico}" 
+                    filterMatchMode="contains" headerText="Exercício"
+                    style="text-align:center; width:125px;"  >
+                    <h:outputText value="#{montante.fkAnoEconomico.anoEconomico}" />
+                </p:column>
+
+                <p:column 
+                    filterBy="#{montante.fkClass.descricaoClass}" filterMatchMode="contains" 
+                    headerText="Categoria" style="text-align:center; width:125px;"  
+                    >
+                    <h:outputText value="#{montante.fkClass.descricaoClass}" />
+                </p:column>
+
+
+                <p:column 
+                    headerText="Valor Anual"   
+                    style="text-align:center; width:125px;">
+                    <h:outputText value="#{montante.valorAnualClasse}"> 
+                        <f:convertNumber 
+                            type="currency" 
+                            locale="pt-PT" 
+                            currencySymbol="AOA" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Alterar" style="width: 100px;">
+                    <p:commandButton 
+                        style="margin-left:30%;" icon="ui-icon-edit" 
+                        update="form_geral" action="#{montanteClasseBean.alterar(montante)}"> 
+
+                        <p:confirm 
+                            header="Confirmação" 
+                            message="Desejas realmente alterar o montante de #{montante.valorAnualClasse} ?"
+                            icon="ui-icon-warning"
+                            />
+                    </p:commandButton>
+                    <p:confirmDialog 
+                        global="true" showEffect="fade" 
+                        hideEffect="fade" width="350">
+                        <p:commandButton 
+                            value="Sim" type="button" styleClass="ui-confirmdialog-yes GreenButton" 
+                            icon="ui-icon-check" />
+                        <p:commandButton 
+                            value="Não" type="button"  
+                            styleClass="ui-confirmdialog-no RedButton" 
+                            icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:column>
+
+                <p:column headerText="Eliminar" style="width:100px;">
+                    <p:commandButton style="margin-left:30%; background: red" 
+                                     action="#{montanteClasseBean.eliminar(montante.pkMontanteClasse)}"
+                                     update=":form_geral:tabela" icon="ui-icon-delete" 
+                                     >
+
+                        <p:confirm 
+                            header="Confirmação" 
+                            message="Desejas realmente eliminar o montante de   #{montante.valorAnualClasse} ?"
+                            icon="ui-icon-warning" />
+                    </p:commandButton>
+
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="350">
+                        <p:commandButton 
+                            value="Sim" type="button" 
+                            styleClass="ui-confirmdialog-yes GreenButton" 
+                            icon="ui-icon-check" />
+                        <p:commandButton 
+                            value="Não" type="button" 
+                            styleClass="ui-confirmdialog-no RedButton" 
+                            icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:column>
+
+            </p:dataTable>
+            <!-- Fim da tabela para vizualização os registros -->
+        </div>
+
+    </ui:define>
+
+</ui:composition>
