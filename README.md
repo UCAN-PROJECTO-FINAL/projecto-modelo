@@ -88,6 +88,8 @@ Este repositório serve de modelo de base para o ínicio do desenvolvimento do p
   - Instruções para criar a pasta: <prefixo-módulo>_visao. <prefixo-módulo> deve ser de 3 letras no mínimo exemplo: financas -> fin; logistica -> logis
 - Usar o arquivo template.xhtml em [web/template](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/tree/main/web/template) como template
 - Alterar o arquivo menu.xhtml em [web/template](https://github.com/UCAN-PROJECTO-FINAL/projecto-modelo/tree/main/web/template) para adicionar o menu de acordo com o teu módulo
+- Criar uma bd com nome: sig_ucan_db
+- Fazer o restore dela apartir do backup mais atualizado na pasta de backups da base de dados
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
